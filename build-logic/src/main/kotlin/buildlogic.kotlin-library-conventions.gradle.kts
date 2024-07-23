@@ -9,4 +9,80 @@ plugins {
     id("buildlogic.kotlin-common-conventions")
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
+    `maven-publish`
+    signing
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+
+            description = project.description
+
+            from(components["java"])
+
+            versionMapping {
+                usage("java-api") {
+                    fromResolutionOf("runtimeClasspath")
+                }
+                usage("java-runtime") {
+                    fromResolutionResult()
+                }
+            }
+
+            pom {
+                name = project.name
+                description = project.description
+                url = "https://github.com/microsphere-projects/microsphere-nacos"
+
+                organization {
+                    name = "Microsphere"
+                    url = "https://github.com/microsphere-projects"
+                }
+
+                licenses {
+                    license {
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = "mercyblitz"
+                        name = "Mercy Ma"
+                        email = "mercyblitz@gmail.com"
+                        organization = "Microsphere"
+                        url = "https://github.com/mercyblitz"
+                        roles = setOf("lead", "architect", "developer")
+                    }
+                }
+
+                scm {
+                    url = "git@github.com/microsphere-projects/microsphere-nacos.git"
+                    connection = "scm:git:git@github.com/microsphere-projects/microsphere-nacos.git"
+                    developerConnection = "scm:git:ssh://git@github.com/microsphere-projects/microsphere-nacos.git"
+                }
+            }
+
+            repositories {
+                maven {
+                    name = "ossrh"
+                    val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                    val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                    url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign(publishing.publications["mavenJava"])
+}
+
+tasks.javadoc {
+    if (JavaVersion.current().isJava9Compatible) {
+        (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
+    }
 }
