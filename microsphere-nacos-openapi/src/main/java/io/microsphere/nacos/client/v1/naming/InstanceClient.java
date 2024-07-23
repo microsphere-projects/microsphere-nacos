@@ -383,6 +383,14 @@ public interface InstanceClient {
     Instance getInstance(QueryInstance queryInstance);
 
     /**
+     * Send {@link Instance Instance's} Heartbeat to Nacos Server
+     *
+     * @param instance {@link Instance}
+     * @return <code>true</code> if send successfully, otherwise <code>false</code>
+     */
+    boolean sendHeartbeat(Instance instance);
+
+    /**
      * {@link UpdateHealthInstance Update Instances' Health}
      *
      * @param updateHealthInstance {@link UpdateHealthInstance}
