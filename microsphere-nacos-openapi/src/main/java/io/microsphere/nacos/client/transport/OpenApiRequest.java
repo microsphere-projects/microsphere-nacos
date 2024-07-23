@@ -131,12 +131,27 @@ public class OpenApiRequest {
             return queryParameter(param.getName(), param.toValue(value));
         }
 
+        public Builder removeParameters(OpenApiRequestParam... params) {
+            for (OpenApiRequestParam param : params) {
+                removeParameter(param);
+            }
+            return this;
+        }
+
+        public Builder removeParameter(OpenApiRequestParam param) {
+            return removeParameter(param.getName());
+        }
+
         protected Builder queryParameter(String name, Object value) {
             return queryParameter(name, value == null ? null : value.toString());
         }
 
         protected Builder queryParameter(String name, String value) {
             return set(name, value, this::getQueryParameters);
+        }
+
+        protected Builder removeParameter(String name) {
+            return remove(name, this::getQueryParameters);
         }
 
         public Builder header(OpenApiRequestHeader header, String value) {
@@ -161,6 +176,15 @@ public class OpenApiRequest {
             }
             Map<String, String> map = mapSupplier.get();
             map.put(name, value);
+            return this;
+        }
+
+        private Builder remove(String name, Supplier<Map<String, String>> mapSupplier) {
+            if (name == null) {
+                return this;
+            }
+            Map<String, String> map = mapSupplier.get();
+            map.remove(name);
             return this;
         }
 
