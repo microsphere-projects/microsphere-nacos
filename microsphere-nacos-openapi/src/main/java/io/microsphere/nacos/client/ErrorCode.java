@@ -16,6 +16,13 @@
  */
 package io.microsphere.nacos.client;
 
+import io.microsphere.nacos.client.util.ErrorCodeControl;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import static java.util.ResourceBundle.getBundle;
+
 /**
  * The Enumeration for Nacos OpenAPI Error-Code
  *
@@ -23,6 +30,8 @@ package io.microsphere.nacos.client;
  * @since 1.0.0
  */
 public enum ErrorCode {
+
+    // Nacos 1.x Errors
 
     BAD_REQUEST(400, "Bad Request"),
 
@@ -32,7 +41,71 @@ public enum ErrorCode {
 
     INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
 
-    // Nacos Client Error (40000 - 49999)
+    // Nacos 2.x Errors (10000 - 30000)
+
+    PARAMETER_MISSING(10000, "Parameter Missing"),
+
+    ACCESS_DENIED(10001, "Access Denied"),
+
+    DATA_ACCESS_ERROR(10002, "Data Access Error"),
+
+    TENANT_PARAMETER_ERROR(20001, "'tenant' Parameter Error"),
+
+    PARAMETER_VALIDATE_ERROR(20002, "Parameter Validate Error"),
+
+    MEDIA_TYPE_ERROR(20003, "MediaType Error"),
+
+    RESOURCE_NOT_FOUND(20004, "Resource Not Found"),
+
+    RESOURCE_CONFLICT(20005, "Resource Conflict"),
+
+    CONFIG_LISTENER_IS_NULL(20006, "Config Listener is NULL"),
+
+    CONFIG_LISTENER_ERROR(20007, "Config Listener Error"),
+
+    INVALID_DATA_ID(20008, "Invalid Data Id"),
+
+    PARAMETER_MISMATCH(20009, "Parameter Mismatch"),
+
+    SERVICE_NAME_ERROR(21000, "Service Name Error"),
+
+    WEIGHT_ERROR(21001, "Weight Error"),
+
+    INSTANCE_METADATA_ERROR(21002, "Instance Metadata Error"),
+
+    INSTANCE_NOT_FOUND(21003, "Instance not found"),
+
+    INSTANCE_ERROR(21004, "Instance error"),
+
+    SERVICE_METADATA_ERROR(21005, "Service Metadata Error"),
+
+    SELECTOR_ERROR(21006, "Selector Error"),
+
+    SERVICE_ALREADY_EXIST(21007, "Service Already Exist"),
+
+    SERVICE_NOT_EXIST(21008, "Service Not Exist"),
+
+    SERVICE_DELETE_FAILURE(21009, "Service Delete Failure"),
+
+    HEALTHY_PARAM_MISS(21010, "Healthy Param Miss"),
+
+    HEALTH_CHECK_STILL_RUNNING(21011, "Health Check Still Running"),
+
+    ILLEGAL_NAMESPACE(22000, "Illegal Namespace"),
+
+    NAMESPACE_NOT_EXIST(22001, "Namespace Not Exist"),
+
+    NAMESPACE_ALREADY_EXIST(22002, "Namespace Already Exist"),
+
+    ILLEGAL_STATE(23000, "Illegal State"),
+
+    NODE_INFO_ERROR(23001, "Node Info Error"),
+
+    NODE_DOWN_FAILURE(23002, "Node Down Failure"),
+
+    SERVER_ERROR(30000, "Server Error"),
+
+    // Nacos Client Errors (40000 - 49999)
 
     CLIENT_ERROR(40000, "Client Error"),
 
@@ -44,6 +117,8 @@ public enum ErrorCode {
 
     ;
 
+
+    private static final String ERROR_CODE_MESSAGES_BASE_NAME = "META-INF/error-code/messages";
 
     private final int value;
 
@@ -68,6 +143,31 @@ public enum ErrorCode {
         return reason;
     }
 
+    /**
+     * Get the message for {@link ErrorCode} with {@link Locale#getDefault()}
+     *
+     * @return the message for {@link ErrorCode}
+     * @see ResourceBundle
+     * @see ErrorCodeResourceBundleControlProvider
+     */
+    public String getMessage() {
+        return getMessage(Locale.getDefault());
+    }
+
+    /**
+     * Get the message for {@link ErrorCode}
+     *
+     * @param locale {@link Locale}
+     * @return the message for {@link ErrorCode}
+     * @see ResourceBundle
+     * @see ErrorCodeResourceBundleControlProvider
+     */
+    public String getMessage(Locale locale) {
+        ResourceBundle resourceBundle = getBundle(ERROR_CODE_MESSAGES_BASE_NAME, locale, ErrorCodeControl.INSTANCE);
+        String key = getMessageKey();
+        return resourceBundle.getString(key);
+    }
+
     public static ErrorCode valueOf(int value) {
         for (ErrorCode errorCode : values()) {
             if (errorCode.value == value) {
@@ -75,5 +175,9 @@ public enum ErrorCode {
             }
         }
         throw new IllegalArgumentException("Invalid ErrorCode value : " + value);
+    }
+
+    private String getMessageKey() {
+        return String.valueOf(this.value);
     }
 }
