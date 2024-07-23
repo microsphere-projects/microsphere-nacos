@@ -262,7 +262,7 @@ public enum OpenApiRequestParam {
     METADATA("metadata", Map.class) {
         @Override
         public String toValue(Object rawValue) {
-            return toJSON((Map<String, String>) rawValue);
+            return toJSON((Map) rawValue);
         }
     },
 
@@ -300,6 +300,16 @@ public enum OpenApiRequestParam {
      * The request parameter of Nacos Discovery's instance ephemeral status
      */
     INSTANCE_EPHEMERAL("ephemeral", Boolean.class),
+
+    /**
+     * The request parameter of Nacos Discovery's heartbeat
+     */
+    HEARTBEAT("beat", Map.class) {
+        @Override
+        public String toValue(Object rawValue) {
+            return toJSON((Map) rawValue);
+        }
+    },
 
     /**
      * The request parameter of Nacos Discovery's instances JSON
