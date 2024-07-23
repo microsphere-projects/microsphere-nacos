@@ -47,6 +47,7 @@ import static io.microsphere.nacos.client.http.HttpMethod.PUT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CLUSTERS;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CLUSTER_NAME;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONSISTENCY_TYPE;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.HEARTBEAT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCES;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_ENABLED;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_EPHEMERAL;
@@ -127,6 +128,30 @@ public class OpenApiInstanceClient implements InstanceClient {
         Instance instance = this.openApiClient.execute(request, Instance.class);
         completeInstance(instance, queryInstance);
         return instance;
+    }
+
+    @Override
+    public boolean sendHeartbeat(Instance instance) {
+        OpenApiRequest request = requestBuilder(instance, PUT)
+                .queryParameter(HEARTBEAT, getHeartbeatMap(instance))
+                .removeParameters(
+                        CLUSTER_NAME,
+                        INSTANCE_WEIGHT,
+                        INSTANCE_ENABLED,
+                        METADATA,
+                        INSTANCE_HEALTHY)
+                .build();
+        return responseMessage(request);
+    }
+
+    private Map<Object, Object> getHeartbeatMap(Instance instance) {
+        Map<Object, Object> heartbeanMap = new HashMap<>(8);
+        Map<String, String> metadata = buildInstanceMap(instance, null);
+
+        heartbeanMap.put("ip", instance.getIp());
+        heartbeanMap.put("port", instance.getPort());
+
+        return heartbeanMap;
     }
 
     @Override
