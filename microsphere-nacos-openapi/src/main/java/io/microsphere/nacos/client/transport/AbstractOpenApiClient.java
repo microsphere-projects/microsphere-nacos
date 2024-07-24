@@ -18,9 +18,11 @@ package io.microsphere.nacos.client.transport;
 
 import io.microsphere.nacos.client.ErrorCode;
 import io.microsphere.nacos.client.NacosClientConfig;
+import io.microsphere.nacos.client.common.model.Result;
 import io.microsphere.nacos.client.io.DeserializationException;
 import io.microsphere.nacos.client.io.Deserializer;
 
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import static io.microsphere.nacos.client.ErrorCode.CLIENT_ERROR;
@@ -58,29 +60,43 @@ public abstract class AbstractOpenApiClient implements OpenApiClient {
     public <T> T execute(OpenApiRequest request, Type payloadType) throws OpenApiClientException {
         Deserializer deserializer = getDeserializer();
         T payload = null;
+        int code = 0;
+        String errorMessge = null;
         try {
             OpenApiResponse response = execute(request);
             int statusCode = response.getStatusCode();
             if (statusCode == 200) {
-                payload = deserializer.deserialize(response.getContent(), payloadType);
-            } else {
-                ErrorCode errorCode = ErrorCode.valueOf(statusCode);
-                String responseMessage = isBlank(response.getStatusMessage()) ?
-                        readAsString(response.getContent(), nacosClientConfig.getEncoding()) :
-                        response.getStatusMessage();
-                String errorMessage = format("The Open API request[%s] is invalid , response status[code : %d , message : %s]",
-                        request, statusCode, responseMessage);
-                throw new OpenApiClientException(errorCode, errorMessage);
+                if (payloadType instanceof ParameterizedType) {
+                    ParameterizedType parameterizedType = (ParameterizedType) payloadType;
+                    Type rawType = parameterizedType.getRawType();
+                    if (Result.class.equals(rawType)) {
+                        Result result = deserializer.deserialize(response.getContent(), Result.class);
+                        if (result.isSuccess()) {
+                            payload = (T) result.getData();
+                        }
+                    }
+                } else {
+                    payload = deserializer.deserialize(response.getContent(), payloadType);
+                }
+
+                return payload;
             }
-        } catch (OpenApiClientException e) {
-            throw e;
+
+            String statusMessage = response.getStatusMessage();
+            code = statusCode;
+            errorMessge = isBlank(statusMessage) ? readAsString(response.getContent(), getEncoding()) : statusMessage;
         } catch (DeserializationException e) {
             String errorMessage = format("The payload[%s] can't be deserialized", payloadType);
             throw new OpenApiClientException(DESERIALIZATION_ERROR, errorMessage, e);
         } catch (Throwable e) {
             throw new OpenApiClientException(CLIENT_ERROR, e.getMessage(), e);
         }
-        return payload;
+
+        ErrorCode errorCode = ErrorCode.valueOf(code);
+        errorMessge = isBlank(errorMessge) ? errorCode.getMessage() : errorMessge;
+        String errorMessage = format("The Open API request[%s] is invalid , response status[code : %d , message : %s]",
+                request, code, errorMessge);
+        throw new OpenApiClientException(errorCode, errorMessage);
     }
 
     /**
