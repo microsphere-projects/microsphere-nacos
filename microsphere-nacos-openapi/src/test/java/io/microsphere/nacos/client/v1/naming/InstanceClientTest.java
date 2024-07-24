@@ -86,6 +86,9 @@ public class InstanceClientTest extends OpenApiTest {
         assertEquals(instance.getHealthy(), instance1.getHealthy());
         assertEquals(instance.getWeight(), instance1.getWeight());
 
+        // Test sendHeartbeat
+        assertTrue(client.sendHeartbeat(instance));
+
         // Test refresh()
         instance.setWeight(50.0);
         UpdateInstance updateInstance = new UpdateInstance().from(instance);
@@ -108,6 +111,7 @@ public class InstanceClientTest extends OpenApiTest {
         }
         assertNotNull(exception);
         assertEquals(ErrorCode.BAD_REQUEST, exception.getErrorCode());
+
 
         // Test getInstancesList()
         InstancesList instancesList = client.getInstancesList(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_SERVICE_NAME);
