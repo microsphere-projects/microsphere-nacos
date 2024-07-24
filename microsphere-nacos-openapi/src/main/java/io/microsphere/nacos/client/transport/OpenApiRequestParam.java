@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import static io.microsphere.nacos.client.util.IOUtils.encode;
 import static io.microsphere.nacos.client.util.JsonUtils.toJSON;
 import static io.microsphere.nacos.client.util.StringUtils.collectionToCommaDelimitedString;
 
@@ -307,7 +308,8 @@ public enum OpenApiRequestParam {
     HEARTBEAT("beat", Map.class) {
         @Override
         public String toValue(Object rawValue) {
-            return toJSON((Map) rawValue);
+            String json = toJSON((Map) rawValue);
+            return encode(json, "UTF-8");
         }
     },
 
