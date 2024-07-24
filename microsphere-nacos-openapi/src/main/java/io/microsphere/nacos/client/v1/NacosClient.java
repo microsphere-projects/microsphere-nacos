@@ -16,6 +16,11 @@
  */
 package io.microsphere.nacos.client.v1;
 
+import io.microsphere.nacos.client.v1.config.ConfigClient;
+import io.microsphere.nacos.client.v1.namespace.NamespaceClient;
+import io.microsphere.nacos.client.v1.naming.InstanceClient;
+import io.microsphere.nacos.client.v1.naming.ServiceClient;
+import io.microsphere.nacos.client.v1.raft.RaftClient;
 import io.microsphere.nacos.client.v1.server.ServerClient;
 
 /**
@@ -25,5 +30,5 @@ import io.microsphere.nacos.client.v1.server.ServerClient;
  * @see ServerClient
  * @since 1.0.0
  */
-public interface NacosClient extends ServerClient {
+public interface NacosClient extends ConfigClient, ServiceClient, InstanceClient, NamespaceClient, ServerClient, RaftClient {
 }
