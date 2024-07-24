@@ -92,7 +92,7 @@ public class InstanceClientTest extends OpenApiTest {
         // Test refresh()
         instance.setWeight(50.0);
         UpdateInstance updateInstance = new UpdateInstance().from(instance);
-        client.refresh(updateInstance);
+        assertTrue(client.refresh(updateInstance));
         instance1 = client.getInstance(queryInstance);
         assertEquals(instance.getIp(), instance1.getIp());
         assertEquals(instance.getPort(), instance1.getPort());
