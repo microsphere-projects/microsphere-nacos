@@ -147,10 +147,13 @@ public class OpenApiInstanceClient implements InstanceClient {
     private Map<Object, Object> getHeartbeatMap(Instance instance) {
         Map<Object, Object> heartbeanMap = new HashMap<>(8);
         Map<String, String> metadata = buildInstanceMap(instance, null);
-
         heartbeanMap.put("ip", instance.getIp());
         heartbeanMap.put("port", instance.getPort());
-
+        heartbeanMap.put("scheduled", true);
+        heartbeanMap.put("serviceName", instance.getServiceName());
+        heartbeanMap.put("cluster", instance.getClusterName());
+        heartbeanMap.put("weight", instance.getWeight());
+        heartbeanMap.put("metadata", metadata);
         return heartbeanMap;
     }
 
