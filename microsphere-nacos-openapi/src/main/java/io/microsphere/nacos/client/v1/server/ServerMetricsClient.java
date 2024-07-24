@@ -19,7 +19,7 @@ package io.microsphere.nacos.client.v1.server;
 import io.microsphere.nacos.client.v1.server.model.ServerMetrics;
 
 /**
- * * The Client for Nacos {@link ServerMetrics Server Metrics}
+ * * The Client for Nacos {@link ServerMetrics Server Metrics} Open API V1
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see ServerMetrics
