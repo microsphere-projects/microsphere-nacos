@@ -19,7 +19,7 @@ package io.microsphere.nacos.client.v1.raft;
 import io.microsphere.nacos.client.v1.raft.model.RaftModel;
 
 /**
- * The Nacos Client for {@link RaftModel RAFT}
+ * The Client for Nacos {@link RaftModel RAFT} Open API V1
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see RaftModel
