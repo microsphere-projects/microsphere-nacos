@@ -69,7 +69,7 @@ public abstract class TypeUtils {
 
         @Override
         public Type getOwnerType() {
-            return null;
+            return ownerType;
         }
     }
 }
