@@ -19,7 +19,7 @@ package io.microsphere.nacos.client.v1.server;
 import io.microsphere.nacos.client.v1.server.model.ServerSwitch;
 
 /**
- * The Client for Nacos {@link ServerSwitch Server Swtich}
+ * The Client for Nacos {@link ServerSwitch Server Swtich} Open API V1
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see ServerSwitch
