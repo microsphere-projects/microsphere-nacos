@@ -81,6 +81,11 @@ public enum OpenApiRequestParam {
     OPERATOR("src_user"),
 
     /**
+     * The request parameter of Nacos operator V2
+     */
+    OPERATOR_V2("srcUser"),
+
+    /**
      * The request parameter of Nacos description
      */
     DESCRIPTION("desc"),
