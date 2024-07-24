@@ -29,6 +29,8 @@ import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
+import static io.microsphere.nacos.client.constants.Constants.DEFAULT_ENCODING;
+
 /**
  * {@link ResourceBundle.Control} for {@link ErrorCode}
  *
@@ -55,7 +57,7 @@ public class ErrorCodeControl extends ResourceBundle.Control {
         ResourceBundle bundle = null;
 
         try (InputStream stream = getInputStream(resourceName, classLoader, reload);
-             Reader reader = new InputStreamReader(stream, "UTF-8");
+             Reader reader = new InputStreamReader(stream, DEFAULT_ENCODING);
         ) {
             bundle = new PropertyResourceBundle(reader);
         } catch (IOException e) {
