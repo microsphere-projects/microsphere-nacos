@@ -75,6 +75,6 @@ public abstract class ConfigUtil {
 
         idBuilder.append(LISTENING_CONFIG_SEPARATOR_CHAR);
 
-        return encode(idBuilder.toString(), "UTF-8");
+        return encode(idBuilder.toString());
     }
 }
