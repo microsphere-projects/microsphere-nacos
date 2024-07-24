@@ -16,116 +16,93 @@
 
 package io.microsphere.nacos.client.common.model;
 
-import java.io.Serializable;
+import java.util.Objects;
 
 /**
- * Rest result.
+ * The {@link Model} {@link Class} for Result.
  *
  * @author <a href="mailto:liaochuntao@live.com">liaochuntao</a>
+ * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  */
-public class RestResult<T> implements Serializable {
-    
+public class Result<T> implements Model {
+
     private static final long serialVersionUID = 6095433538316185017L;
-    
+
     private int code;
-    
+
     private String message;
-    
+
     private T data;
-    
-    public RestResult() {
+
+    public Result() {
     }
-    
-    public RestResult(int code, String message, T data) {
+
+    public Result(int code, String message, T data) {
         this.code = code;
         this.setMessage(message);
         this.data = data;
     }
-    
-    public RestResult(int code, T data) {
+
+    public Result(int code, T data) {
         this.code = code;
         this.data = data;
     }
-    
-    public RestResult(int code, String message) {
+
+    public Result(int code, String message) {
         this.code = code;
         this.setMessage(message);
     }
-    
+
     public int getCode() {
         return code;
     }
-    
+
     public void setCode(int code) {
         this.code = code;
     }
-    
+
     public String getMessage() {
         return message;
     }
-    
+
     public void setMessage(String message) {
         this.message = message;
     }
-    
+
     public T getData() {
         return data;
     }
-    
+
     public void setData(T data) {
         this.data = data;
     }
-    
-    public boolean ok() {
+
+    public boolean isSuccess() {
         return this.code == 0 || this.code == 200;
     }
-    
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Result)) return false;
+
+        Result<?> result = (Result<?>) o;
+        return code == result.code &&
+                Objects.equals(message, result.message) &&
+                Objects.equals(data, result.data);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = code;
+        result = 31 * result + Objects.hashCode(message);
+        result = 31 * result + Objects.hashCode(data);
+        return result;
+    }
+
     @Override
     public String toString() {
-        return "RestResult{" + "code=" + code + ", message='" + message + '\'' + ", data=" + data + '}';
+        return "Result{" + "code=" + code + ", message='" + message + '\'' + ", data=" + data + '}';
     }
-    
-    public static <T> ResResultBuilder<T> builder() {
-        return new ResResultBuilder<T>();
-    }
-    
-    public static final class ResResultBuilder<T> {
-        
-        private int code;
-        
-        private String errMsg;
-        
-        private T data;
-        
-        private ResResultBuilder() {
-        }
-        
-        public ResResultBuilder<T> withCode(int code) {
-            this.code = code;
-            return this;
-        }
-        
-        public ResResultBuilder<T> withMsg(String errMsg) {
-            this.errMsg = errMsg;
-            return this;
-        }
-        
-        public ResResultBuilder<T> withData(T data) {
-            this.data = data;
-            return this;
-        }
-    
-        /**
-         * Build result.
-         *
-         * @return result
-         */
-        public RestResult<T> build() {
-            RestResult<T> restResult = new RestResult<T>();
-            restResult.setCode(code);
-            restResult.setMessage(errMsg);
-            restResult.setData(data);
-            return restResult;
-        }
-    }
+
 }
