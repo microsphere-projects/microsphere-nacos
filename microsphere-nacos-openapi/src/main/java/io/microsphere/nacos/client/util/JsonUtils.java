@@ -16,10 +16,17 @@
  */
 package io.microsphere.nacos.client.util;
 
+import java.beans.BeanInfo;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
+
+import static java.beans.Introspector.decapitalize;
+import static java.beans.Introspector.getBeanInfo;
+import static java.util.Arrays.asList;
 
 /**
  * The utility class for JSON
@@ -28,6 +35,10 @@ import java.util.StringJoiner;
  * @since 1.0.0
  */
 public abstract class JsonUtils {
+
+    private static final String QUOTE = "\"";
+
+    private static final String COLON = ":";
 
     private static final String SEPARATOR = ",";
 
@@ -43,16 +54,27 @@ public abstract class JsonUtils {
 
     private static final String EMPTY_ARRAY_JSON = ARRAY_JSON_START + ARRAY_JSON_END;
 
+    public static String toJSON(Object[] elements) {
+        int size = elements == null ? 0 : elements.length;
+        if (size < 1) {
+            return EMPTY_ARRAY_JSON;
+        }
+        return toJSON(asList(elements));
+    }
 
     public static String toJSON(Collection<?> elements) {
         int size = elements == null ? 0 : elements.size();
         if (size < 1) {
             return EMPTY_ARRAY_JSON;
         }
+        return toJSON((Iterable<?>) elements);
+    }
+
+    public static String toJSON(Iterable<?> elements) {
         StringJoiner jsonBuilder = new StringJoiner(SEPARATOR, ARRAY_JSON_START, ARRAY_JSON_END);
 
         for (Object element : elements) {
-            jsonBuilder.add(toJSON(element));
+            jsonBuilder.add(String.valueOf(toValue(element)));
         }
 
         return jsonBuilder.toString();
@@ -64,21 +86,33 @@ public abstract class JsonUtils {
         } else if (object instanceof Map) {
             return toJSON((Map<String, String>) object);
         }
+        String json = null;
+        try {
+            BeanInfo beanInfo = getBeanInfo(object.getClass(), Object.class);
+            json = toJSON(object, beanInfo);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+        return json;
     }
 
-    public static String toJSON(List<Map<String, String>> maps) {
-        int size = maps == null ? 0 : maps.size();
+    static String toJSON(Object object, BeanInfo beanInfo) throws Throwable {
+        PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+        int size = propertyDescriptors == null ? 0 : propertyDescriptors.length;
         if (size < 1) {
-            return "[]";
+            return EMPTY_JSON;
         }
-
-        StringJoiner jsonBuilder = new StringJoiner(",", "[", "]");
+        Map<String, Object> fieldsMap = new HashMap<>(size);
         for (int i = 0; i < size; i++) {
-            Map<String, String> map = maps.get(i);
-            jsonBuilder.add(toJSON(map));
+            PropertyDescriptor propertyDescriptor = propertyDescriptors[i];
+            Method method = propertyDescriptor.getReadMethod();
+            if (method != null) {
+                String key = decapitalize(propertyDescriptor.getName());
+                Object value = method.invoke(object);
+                fieldsMap.put(key, value);
+            }
         }
-
-        return jsonBuilder.toString();
+        return toJSON(fieldsMap);
     }
 
     /**
@@ -96,18 +130,40 @@ public abstract class JsonUtils {
         StringBuilder jsonBuilder = new StringBuilder(32 * size);
 
         int cursor = 0;
-        jsonBuilder.append("{");
+        jsonBuilder.append(JSON_START);
         for (Map.Entry<?, ?> entry : map.entrySet()) {
             Object key = entry.getKey();
             Object value = entry.getValue();
-            jsonBuilder.append('"')
-                    .append(key).append('"').append(':').append('"').append(value).append('"');
+            jsonBuilder.append(toEntry(key, value));
             if (++cursor < size) {
-                jsonBuilder.append(",");
+                jsonBuilder.append(SEPARATOR);
             }
         }
 
-        jsonBuilder.append("}");
+        jsonBuilder.append(JSON_END);
         return jsonBuilder.toString();
+    }
+
+    static String toEntry(Object key, Object value) {
+        return toKey(key) + COLON + toValue(value);
+    }
+
+    static String toKey(Object key) {
+        return QUOTE + key + QUOTE;
+    }
+
+    static Object toValue(Object value) {
+        if (value instanceof CharSequence) {
+            return QUOTE + value + QUOTE;
+        } else if (value instanceof Number) {
+            return value;
+        } else if (value instanceof Boolean) {
+            return value;
+        } else if (value instanceof Collection) {
+            return toJSON((Collection<?>) value);
+        } else if (value instanceof Map) {
+            return toJSON((Map<String, String>) value);
+        }
+        return toJSON(value);
     }
 }

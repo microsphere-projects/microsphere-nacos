@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class JsonUtilsTest {
 
     @Test
-    public void testToJSON() {
+    public void testMapToJSON() {
         Map<String, String> map = new HashMap<>();
         map.put("key-1", "value-1");
         map.put("key-2", "value-2");
@@ -45,5 +45,12 @@ public class JsonUtilsTest {
 
         json = toJSON(emptyMap());
         assertEquals("{}", json);
+    }
+
+    @Test
+    public void testArrayToJSON() {
+        String[] elements = new String[]{"a", "b", "c"};
+        String json = toJSON(elements);
+        assertEquals("[\"a\",\"b\",\"c\"]", json);
     }
 }
