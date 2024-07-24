@@ -46,29 +46,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class ConfigClientTest extends OpenApiTest {
 
-    private static final String TEST_DATA_ID = "test-config";
+    public static final String TEST_DATA_ID = "test-config";
 
-    private static final String CONTENT = "Test Config Content...";
+    public static final String TEST_CONFIG_CONTENT = "Test Config Content...";
 
-    private static final String TAG = "test-tag";
+    public static final String TEST_CONFIG_TAG = "test-tag";
 
-    private static final Set<String> TAGS = new HashSet<>(asList("test-tag-1", "test-tag-2", "test-tag-3"));
+    public static final Set<String> TEST_CONFIG_TAGS = new HashSet<>(asList("test-tag-1", "test-tag-2", "test-tag-3"));
 
-    private static final String APP_NAME = "test-app";
+    public static final String TEST_CONFIG_APP_NAME = "test-app";
 
-    private static final String DESCRIPTION = "This is a description for test-config";
+    public static final String TEST_CONFIG_DESCRIPTION = "This is a description for test-config";
 
-    private static final String OPERATOR = "microsphere-nacos-client";
+    public static final String TEST_CONFIG_OPERATOR = "microsphere-nacos-client";
 
-    private static final String USE = "test";
+    public static final String TEST_CONFIG_USE = "test";
 
-    private static final String EFFECT = "Effect 1";
+    public static final String TEST_CONFIG_EFFECT = "Effect 1";
 
-    private static final String SCHEMA = "test config schema";
+    public static final String TEST_CONFIG_SCHEMA = "test config schema";
 
-    private static final ConfigType CONFIG_TYPE = ConfigType.TEXT;
+    public static final ConfigType CONFIG_TYPE = ConfigType.TEXT;
 
-    private static final int LONG_POLLING_TIMEOUT = 5000;
+    public static final int LONG_POLLING_TIMEOUT = 5000;
 
     @Override
     protected void customize(NacosClientConfig nacosClientConfig) {
@@ -190,7 +190,7 @@ public class ConfigClientTest extends OpenApiTest {
         assertEquals(TEST_NAMESPACE_ID, config.getNamespaceId());
         assertEquals(TEST_GROUP_NAME, config.getGroup());
         assertEquals(TEST_DATA_ID, config.getDataId());
-        assertEquals(APP_NAME, config.getAppName());
+        assertEquals(TEST_CONFIG_APP_NAME, config.getAppName());
         assertNotNull(config.getOperatorIp());
         assertNotNull(config.getOperator());
         assertNotNull(config.getCreatedTime());
@@ -202,14 +202,14 @@ public class ConfigClientTest extends OpenApiTest {
         newConfig.setNamespaceId(TEST_NAMESPACE_ID);
         newConfig.setGroup(TEST_GROUP_NAME);
         newConfig.setDataId(TEST_DATA_ID);
-        newConfig.setContent(CONTENT);
-        newConfig.setTags(TAGS);
-        newConfig.setAppName(APP_NAME);
-        newConfig.setDescription(DESCRIPTION);
-        newConfig.setOperator(OPERATOR);
-        newConfig.setUse(USE);
-        newConfig.setEffect(EFFECT);
-        newConfig.setSchema(SCHEMA);
+        newConfig.setContent(TEST_CONFIG_CONTENT);
+        newConfig.setTags(TEST_CONFIG_TAGS);
+        newConfig.setAppName(TEST_CONFIG_APP_NAME);
+        newConfig.setDescription(TEST_CONFIG_DESCRIPTION);
+        newConfig.setOperator(TEST_CONFIG_OPERATOR);
+        newConfig.setUse(TEST_CONFIG_USE);
+        newConfig.setEffect(TEST_CONFIG_EFFECT);
+        newConfig.setSchema(TEST_CONFIG_SCHEMA);
         newConfig.setType(CONFIG_TYPE);
         return newConfig;
     }
