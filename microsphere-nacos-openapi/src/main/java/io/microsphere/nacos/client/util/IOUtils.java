@@ -16,6 +16,8 @@
  */
 package io.microsphere.nacos.client.util;
 
+import io.microsphere.nacos.client.constants.Constants;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static io.microsphere.nacos.client.constants.Constants.DEFAULT_ENCODING;
 import static io.microsphere.nacos.client.util.StringUtils.EMPTY_STRING;
 import static java.nio.charset.Charset.forName;
 
@@ -200,6 +203,23 @@ public abstract class IOUtils {
         return bytes == EMPTY_BYTE_ARRAY ? EMPTY_STRING : new String(bytes, charset);
     }
 
+    /**
+     * {@link URLEncoder#encode(String, String)} with {@link Constants#DEFAULT_ENCODING "UTF-8"}
+     *
+     * @param content the content to be encoded
+     * @return the encoded content
+     */
+    public static String encode(String content) {
+        return encode(content, DEFAULT_ENCODING);
+    }
+
+    /**
+     * {@link URLEncoder#encode(String, String)}
+     *
+     * @param content  the content to be encoded
+     * @param encoding the encoding
+     * @return the encoded content
+     */
     public static String encode(String content, String encoding) {
         String encodedContent = null;
         try {
