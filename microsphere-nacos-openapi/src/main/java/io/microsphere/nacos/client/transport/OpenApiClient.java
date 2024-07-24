@@ -16,10 +16,14 @@
  */
 package io.microsphere.nacos.client.transport;
 
+import io.microsphere.nacos.client.common.model.Result;
 import io.microsphere.nacos.client.io.Deserializer;
 import io.microsphere.nacos.client.io.Serializer;
 
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+
+import static io.microsphere.nacos.client.util.TypeUtils.ofParameterizedType;
 
 /**
  * The Nacos Client for Open API
@@ -47,12 +51,26 @@ public interface OpenApiClient extends AutoCloseable {
      * Execute the {@link OpenApiRequest}
      *
      * @param request     the {@link OpenApiRequest}
-     * @param payloadType the class of payload body
-     * @param <T>         the class of payload body
+     * @param payloadType the {@link Type type} of payload body
+     * @param <T>         the {@link Type type} of payload body
      * @return the payload instance
      * @throws OpenApiClientException
      */
     <T> T execute(OpenApiRequest request, Type payloadType) throws OpenApiClientException;
+
+    /**
+     * Execute the {@link OpenApiRequest} for {@link Result}
+     *
+     * @param request  the {@link OpenApiRequest}
+     * @param dataType the {@link Type type} of data body
+     * @param <T>      the {@link Type type} of data body
+     * @return the data of {@link Result}
+     * @throws OpenApiClientException
+     */
+    default <T> T executeAsResult(OpenApiRequest request, Type dataType) throws OpenApiClientException {
+        ParameterizedType payloadType = ofParameterizedType(Result.class, dataType);
+        return execute(request, payloadType);
+    }
 
     /**
      * Get the instance of {@link Serializer}
