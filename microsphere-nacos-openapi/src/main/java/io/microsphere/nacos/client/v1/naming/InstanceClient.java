@@ -33,7 +33,7 @@ import java.util.Set;
 import static io.microsphere.nacos.client.v1.naming.ConsistencyType.EPHEMERAL;
 
 /**
- * The Nacos Client for {@link Service} {@link Instance}
+ * The Client for Nacos {@link Service} {@link Instance} Open API V1
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see InstancesList
