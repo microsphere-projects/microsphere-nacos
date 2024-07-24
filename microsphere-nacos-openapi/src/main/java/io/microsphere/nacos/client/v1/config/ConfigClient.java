@@ -28,7 +28,7 @@ import static io.microsphere.nacos.client.constants.Constants.DEFAULT_GROUP_NAME
 import static io.microsphere.nacos.client.constants.Constants.PAGE_NUMBER;
 
 /**
- * The Nacos Client for {@link Config}
+ * The Client for Nacos {@link Config} Open API V1
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see Config
