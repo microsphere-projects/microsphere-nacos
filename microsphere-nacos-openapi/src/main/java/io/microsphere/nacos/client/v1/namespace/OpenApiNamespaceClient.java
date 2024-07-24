@@ -16,7 +16,7 @@
  */
 package io.microsphere.nacos.client.v1.namespace;
 
-import io.microsphere.nacos.client.common.model.RestResult;
+import io.microsphere.nacos.client.common.model.Result;
 import io.microsphere.nacos.client.http.HttpMethod;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiClientException;
@@ -104,6 +104,6 @@ public class OpenApiNamespaceClient implements NamespaceClient {
         return this.openApiClient.execute(request, boolean.class);
     }
 
-    private static class NamespacesList extends RestResult<List<Namespace>> {
+    private static class NamespacesList extends Result<List<Namespace>> {
     }
 }
