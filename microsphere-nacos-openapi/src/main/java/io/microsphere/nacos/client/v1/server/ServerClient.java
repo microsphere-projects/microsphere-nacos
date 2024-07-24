@@ -19,7 +19,7 @@ package io.microsphere.nacos.client.v1.server;
 import io.microsphere.nacos.client.v1.server.model.ServerState;
 
 /**
- * The Client for Nacos Server
+ * The Client for Nacos Server Open API V1
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see ServerState
