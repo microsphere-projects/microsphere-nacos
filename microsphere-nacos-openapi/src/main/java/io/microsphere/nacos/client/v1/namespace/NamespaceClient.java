@@ -21,7 +21,7 @@ import io.microsphere.nacos.client.v1.namespace.model.Namespace;
 import java.util.List;
 
 /**
- * The Client for Nacos Namespace
+ * The Client for Nacos {@link Namespace} Open API V1
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see Namespace
