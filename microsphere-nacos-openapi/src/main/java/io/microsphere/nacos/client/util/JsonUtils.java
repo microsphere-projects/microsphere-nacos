@@ -71,6 +71,10 @@ public abstract class JsonUtils {
     }
 
     public static String toJSON(Iterable<?> elements) {
+        if (elements == null) {
+            return EMPTY_ARRAY_JSON;
+        }
+
         StringJoiner jsonBuilder = new StringJoiner(SEPARATOR, ARRAY_JSON_START, ARRAY_JSON_END);
 
         for (Object element : elements) {

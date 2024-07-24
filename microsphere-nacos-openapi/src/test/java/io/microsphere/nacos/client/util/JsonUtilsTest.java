@@ -18,11 +18,14 @@ package io.microsphere.nacos.client.util;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import static io.microsphere.nacos.client.util.JsonUtils.toJSON;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptySet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -52,5 +55,60 @@ public class JsonUtilsTest {
         String[] elements = new String[]{"a", "b", "c"};
         String json = toJSON(elements);
         assertEquals("[\"a\",\"b\",\"c\"]", json);
+
+        json = toJSON(new String[0]);
+        assertEquals("[]", json);
+
+        json = toJSON((Object[]) null);
+        assertEquals("[]", json);
+    }
+
+    @Test
+    public void testIterableToJSON() {
+        String json = toJSON(Arrays.asList(1, 2, 3));
+        assertEquals("[1,2,3]", json);
+
+        json = toJSON(emptyList());
+        assertEquals("[]", json);
+
+        json = toJSON(emptySet());
+        assertEquals("[]", json);
+
+        json = toJSON((Iterable<?>) null);
+        assertEquals("[]", json);
+    }
+
+    @Test
+    public void testPOJOToJSON() {
+        Person person = new Person("test", 10);
+
+        String json = toJSON(person);
+        assertEquals("{\"name\":\"test\",\"age\":10}", json);
+    }
+
+    static class Person {
+        private String name;
+        private int age;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public void setAge(int age) {
+            this.age = age;
+        }
     }
 }
