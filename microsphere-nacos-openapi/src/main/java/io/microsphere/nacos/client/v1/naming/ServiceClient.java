@@ -24,7 +24,7 @@ import static io.microsphere.nacos.client.constants.Constants.PAGE_NUMBER;
 import static io.microsphere.nacos.client.constants.Constants.PAGE_SIZE;
 
 /**
- * The Nacos Client for Service
+ * The Client for Nacos {@link Service} Open API V1
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see Page
