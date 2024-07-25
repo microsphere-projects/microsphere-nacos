@@ -17,10 +17,24 @@
 package io.microsphere.nacos.client.v2.config;
 
 import io.microsphere.nacos.client.OpenApiTest;
+import io.microsphere.nacos.client.common.model.Page;
+import io.microsphere.nacos.client.v1.config.model.Config;
+import io.microsphere.nacos.client.v1.config.model.HistoryConfig;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_APP_NAME;
 import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_CONTENT;
+import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_DESCRIPTION;
+import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_EFFECT;
+import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_OPERATOR;
+import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_SCHEMA;
+import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_TAGS;
+import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_USE;
 import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_DATA_ID;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -32,13 +46,61 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class ConfigClientV2Test extends OpenApiTest {
 
+    private ConfigClientV2 client;
+
+    @BeforeEach
+    public void before() {
+        this.client = new OpenApiConfigClientV2(this.openApiClient, this.nacosClientConfig);
+        this.client.deleteConfig(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_DATA_ID);
+    }
+
     @Test
     public void test() {
-        ConfigClientV2 client = new OpenApiConfigClientV2(this.openApiClient, this.nacosClientConfig);
+        ConfigClientV2 client = this.client;
 
+        // Test publishConfigContent()
         assertTrue(client.publishConfigContent(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_DATA_ID, TEST_CONFIG_CONTENT));
 
         String newContent = "New Content for testing...";
         assertTrue(client.publishConfigContent(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_DATA_ID, newContent));
+
+        // Test publishConfig()
+        Config config = newConfig();
+        assertTrue(client.publishConfig(config));
+
+        // Test getConfigContent()
+        String content = client.getConfigContent(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_DATA_ID);
+        assertTrue(TEST_CONFIG_CONTENT.equals(content));
+
+        // Test getHistoryConfigs
+        Page<HistoryConfig> historyConfigs = client.getHistoryConfigs(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_DATA_ID);
+        assertFalse(historyConfigs.isEmpty());
+        for (HistoryConfig historyConfig : historyConfigs.getElements()) {
+            assertEquals(TEST_NAMESPACE_ID, historyConfig.getNamespaceId());
+            assertEquals(TEST_GROUP_NAME, historyConfig.getGroup());
+            assertEquals(TEST_DATA_ID, historyConfig.getDataId());
+            // Test getHistoryConfig
+            assertNotNull(client.getHistoryConfig(historyConfig.getNamespaceId(), historyConfig.getGroup(), historyConfig.getDataId(), historyConfig.getRevision()));
+        }
+
+        // Test deleteConfig()
+        assertTrue(client.deleteConfig(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_DATA_ID));
+
+    }
+
+    private Config newConfig() {
+        Config config = new Config();
+        config.setNamespaceId(TEST_NAMESPACE_ID);
+        config.setGroup(TEST_GROUP_NAME);
+        config.setDataId(TEST_DATA_ID);
+        config.setContent(TEST_CONFIG_CONTENT);
+        config.setTags(TEST_CONFIG_TAGS);
+        config.setAppName(TEST_CONFIG_APP_NAME);
+        config.setOperator(TEST_CONFIG_OPERATOR);
+        config.setDescription(TEST_CONFIG_DESCRIPTION);
+        config.setEffect(TEST_CONFIG_EFFECT);
+        config.setUse(TEST_CONFIG_USE);
+        config.setSchema(TEST_CONFIG_SCHEMA);
+        return config;
     }
 }
