@@ -16,7 +16,6 @@
  */
 package io.microsphere.nacos.client.v1.discovery;
 
-import io.microsphere.nacos.client.v1.namespace.model.Namespace;
 import io.microsphere.nacos.client.v1.discovery.model.BatchMetadataResult;
 import io.microsphere.nacos.client.v1.discovery.model.DeleteInstance;
 import io.microsphere.nacos.client.v1.discovery.model.Instance;
@@ -26,6 +25,7 @@ import io.microsphere.nacos.client.v1.discovery.model.QueryInstance;
 import io.microsphere.nacos.client.v1.discovery.model.Service;
 import io.microsphere.nacos.client.v1.discovery.model.UpdateHealthInstance;
 import io.microsphere.nacos.client.v1.discovery.model.UpdateInstance;
+import io.microsphere.nacos.client.v1.namespace.model.Namespace;
 
 import java.util.Map;
 import java.util.Set;

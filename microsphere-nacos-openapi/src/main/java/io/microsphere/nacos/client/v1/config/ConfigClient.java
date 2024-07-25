@@ -16,12 +16,12 @@
  */
 package io.microsphere.nacos.client.v1.config;
 
-import io.microsphere.nacos.client.common.model.Page;
-import io.microsphere.nacos.client.constants.Constants;
-import io.microsphere.nacos.client.v1.config.event.ConfigChangedListener;
 import io.microsphere.nacos.client.common.config.model.Config;
 import io.microsphere.nacos.client.common.config.model.HistoryConfig;
 import io.microsphere.nacos.client.common.config.model.NewConfig;
+import io.microsphere.nacos.client.common.model.Page;
+import io.microsphere.nacos.client.constants.Constants;
+import io.microsphere.nacos.client.v1.config.event.ConfigChangedListener;
 import io.microsphere.nacos.client.v1.namespace.model.Namespace;
 
 import static io.microsphere.nacos.client.constants.Constants.DEFAULT_GROUP_NAME;
