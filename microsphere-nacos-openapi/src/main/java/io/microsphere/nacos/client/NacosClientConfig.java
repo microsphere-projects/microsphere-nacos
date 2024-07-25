@@ -19,6 +19,7 @@ package io.microsphere.nacos.client;
 import java.io.Serializable;
 import java.util.Objects;
 
+import static io.microsphere.nacos.client.constants.Constants.APPLICATION_NAME;
 import static io.microsphere.nacos.client.constants.Constants.CONNECTION_TIMEOUT;
 import static io.microsphere.nacos.client.constants.Constants.DEFAULT_FETCHING_CONFIG_THREAD_NAME;
 import static io.microsphere.nacos.client.constants.Constants.DEFAULT_LISTENING_CONFIG_THREAD_NAME;
@@ -38,7 +39,12 @@ import static io.microsphere.nacos.client.constants.Constants.READ_TIMEOUT;
  */
 public class NacosClientConfig implements Serializable {
 
-    private static final long serialVersionUID = 4986040001466414402L;
+    private static final long serialVersionUID = 6094172977732048929L;
+
+    /**
+     * The application name
+     */
+    private String applicationName = APPLICATION_NAME;
 
     /**
      * The Nacos naming server address
@@ -115,6 +121,14 @@ public class NacosClientConfig implements Serializable {
      * The encoding for Nacos Client
      */
     private String encoding = ENCODING;
+
+    public String getApplicationName() {
+        return applicationName;
+    }
+
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
+    }
 
     public String getServerAddress() {
         return serverAddress;
