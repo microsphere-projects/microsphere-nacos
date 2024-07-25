@@ -46,29 +46,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class ConfigClientTest extends OpenApiTest {
 
-    private final String TEST_DATA_ID = "test-config";
+    public static final String TEST_DATA_ID = "test-config";
 
-    private final String TEST_CONFIG_CONTENT = "Test Config Content...";
+    public static final String TEST_CONFIG_CONTENT = "Test Config Content...";
 
-    private final String TEST_CONFIG_TAG = "test-tag";
+    public static final String TEST_CONFIG_TAG = "test-tag";
 
-    private final Set<String> TEST_CONFIG_TAGS = new HashSet<>(asList("test-tag-1", "test-tag-2", "test-tag-3"));
+    public static final Set<String> TEST_CONFIG_TAGS = new HashSet<>(asList("test-tag-1", "test-tag-2", "test-tag-3"));
 
-    private final String TEST_CONFIG_APP_NAME = "test-app";
+    public static final String TEST_CONFIG_APP_NAME = "test-app";
 
-    private final String TEST_CONFIG_DESCRIPTION = "This is a description for test-config";
+    public static final String TEST_CONFIG_DESCRIPTION = "This is a description for test-config";
 
-    private final String TEST_CONFIG_OPERATOR = "microsphere-nacos-client";
+    public static final String TEST_CONFIG_OPERATOR = "microsphere-nacos-client";
 
-    private final String TEST_CONFIG_USE = "test";
+    public static final String TEST_CONFIG_USE = "test";
 
-    private final String TEST_CONFIG_EFFECT = "Effect 1";
+    public static final String TEST_CONFIG_EFFECT = "Effect 1";
 
-    private final String TEST_CONFIG_SCHEMA = "test config schema";
+    public static final String TEST_CONFIG_SCHEMA = "test config schema";
 
-    private final ConfigType CONFIG_TYPE = ConfigType.TEXT;
+    public static final ConfigType CONFIG_TYPE = ConfigType.TEXT;
 
-    private final int LONG_POLLING_TIMEOUT = 5000;
+    public static final int LONG_POLLING_TIMEOUT = 5000;
 
     @Override
     protected void customize(NacosClientConfig nacosClientConfig) {
@@ -173,7 +173,7 @@ public class ConfigClientTest extends OpenApiTest {
         assertNotNull(historyConfig.getOperationType());
     }
 
-    private  void assertConfig(Config config) {
+    private void assertConfig(Config config) {
         assertBaseConfig(config);
         assertNotNull(config.getId());
         assertNotNull(config.getContent());
