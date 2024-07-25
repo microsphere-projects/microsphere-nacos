@@ -36,7 +36,6 @@ public abstract class OpenApiUtils {
      */
     public static final String RESPONSE_MESSAGE_OK = "ok";
 
-
     /**
      * Check whether the response message is OK
      *
@@ -44,7 +43,7 @@ public abstract class OpenApiUtils {
      * @param request       {@link OpenApiRequest}
      * @return <code>true</code> if OK, otherwise <code>false</code>
      */
-    public static boolean executeOkResponse(OpenApiClient openApiClient, OpenApiRequest request) {
+    public static boolean executeMessageOK(OpenApiClient openApiClient, OpenApiRequest request) {
         String message = openApiClient.execute(request, String.class);
         return RESPONSE_MESSAGE_OK.equals(message);
     }
@@ -56,7 +55,7 @@ public abstract class OpenApiUtils {
      * @param request       {@link OpenApiRequest}
      * @return <code>true</code> if OK, otherwise <code>false</code>
      */
-    public static boolean executeAsResultOkResponse(OpenApiClient openApiClient, OpenApiRequest request) {
+    public static boolean executeAsResultMessageOK(OpenApiClient openApiClient, OpenApiRequest request) {
         String message = openApiClient.executeAsResult(request, String.class);
         return RESPONSE_MESSAGE_OK.equals(message);
     }
