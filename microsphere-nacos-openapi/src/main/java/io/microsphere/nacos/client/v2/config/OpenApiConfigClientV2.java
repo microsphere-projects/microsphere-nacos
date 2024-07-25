@@ -40,7 +40,7 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_R
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_SCHEMA;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_SEARCH;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_TAG;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_TAGS;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_TAGS_V2;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_USE;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.DESCRIPTION;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPACE_ID;
@@ -97,7 +97,7 @@ public class OpenApiConfigClientV2 implements ConfigClientV2 {
         String schema = config.getSchema();
         OpenApiRequest request = configRequestBuilder(namespaceId, group, dataId, null, POST)
                 .queryParameter(CONFIG_CONTENT, content)
-                .queryParameter(CONFIG_TAGS, tags)
+                .queryParameter(CONFIG_TAGS_V2, tags)
                 .queryParameter(APP_NAME, appName)
                 .queryParameter(OPERATOR_V2, operator)
                 .queryParameter(DESCRIPTION, description)
