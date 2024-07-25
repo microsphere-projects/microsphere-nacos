@@ -20,7 +20,6 @@ import io.microsphere.nacos.client.OpenApiTest;
 import io.microsphere.nacos.client.common.model.Page;
 import io.microsphere.nacos.client.v1.config.model.Config;
 import io.microsphere.nacos.client.v1.config.model.HistoryConfig;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_APP_NAME;
@@ -46,17 +45,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class ConfigClientV2Test extends OpenApiTest {
 
-    private ConfigClientV2 client;
-
-    @BeforeEach
-    public void before() {
-        this.client = new OpenApiConfigClientV2(this.openApiClient, this.nacosClientConfig);
-        this.client.deleteConfig(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_DATA_ID);
-    }
-
     @Test
     public void test() {
-        ConfigClientV2 client = this.client;
+        ConfigClientV2 client = new OpenApiConfigClientV2(this.openApiClient, this.nacosClientConfig);
+
+        // Delete first
+        assertTrue(client.deleteConfig(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_DATA_ID));
 
         // Test publishConfigContent()
         assertTrue(client.publishConfigContent(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_DATA_ID, TEST_CONFIG_CONTENT));
