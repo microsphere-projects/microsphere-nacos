@@ -43,6 +43,11 @@ public interface Constants {
     String CLIENT_NAME_PREFIX = "Nacos Client - ";
 
     /**
+     * The property name of the application name for Nacos Client: "microsphere.nacos.client.app-name"
+     */
+    String APPLICATION_NAME_PROPERTY_NAME = PROPERTY_NAME_PREFIX + "app-name";
+
+    /**
      * The property name of the maximum number of connections for Nacos Client: "microsphere.nacos.client.max-connections"
      */
     String MAX_CONNECTIONS_PROPERTY_NAME = PROPERTY_NAME_PREFIX + "max-connections";
@@ -86,6 +91,11 @@ public interface Constants {
      * The property name of the page size for Nacos Client: "microsphere.nacos.client.page-size"
      */
     String PAGE_SIZE_PROPERTY_NAME = PROPERTY_NAME_PREFIX + "page-size";
+
+    /**
+     * The default app name : "microsphere-nacos-client"
+     */
+    String DEFAULT_APPLICATION_NAME = "microsphere-nacos-client";
 
     /**
      * The default value of the maximum number of connections for Nacos Client : 1000
@@ -146,6 +156,14 @@ public interface Constants {
      * Default page size : 10
      */
     int DEFAULT_PAGE_SIZE = 10;
+
+    boolean DEFAULT_HEALTHY_ONLY = false;
+
+    /**
+     * The application name that uses Nacos Client
+     */
+    String APPLICATION_NAME = System.getProperty(APPLICATION_NAME_PROPERTY_NAME, DEFAULT_APPLICATION_NAME);
+
 
     /**
      * The maximum number of connections for Nacos Client
@@ -239,7 +257,6 @@ public interface Constants {
      * The separator for listening config's fields
      */
     String LISTENING_CONFIG_FIELD_SEPARATOR = Character.toString(LISTENING_CONFIG_FIELD_SEPARATOR_CHAR);
-
 
     // Open API Request Parameters
 
