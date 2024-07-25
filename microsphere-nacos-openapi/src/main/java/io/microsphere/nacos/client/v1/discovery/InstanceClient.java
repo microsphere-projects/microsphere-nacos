@@ -45,12 +45,12 @@ import static io.microsphere.nacos.client.v1.discovery.ConsistencyType.EPHEMERAL
 public interface InstanceClient {
 
     /**
-     * Register {@link NewInstance a new ionstance} with parameters :
+     * Register {@link NewInstance a new instance} with parameters :
      * <table>
      * <thead>
      * <tr>
-     * <th data-spm-anchor-id="0.0.0.i1.746f10d8pngE3U">Name</th>
-     * <th data-spm-anchor-id="0.0.0.i2.746f10d8pngE3U">Type</th>
+     * <th>Name</th>
+     * <th>Type</th>
      * <th>Required</th>
      * <th>Description</th>
      * </tr>
@@ -135,7 +135,7 @@ public interface InstanceClient {
      * <table>
      * <thead>
      * <tr>
-     * <th data-spm-anchor-id="0.0.0.i4.746f10d8pngE3U">Name</th>
+     * <th>Name</th>
      * <th>Type</th>
      * <th>Required</th>
      * <th>Description</th>
