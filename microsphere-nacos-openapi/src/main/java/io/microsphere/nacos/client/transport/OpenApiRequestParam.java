@@ -81,7 +81,7 @@ public enum OpenApiRequestParam {
     OPERATOR("src_user"),
 
     /**
-     * The request parameter of Nacos operator V2
+     * The request parameter of Nacos operator (V2)
      */
     OPERATOR_V2("srcUser"),
 
@@ -192,6 +192,11 @@ public enum OpenApiRequestParam {
      * The request parameter of Nacos configuration's tags
      */
     CONFIG_TAGS("config_tags"),
+
+    /**
+     * The request parameter of Nacos configuration's tags (V2)
+     */
+    CONFIG_TAGS_V2("configTags"),
 
     /**
      * The request parameter of Nacos configuration's use
