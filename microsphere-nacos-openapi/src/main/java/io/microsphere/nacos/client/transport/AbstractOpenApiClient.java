@@ -70,7 +70,7 @@ public abstract class AbstractOpenApiClient implements OpenApiClient {
                     ParameterizedType parameterizedType = (ParameterizedType) payloadType;
                     Type rawType = parameterizedType.getRawType();
                     if (Result.class.equals(rawType)) {
-                        Result result = deserializer.deserialize(response.getContent(), Result.class);
+                        Result result = deserializer.deserialize(response.getContent(), payloadType);
                         if (result.isSuccess()) {
                             payload = (T) result.getData();
                         }
