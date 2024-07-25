@@ -166,14 +166,14 @@ public class ConfigClientTest extends OpenApiTest {
         }
     }
 
-    private void assertHistoryConfig(HistoryConfig historyConfig) {
+    public static void assertHistoryConfig(HistoryConfig historyConfig) {
         assertBaseConfig(historyConfig);
         assertNotNull(historyConfig.getRevision());
         assertNotNull(historyConfig.getLastRevision());
         assertNotNull(historyConfig.getOperationType());
     }
 
-    private void assertConfig(Config config) {
+    public static  void assertConfig(Config config) {
         assertBaseConfig(config);
         assertNotNull(config.getId());
         assertNotNull(config.getContent());
@@ -186,7 +186,7 @@ public class ConfigClientTest extends OpenApiTest {
         assertNotNull(config.getType());
     }
 
-    private void assertBaseConfig(BaseConfig config) {
+    public static void assertBaseConfig(BaseConfig config) {
         assertEquals(TEST_NAMESPACE_ID, config.getNamespaceId());
         assertEquals(TEST_GROUP_NAME, config.getGroup());
         assertEquals(TEST_DATA_ID, config.getDataId());
