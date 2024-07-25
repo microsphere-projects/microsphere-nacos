@@ -90,7 +90,18 @@ public class OpenApiInstanceClientV2 implements InstanceClientV2 {
 
     @Override
     public Instance getInstance(String namespaceId, String groupName, String clusterName, String serviceName, String ip, int port) {
-        return null;
+        OpenApiRequest request = OpenApiRequest.Builder.create(INSTANCE_ENDPOINT)
+                .method(HttpMethod.GET)
+                .queryParameter(NAMESPACE_ID, namespaceId)
+                .queryParameter(SERVICE_GROUP_NAME, groupName)
+                .queryParameter(CLUSTER_NAME, clusterName)
+                .queryParameter(SERVICE_NAME, serviceName)
+                .queryParameter(INSTANCE_IP, ip)
+                .queryParameter(INSTANCE_PORT, port)
+                .build();
+        Instance instance = this.openApiClient.executeAsResult(request, Instance.class);
+        instance.setNamespaceId(namespaceId);
+        return instance;
     }
 
     @Override

@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import static io.microsphere.nacos.client.v1.discovery.InstanceClientTest.assertBaseInstance;
 import static io.microsphere.nacos.client.v1.discovery.InstanceClientTest.createInstance;
 import static io.microsphere.nacos.client.v1.discovery.ServiceClientTest.TEST_CLUSTER;
+import static io.microsphere.nacos.client.v1.discovery.ServiceClientTest.TEST_SERVICE_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -57,6 +58,17 @@ public class InstanceClientV2Test extends OpenApiTest {
         // Test refresh()
         newInstance.setWeight(50.0);
         assertTrue(client.refresh(newInstance));
+
+        // Test getInstance()
+        Instance instance1 = client.getInstance(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_CLUSTER, TEST_SERVICE_NAME, newInstance.getIp(), newInstance.getPort());
+        assertEquals(newInstance.getNamespaceId(), instance1.getNamespaceId());
+        assertEquals(newInstance.getGroupName(), instance1.getGroupName());
+        assertEquals(newInstance.getClusterName(), instance1.getClusterName());
+        assertEquals(newInstance.getServiceName(), instance1.getServiceName());
+        assertEquals(newInstance.getIp(), instance1.getIp());
+        assertEquals(newInstance.getPort(), instance1.getPort());
+        assertEquals(newInstance.getHealthy(), instance1.getHealthy());
+        assertEquals(newInstance.getWeight(), instance1.getWeight());
 
         // Test deregister()
         assertTrue(client.deregister(instance));
