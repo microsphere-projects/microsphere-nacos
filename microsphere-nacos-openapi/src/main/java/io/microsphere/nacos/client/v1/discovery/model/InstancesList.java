@@ -52,6 +52,12 @@ public class InstancesList implements Model {
 
     private Map<String, String> metadata;
 
+    private Boolean allIPs;
+
+    private Boolean reachProtectionThreshold;
+
+    private Boolean valid;
+
     public String getDom() {
         return dom;
     }
@@ -130,5 +136,29 @@ public class InstancesList implements Model {
 
     public void setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+    }
+
+    public Boolean getAllIPs() {
+        return allIPs;
+    }
+
+    public void setAllIPs(Boolean allIPs) {
+        this.allIPs = allIPs;
+    }
+
+    public Boolean getReachProtectionThreshold() {
+        return reachProtectionThreshold;
+    }
+
+    public void setReachProtectionThreshold(Boolean reachProtectionThreshold) {
+        this.reachProtectionThreshold = reachProtectionThreshold;
+    }
+
+    public Boolean getValid() {
+        return valid;
+    }
+
+    public void setValid(Boolean valid) {
+        this.valid = valid;
     }
 }
