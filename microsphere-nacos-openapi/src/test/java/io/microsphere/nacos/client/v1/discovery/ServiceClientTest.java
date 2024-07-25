@@ -47,9 +47,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class ServiceClientTest extends OpenApiTest {
 
-    static final String TEST_SERVICE_NAME = "test-service";
+    public static final String TEST_SERVICE_NAME = "test-service";
 
-    static final String TEST_CLUSTER = "DEFAULT";
+    public static final String TEST_CLUSTER = "DEFAULT";
 
     static final Set<String> TEST_CLUSTERS = singleton(TEST_CLUSTER);
 
