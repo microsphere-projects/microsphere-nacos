@@ -28,7 +28,77 @@ import java.lang.reflect.Type;
  */
 public enum OpenApiRequestHeader {
 
-    LONG_PULLING_TIMEOUT("Long-Pulling-Timeout");
+    /**
+     * The request header for the timeout of long-pulling
+     */
+    LONG_PULLING_TIMEOUT("Long-Pulling-Timeout"),
+
+    /**
+     * The request header for the version of client
+     */
+    CLIENT_VERSION_HEADER("Client-Version"),
+
+    /**
+     * The request header for user agent
+     */
+    USER_AGENT_HEADER("User-Agent"),
+
+    /**
+     * The request header for the source of request
+     */
+    REQUEST_SOURCE_HEADER("Request-Source"),
+
+    /**
+     * The request header for the content type
+     */
+    CONTENT_TYPE("Content-Type"),
+
+    /**
+     * The request header for the content length
+     */
+    CONTENT_LENGTH("Content-Length"),
+
+    /**
+     * The request header for the charset
+     */
+    ACCEPT_CHARSET("Accept-Charset"),
+
+    /**
+     * The request header for the encoding
+     */
+    ACCEPT_ENCODING("Accept-Encoding"),
+
+    /**
+     * The request header for the encoding
+     */
+    CONTENT_ENCODING("Content-Encoding"),
+
+    /**
+     * The request header for the Requester
+     */
+    REQUESTER("Requester"),
+
+    /**
+     * The request header for the Request ID
+     */
+    REQUEST_ID("RequestId"),
+
+    /**
+     * The request header for the Request Module
+     */
+    REQUEST_MODULE("Request-Module"),
+
+    /**
+     * The request header for the application
+     */
+    APP("app"),
+
+    /**
+     * The request header for the client IP
+     */
+    CLIENT_IP("clientIp"),
+
+    ;
 
     /**
      * The request header name
