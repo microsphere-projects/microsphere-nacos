@@ -48,7 +48,7 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.PAGE_SIZ
 import static io.microsphere.nacos.client.util.StringUtils.collectionToCommaDelimitedString;
 
 /**
- * The {@link ConfigClientV2} for for <a href="https://nacos.io/en/docs/v2/open-api/#configuration-management">Open API</a>
+ * The {@link ConfigClientV2} for <a href="https://nacos.io/en/docs/v2/open-api/#configuration-management">Open API</a>
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see ConfigClientV2
