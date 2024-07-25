@@ -75,7 +75,9 @@ public abstract class AbstractOpenApiClient implements OpenApiClient {
                             payload = (T) result.getData();
                         }
                     }
-                } else {
+                }
+
+                if (payload == null) {
                     payload = deserializer.deserialize(response.getContent(), payloadType);
                 }
 
