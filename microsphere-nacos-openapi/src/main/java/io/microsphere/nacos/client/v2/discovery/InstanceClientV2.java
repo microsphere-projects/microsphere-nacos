@@ -19,6 +19,7 @@ package io.microsphere.nacos.client.v2.discovery;
 import io.microsphere.nacos.client.common.discovery.ConsistencyType;
 import io.microsphere.nacos.client.common.discovery.model.Instance;
 import io.microsphere.nacos.client.common.discovery.model.InstancesList;
+import io.microsphere.nacos.client.common.discovery.model.NewInstance;
 import io.microsphere.nacos.client.common.discovery.model.Service;
 import io.microsphere.nacos.client.common.discovery.model.UpdateHealthInstance;
 import io.microsphere.nacos.client.common.discovery.model.UpdateInstance;
@@ -47,7 +48,7 @@ import static io.microsphere.nacos.client.constants.Constants.DEFAULT_NAMESPACE_
 public interface InstanceClientV2 {
 
     /**
-     * Register {@link Instance a new instance} with parameters :
+     * Register {@link NewInstance a new instance} with parameters :
      * <table>
      * <thead>
      * <tr>
@@ -127,13 +128,13 @@ public interface InstanceClientV2 {
      * </tbody>
      * </table>
      *
-     * @param instance {@link Instance a new instance}
+     * @param instance {@link NewInstance a new instance}
      * @return <code>true</code> if register successfully, otherwise <code>false</code>
      */
-    boolean register(Instance instance);
+    boolean register(NewInstance instance);
 
     /**
-     * Deregister a {@link Instance} with parameters :
+     * Deregister a {@link NewInstance} with parameters :
      * <table>
      * <thead>
      * <tr>
@@ -213,13 +214,13 @@ public interface InstanceClientV2 {
      * </tbody>
      * </table>
      *
-     * @param instance {@link Instance an instance to be deregistered}
+     * @param instance {@link NewInstance an instance to be deregistered}
      * @return <code>true</code> if deregister successfully, otherwise <code>false</code>
      */
-    boolean deregister(Instance instance);
+    boolean deregister(NewInstance instance);
 
     /**
-     * Refresh the registered {@link UpdateInstance} with parameters:
+     * Refresh the registered {@link NewInstance} with parameters:
      * <table>
      * <thead>
      * <tr>
@@ -302,7 +303,7 @@ public interface InstanceClientV2 {
      * @param instance an instance to be refreshed
      * @return <code>true</code> if refresh successfully, otherwise <code>false</code>
      */
-    boolean refresh(Instance instance);
+    boolean refresh(NewInstance instance);
 
     /**
      * Get the {@link Instance} for the {@link Constants#DEFAULT_NAMESPACE_ID "public" namespace},

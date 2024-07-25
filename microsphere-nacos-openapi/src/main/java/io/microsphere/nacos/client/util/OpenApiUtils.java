@@ -44,8 +44,20 @@ public abstract class OpenApiUtils {
      * @param request       {@link OpenApiRequest}
      * @return <code>true</code> if OK, otherwise <code>false</code>
      */
-    public static boolean isOkResponse(OpenApiClient openApiClient, OpenApiRequest request) {
+    public static boolean executeOkResponse(OpenApiClient openApiClient, OpenApiRequest request) {
         String message = openApiClient.execute(request, String.class);
+        return RESPONSE_MESSAGE_OK.equals(message);
+    }
+
+    /**
+     * Check whether the response message is OK
+     *
+     * @param openApiClient {@link OpenApiClient}
+     * @param request       {@link OpenApiRequest}
+     * @return <code>true</code> if OK, otherwise <code>false</code>
+     */
+    public static boolean executeAsResultOkResponse(OpenApiClient openApiClient, OpenApiRequest request) {
+        String message = openApiClient.executeAsResult(request, String.class);
         return RESPONSE_MESSAGE_OK.equals(message);
     }
 }

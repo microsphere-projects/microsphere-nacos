@@ -18,12 +18,30 @@ package io.microsphere.nacos.client.v2.discovery;
 
 import io.microsphere.nacos.client.NacosClientConfig;
 import io.microsphere.nacos.client.common.discovery.ConsistencyType;
+import io.microsphere.nacos.client.common.discovery.model.BaseInstance;
+import io.microsphere.nacos.client.common.discovery.model.GenericInstance;
 import io.microsphere.nacos.client.common.discovery.model.Instance;
 import io.microsphere.nacos.client.common.discovery.model.InstancesList;
+import io.microsphere.nacos.client.common.discovery.model.NewInstance;
 import io.microsphere.nacos.client.common.discovery.model.UpdateHealthInstance;
+import io.microsphere.nacos.client.http.HttpMethod;
 import io.microsphere.nacos.client.transport.OpenApiClient;
+import io.microsphere.nacos.client.transport.OpenApiRequest;
 
 import java.util.Map;
+
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CLUSTER_NAME;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_ENABLED;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_EPHEMERAL;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_HEALTHY;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_IP;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_PORT;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_WEIGHT;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.METADATA;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPACE_ID;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_GROUP_NAME;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_NAME;
+import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsResultOkResponse;
 
 /**
  * The {@link InstanceClientV2} for <a href="https://nacos.io/en/docs/latest/manual/user/open-api">Open API</a>
@@ -35,6 +53,14 @@ import java.util.Map;
  */
 public class OpenApiInstanceClientV2 implements InstanceClientV2 {
 
+    public static final String INSTANCE_ENDPOINT = "/v2/ns/instance";
+
+    public static final String INSTANCES_LIST_ENDPOINT = "/v2/ns/instance/list";
+
+    public static final String INSTANCE_HEALTH_ENDPOINT = "/v2/ns/health/instance";
+
+    private static final String METADATA_BATCH_ENDPOINT = "/v2/ns/instance/metadata/batch";
+
     private final OpenApiClient openApiClient;
 
     private final NacosClientConfig nacosClientConfig;
@@ -45,18 +71,21 @@ public class OpenApiInstanceClientV2 implements InstanceClientV2 {
     }
 
     @Override
-    public boolean register(Instance instance) {
-        return false;
+    public boolean register(NewInstance instance) {
+        OpenApiRequest request = buildInstanceRequest(instance, HttpMethod.POST);
+        return executeAsBoolean(request);
     }
 
     @Override
-    public boolean deregister(Instance instance) {
-        return false;
+    public boolean deregister(NewInstance instance) {
+        OpenApiRequest request = buildInstanceRequest(instance, HttpMethod.DELETE);
+        return executeAsBoolean(request);
     }
 
     @Override
-    public boolean refresh(Instance instance) {
-        return false;
+    public boolean refresh(NewInstance instance) {
+        OpenApiRequest request = buildInstanceRequest(instance, HttpMethod.PUT);
+        return executeAsBoolean(request);
     }
 
     @Override
@@ -87,5 +116,51 @@ public class OpenApiInstanceClientV2 implements InstanceClientV2 {
     @Override
     public boolean batchDeleteMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType) {
         return false;
+    }
+
+
+    private OpenApiRequest buildInstanceRequest(NewInstance instance, HttpMethod method) {
+        return requestBuilder(instance, method).build();
+    }
+
+    private OpenApiRequest.Builder requestBuilder(NewInstance instance, HttpMethod method) {
+        return requestBuilder((GenericInstance) instance, method)
+                .queryParameter(INSTANCE_HEALTHY, instance.getHealthy());
+    }
+
+    private OpenApiRequest buildHealthRequest(UpdateHealthInstance instance, HttpMethod method) {
+        return OpenApiRequest.Builder.create(INSTANCE_HEALTH_ENDPOINT)
+                .method(method)
+                .queryParameter(NAMESPACE_ID, instance.getNamespaceId())
+                .queryParameter(SERVICE_GROUP_NAME, instance.getGroupName())
+                .queryParameter(SERVICE_NAME, instance.getServiceName())
+                .queryParameter(CLUSTER_NAME, instance.getClusterName())
+                .queryParameter(INSTANCE_IP, instance.getIp())
+                .queryParameter(INSTANCE_PORT, instance.getPort())
+                .queryParameter(INSTANCE_HEALTHY, instance.isHealthy())
+                .build();
+    }
+
+    private OpenApiRequest.Builder requestBuilder(GenericInstance instance, HttpMethod method) {
+        return requestBuilder((BaseInstance) instance, method)
+                .queryParameter(INSTANCE_WEIGHT, instance.getWeight())
+                .queryParameter(INSTANCE_ENABLED, instance.getEnabled())
+                .queryParameter(INSTANCE_EPHEMERAL, instance.getEphemeral())
+                .queryParameter(METADATA, instance.getMetadata());
+    }
+
+    private OpenApiRequest.Builder requestBuilder(BaseInstance instance, HttpMethod method) {
+        return OpenApiRequest.Builder.create(INSTANCE_ENDPOINT)
+                .method(method)
+                .queryParameter(NAMESPACE_ID, instance.getNamespaceId())
+                .queryParameter(SERVICE_GROUP_NAME, instance.getGroupName())
+                .queryParameter(SERVICE_NAME, instance.getServiceName())
+                .queryParameter(CLUSTER_NAME, instance.getClusterName())
+                .queryParameter(INSTANCE_IP, instance.getIp())
+                .queryParameter(INSTANCE_PORT, instance.getPort());
+    }
+
+    private boolean executeAsBoolean(OpenApiRequest request) {
+        return executeAsResultOkResponse(this.openApiClient, request);
     }
 }
