@@ -14,28 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.config.model;
+package io.microsphere.nacos.client.common.config.model;
 
-import io.microsphere.nacos.client.common.model.Model;
+import io.microsphere.nacos.client.common.model.Page;
+
+import java.util.List;
 
 /**
- * The {@link Model model} {@link Class} for Nacos Configuration
+ * The {@link Page} {@link Class} for {@link HistoryConfig}
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see NewConfig
+ * @see HistoryConfig
+ * @see Page
  * @since 1.0.0
  */
-public class Config extends NewConfig {
+public class HistoryConfigPage extends Page<HistoryConfig> {
 
-    private static final long serialVersionUID = 178417156057616475L;
-
-    private String id;
-
-    public String getId() {
-        return id;
+    public HistoryConfigPage(int totalElements, List<HistoryConfig> elements, int pageNumber, int pageSize) {
+        super(totalElements, elements, pageNumber, pageSize);
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public HistoryConfigPage(int totalPages, int totalElements, List<HistoryConfig> elements) {
+        super(totalPages, totalElements, elements);
     }
 }

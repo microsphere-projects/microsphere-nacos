@@ -16,7 +16,7 @@
  */
 package io.microsphere.nacos.client.v1.config;
 
-import io.microsphere.nacos.client.v1.config.model.Config;
+import io.microsphere.nacos.client.common.config.model.Config;
 
 /**
  * The enumeration of Nacos Configuration types

@@ -21,7 +21,7 @@ import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
 import io.microsphere.nacos.client.v1.config.event.ConfigChangedEvent;
 import io.microsphere.nacos.client.v1.config.event.ConfigChangedListener;
-import io.microsphere.nacos.client.v1.config.model.Config;
+import io.microsphere.nacos.client.common.config.model.Config;
 
 import java.util.Collection;
 import java.util.Iterator;

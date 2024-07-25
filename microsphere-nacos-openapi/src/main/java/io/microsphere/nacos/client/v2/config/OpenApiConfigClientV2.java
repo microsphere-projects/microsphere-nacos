@@ -22,9 +22,9 @@ import io.microsphere.nacos.client.common.model.StringResult;
 import io.microsphere.nacos.client.http.HttpMethod;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
-import io.microsphere.nacos.client.v1.config.model.Config;
-import io.microsphere.nacos.client.v1.config.model.HistoryConfig;
-import io.microsphere.nacos.client.v1.config.model.HistoryConfigPage;
+import io.microsphere.nacos.client.common.config.model.Config;
+import io.microsphere.nacos.client.common.config.model.HistoryConfig;
+import io.microsphere.nacos.client.common.config.model.HistoryConfigPage;
 
 import static io.microsphere.nacos.client.http.HttpMethod.DELETE;
 import static io.microsphere.nacos.client.http.HttpMethod.GET;

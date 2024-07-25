@@ -19,8 +19,8 @@ package io.microsphere.nacos.client.v2.config;
 import io.microsphere.nacos.client.common.model.Page;
 import io.microsphere.nacos.client.constants.Constants;
 import io.microsphere.nacos.client.v1.config.ConfigClient;
-import io.microsphere.nacos.client.v1.config.model.Config;
-import io.microsphere.nacos.client.v1.config.model.HistoryConfig;
+import io.microsphere.nacos.client.common.config.model.Config;
+import io.microsphere.nacos.client.common.config.model.HistoryConfig;
 import io.microsphere.nacos.client.v1.namespace.model.Namespace;
 
 import static io.microsphere.nacos.client.constants.Constants.DEFAULT_GROUP_NAME;

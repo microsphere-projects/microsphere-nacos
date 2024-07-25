@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.config.io;
+package io.microsphere.nacos.client.common.config.io;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -24,8 +24,8 @@ import com.google.gson.JsonParseException;
 import io.microsphere.nacos.client.common.model.Page;
 import io.microsphere.nacos.client.io.GsonDeserializer;
 import io.microsphere.nacos.client.v1.config.ConfigClient;
-import io.microsphere.nacos.client.v1.config.model.HistoryConfig;
-import io.microsphere.nacos.client.v1.config.model.HistoryConfigPage;
+import io.microsphere.nacos.client.common.config.model.HistoryConfig;
+import io.microsphere.nacos.client.common.config.model.HistoryConfigPage;
 
 import java.lang.reflect.Type;
 import java.util.List;

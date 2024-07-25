@@ -16,7 +16,7 @@
  */
 package io.microsphere.nacos.client.v1.config.event;
 
-import io.microsphere.nacos.client.v1.config.model.Config;
+import io.microsphere.nacos.client.common.config.model.Config;
 
 import java.util.EventListener;
 

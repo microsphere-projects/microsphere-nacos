@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.config.model;
+package io.microsphere.nacos.client.common.config.model;
 
 import io.microsphere.nacos.client.common.model.Model;
 
