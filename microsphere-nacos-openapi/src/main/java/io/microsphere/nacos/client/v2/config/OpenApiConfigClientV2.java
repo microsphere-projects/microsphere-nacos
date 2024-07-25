@@ -26,7 +26,6 @@ import io.microsphere.nacos.client.v1.config.model.Config;
 import io.microsphere.nacos.client.v1.config.model.HistoryConfig;
 import io.microsphere.nacos.client.v1.config.model.HistoryConfigPage;
 
-import static io.microsphere.nacos.client.constants.Constants.SEARCH_PARAM_VALUE;
 import static io.microsphere.nacos.client.http.HttpMethod.DELETE;
 import static io.microsphere.nacos.client.http.HttpMethod.GET;
 import static io.microsphere.nacos.client.http.HttpMethod.POST;
@@ -38,7 +37,6 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_G
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_ID;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_REVISION;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_SCHEMA;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_SEARCH;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_TAG;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_TAGS_V2;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_USE;
@@ -128,7 +126,6 @@ public class OpenApiConfigClientV2 implements ConfigClientV2 {
         }
 
         OpenApiRequest request = requestBuilder(CONFIG_HISTORY_LIST_ENDPOINT, namespaceId, group, dataId, GET)
-                .queryParameter(CONFIG_SEARCH, SEARCH_PARAM_VALUE)
                 .queryParameter(PAGE_NUMBER, pageNumber)
                 .queryParameter(PAGE_SIZE, pageSize)
                 .build();
