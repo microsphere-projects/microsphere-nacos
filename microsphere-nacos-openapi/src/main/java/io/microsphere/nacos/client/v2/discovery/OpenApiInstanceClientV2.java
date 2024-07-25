@@ -41,7 +41,7 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.METADATA
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPACE_ID;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_GROUP_NAME;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_NAME;
-import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsResultOkResponse;
+import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsResultMessageOK;
 
 /**
  * The {@link InstanceClientV2} for <a href="https://nacos.io/en/docs/latest/manual/user/open-api">Open API</a>
@@ -161,6 +161,6 @@ public class OpenApiInstanceClientV2 implements InstanceClientV2 {
     }
 
     private boolean executeAsBoolean(OpenApiRequest request) {
-        return executeAsResultOkResponse(this.openApiClient, request);
+        return executeAsResultMessageOK(this.openApiClient, request);
     }
 }
