@@ -14,27 +14,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.naming.model;
+package io.microsphere.nacos.client.v1.discovery.model;
 
 import io.microsphere.nacos.client.common.model.Model;
 
+
 /**
- * Selector Model
+ * The {@link Model model} {@link Class} of Service Instance's healthy to be updated
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see Model
+ * @see BaseInstance
  * @since 1.0.0
  */
-public class Selector {
+public class UpdateHealthInstance extends BaseInstance {
 
-    private String type;
+    private static final long serialVersionUID = -3008513148278039309L;
 
-    public void setType(String type) {
-        this.type = type;
+    private final boolean healthy;
+
+    public UpdateHealthInstance(boolean healthy) {
+        this.healthy = healthy;
     }
 
-    public String getType() {
-        return type;
+    public boolean isHealthy() {
+        return healthy;
     }
 
+    @Override
+    public UpdateHealthInstance from(BaseInstance that) {
+        super.from(that);
+        return this;
+    }
 }

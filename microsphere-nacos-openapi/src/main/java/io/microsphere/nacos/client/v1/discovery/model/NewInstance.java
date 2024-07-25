@@ -14,39 +14,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.naming.model;
+package io.microsphere.nacos.client.v1.discovery.model;
 
 import io.microsphere.nacos.client.common.model.Model;
-import io.microsphere.nacos.client.v1.naming.ServiceClient;
-
-import java.util.List;
 
 /**
- * The {@link Model model} {@link Class} of <a href="https://nacos.io/en/docs/v1/open-api/#2.15">Service List</a>
+ * The {@link Model model} {@link Class} of Service Instance to be registered
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see ServiceClient
+ * @see BaseInstance
  * @since 1.0.0
  */
-public class ServiceList implements Model {
+public class NewInstance extends GenericInstance {
 
-    private int count;
+    private static final long serialVersionUID = 2552559705966427092L;
 
-    private List<String> doms;
+    private Boolean healthy;
 
-    public int getCount() {
-        return count;
+    public Boolean getHealthy() {
+        return healthy;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setHealthy(Boolean healthy) {
+        this.healthy = healthy;
     }
 
-    public List<String> getDoms() {
-        return doms;
-    }
-
-    public void setDoms(List<String> doms) {
-        this.doms = doms;
+    public NewInstance from(NewInstance that) {
+        super.from(that);
+        this.healthy = that.healthy;
+        return this;
     }
 }

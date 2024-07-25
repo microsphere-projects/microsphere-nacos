@@ -14,16 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.naming;
+package io.microsphere.nacos.client.v1.discovery;
 
 import io.microsphere.nacos.client.common.model.Page;
 import io.microsphere.nacos.client.http.HttpMethod;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
 import io.microsphere.nacos.client.util.JsonUtils;
-import io.microsphere.nacos.client.v1.naming.model.Selector;
-import io.microsphere.nacos.client.v1.naming.model.Service;
-import io.microsphere.nacos.client.v1.naming.model.ServiceList;
+import io.microsphere.nacos.client.v1.discovery.model.Selector;
+import io.microsphere.nacos.client.v1.discovery.model.Service;
+import io.microsphere.nacos.client.v1.discovery.model.ServiceList;
 
 import static io.microsphere.nacos.client.http.HttpMethod.DELETE;
 import static io.microsphere.nacos.client.http.HttpMethod.GET;

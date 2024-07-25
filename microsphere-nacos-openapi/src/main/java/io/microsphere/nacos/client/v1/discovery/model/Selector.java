@@ -14,28 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.naming.model;
+package io.microsphere.nacos.client.v1.discovery.model;
 
 import io.microsphere.nacos.client.common.model.Model;
 
-import java.util.List;
-
 /**
- * The Batch Operation {@link Model model} {@link Class} of Service Instances' Metadata
+ * Selector Model
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see Model
  * @since 1.0.0
  */
-public class BatchMetadataResult implements Model {
+public class Selector {
 
-    private List<String> updated;
+    private String type;
 
-    public List<String> getUpdated() {
-        return updated;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public void setUpdated(List<String> updated) {
-        this.updated = updated;
+    public String getType() {
+        return type;
     }
+
 }

@@ -14,30 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.naming;
+package io.microsphere.nacos.client.v1.discovery.model;
 
-import java.util.Map;
+import io.microsphere.nacos.client.common.model.Model;
 
 /**
- * The enumeration of consistency types
+ * The {@link Model model} {@link Class} of Service Instance to be updated
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see InstanceClient#batchUpdateMetadata(Iterable, Map, ConsistencyType)
+ * @see GenericInstance
  * @since 1.0.0
  */
-public enum ConsistencyType {
+public class UpdateInstance extends GenericInstance {
 
-    EPHEMERAL("ephemeral"),
+    private static final long serialVersionUID = 5140675711969093858L;
 
-    PERSIST("persist");
-
-    private final String value;
-
-    ConsistencyType(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
+    @Override
+    public UpdateInstance from(GenericInstance that) {
+        super.from(that);
+        return this;
     }
 }

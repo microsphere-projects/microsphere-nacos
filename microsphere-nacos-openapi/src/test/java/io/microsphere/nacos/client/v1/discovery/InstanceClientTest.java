@@ -14,28 +14,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.naming;
+package io.microsphere.nacos.client.v1.discovery;
 
 import io.microsphere.nacos.client.ErrorCode;
 import io.microsphere.nacos.client.OpenApiTest;
 import io.microsphere.nacos.client.transport.OpenApiClientException;
-import io.microsphere.nacos.client.v1.naming.model.BaseInstance;
-import io.microsphere.nacos.client.v1.naming.model.BatchMetadataResult;
-import io.microsphere.nacos.client.v1.naming.model.DeleteInstance;
-import io.microsphere.nacos.client.v1.naming.model.Instance;
-import io.microsphere.nacos.client.v1.naming.model.InstancesList;
-import io.microsphere.nacos.client.v1.naming.model.NewInstance;
-import io.microsphere.nacos.client.v1.naming.model.QueryInstance;
-import io.microsphere.nacos.client.v1.naming.model.UpdateHealthInstance;
-import io.microsphere.nacos.client.v1.naming.model.UpdateInstance;
+import io.microsphere.nacos.client.v1.discovery.model.BaseInstance;
+import io.microsphere.nacos.client.v1.discovery.model.BatchMetadataResult;
+import io.microsphere.nacos.client.v1.discovery.model.DeleteInstance;
+import io.microsphere.nacos.client.v1.discovery.model.Instance;
+import io.microsphere.nacos.client.v1.discovery.model.InstancesList;
+import io.microsphere.nacos.client.v1.discovery.model.NewInstance;
+import io.microsphere.nacos.client.v1.discovery.model.QueryInstance;
+import io.microsphere.nacos.client.v1.discovery.model.UpdateHealthInstance;
+import io.microsphere.nacos.client.v1.discovery.model.UpdateInstance;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
 
-import static io.microsphere.nacos.client.v1.naming.ServiceClientTest.TEST_CLUSTER;
-import static io.microsphere.nacos.client.v1.naming.ServiceClientTest.TEST_SERVICE_NAME;
+import static io.microsphere.nacos.client.v1.discovery.ServiceClientTest.TEST_CLUSTER;
+import static io.microsphere.nacos.client.v1.discovery.ServiceClientTest.TEST_SERVICE_NAME;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;

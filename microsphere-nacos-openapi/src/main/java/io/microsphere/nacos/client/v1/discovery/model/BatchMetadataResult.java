@@ -14,35 +14,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.naming.model;
+package io.microsphere.nacos.client.v1.discovery.model;
 
 import io.microsphere.nacos.client.common.model.Model;
 
+import java.util.List;
 
 /**
- * The {@link Model model} {@link Class} of Service Instance's healthy to be updated
+ * The Batch Operation {@link Model model} {@link Class} of Service Instances' Metadata
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see BaseInstance
+ * @see Model
  * @since 1.0.0
  */
-public class UpdateHealthInstance extends BaseInstance {
+public class BatchMetadataResult implements Model {
 
-    private static final long serialVersionUID = -3008513148278039309L;
+    private List<String> updated;
 
-    private final boolean healthy;
-
-    public UpdateHealthInstance(boolean healthy) {
-        this.healthy = healthy;
+    public List<String> getUpdated() {
+        return updated;
     }
 
-    public boolean isHealthy() {
-        return healthy;
-    }
-
-    @Override
-    public UpdateHealthInstance from(BaseInstance that) {
-        super.from(that);
-        return this;
+    public void setUpdated(List<String> updated) {
+        this.updated = updated;
     }
 }

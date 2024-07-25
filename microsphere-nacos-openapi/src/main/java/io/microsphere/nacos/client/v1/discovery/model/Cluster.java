@@ -14,43 +14,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.naming.model;
+package io.microsphere.nacos.client.v1.discovery.model;
 
 import io.microsphere.nacos.client.common.model.Model;
 
 import java.util.Map;
 
 /**
- * The generic {@link Model model} {@link Class} of Service Instance
+ * Cluster Model
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see BaseInstance
+ * @see Model
  * @since 1.0.0
  */
-public class GenericInstance extends BaseInstance {
+public class Cluster implements Model {
 
-    private static final long serialVersionUID = -6877919356579984749L;
-
-    private Boolean enabled;
-
-    private Double weight;
+    private HealthChecker healthChecker;
 
     private Map<String, String> metadata;
 
-    public Boolean getEnabled() {
-        return enabled;
+    private String name;
+
+    public HealthChecker getHealthChecker() {
+        return healthChecker;
     }
 
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
+    public void setHealthChecker(HealthChecker healthChecker) {
+        this.healthChecker = healthChecker;
     }
 
     public Map<String, String> getMetadata() {
@@ -61,11 +51,11 @@ public class GenericInstance extends BaseInstance {
         this.metadata = metadata;
     }
 
-    public GenericInstance from(GenericInstance that) {
-        super.from(that);
-        this.enabled = that.enabled;
-        this.weight = that.weight;
-        this.metadata = that.metadata;
-        return this;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

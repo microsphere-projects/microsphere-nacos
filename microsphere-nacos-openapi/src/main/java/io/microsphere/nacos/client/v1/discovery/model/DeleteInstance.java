@@ -14,27 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.naming.model;
+package io.microsphere.nacos.client.v1.discovery.model;
 
 import io.microsphere.nacos.client.common.model.Model;
 
 /**
- * Selector Model
+ * The {@link Model model} {@link Class} of Service Instance to be deregistered
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see Model
+ * @see BaseInstance
  * @since 1.0.0
  */
-public class HealthChecker {
+public class DeleteInstance extends BaseInstance {
 
-    private String type;
-
-    public void setType(String type) {
-        this.type = type;
+    @Override
+    public DeleteInstance from(BaseInstance that) {
+        super.from(that);
+        return this;
     }
-
-    public String getType() {
-        return type;
-    }
-
 }

@@ -16,7 +16,7 @@
  */
 package io.microsphere.nacos.client.transport;
 
-import io.microsphere.nacos.client.v1.naming.ConsistencyType;
+import io.microsphere.nacos.client.v1.discovery.ConsistencyType;
 
 import java.lang.reflect.Type;
 import java.util.Collection;

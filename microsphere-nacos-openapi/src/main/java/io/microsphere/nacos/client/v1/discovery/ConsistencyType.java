@@ -14,21 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1;
+package io.microsphere.nacos.client.v1.discovery;
 
-import io.microsphere.nacos.client.v1.config.ConfigClient;
-import io.microsphere.nacos.client.v1.namespace.NamespaceClient;
-import io.microsphere.nacos.client.v1.discovery.InstanceClient;
-import io.microsphere.nacos.client.v1.discovery.ServiceClient;
-import io.microsphere.nacos.client.v1.raft.RaftClient;
-import io.microsphere.nacos.client.v1.server.ServerClient;
+import java.util.Map;
 
 /**
- * Nacos Client for Open API V1
+ * The enumeration of consistency types
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see ServerClient
+ * @see InstanceClient#batchUpdateMetadata(Iterable, Map, ConsistencyType)
  * @since 1.0.0
  */
-public interface NacosClient extends ConfigClient, ServiceClient, InstanceClient, NamespaceClient, ServerClient, RaftClient {
+public enum ConsistencyType {
+
+    EPHEMERAL("ephemeral"),
+
+    PERSIST("persist");
+
+    private final String value;
+
+    ConsistencyType(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
 }

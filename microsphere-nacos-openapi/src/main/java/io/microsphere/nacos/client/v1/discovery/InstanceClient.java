@@ -14,23 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.naming;
+package io.microsphere.nacos.client.v1.discovery;
 
 import io.microsphere.nacos.client.v1.namespace.model.Namespace;
-import io.microsphere.nacos.client.v1.naming.model.BatchMetadataResult;
-import io.microsphere.nacos.client.v1.naming.model.DeleteInstance;
-import io.microsphere.nacos.client.v1.naming.model.Instance;
-import io.microsphere.nacos.client.v1.naming.model.InstancesList;
-import io.microsphere.nacos.client.v1.naming.model.NewInstance;
-import io.microsphere.nacos.client.v1.naming.model.QueryInstance;
-import io.microsphere.nacos.client.v1.naming.model.Service;
-import io.microsphere.nacos.client.v1.naming.model.UpdateHealthInstance;
-import io.microsphere.nacos.client.v1.naming.model.UpdateInstance;
+import io.microsphere.nacos.client.v1.discovery.model.BatchMetadataResult;
+import io.microsphere.nacos.client.v1.discovery.model.DeleteInstance;
+import io.microsphere.nacos.client.v1.discovery.model.Instance;
+import io.microsphere.nacos.client.v1.discovery.model.InstancesList;
+import io.microsphere.nacos.client.v1.discovery.model.NewInstance;
+import io.microsphere.nacos.client.v1.discovery.model.QueryInstance;
+import io.microsphere.nacos.client.v1.discovery.model.Service;
+import io.microsphere.nacos.client.v1.discovery.model.UpdateHealthInstance;
+import io.microsphere.nacos.client.v1.discovery.model.UpdateInstance;
 
 import java.util.Map;
 import java.util.Set;
 
-import static io.microsphere.nacos.client.v1.naming.ConsistencyType.EPHEMERAL;
+import static io.microsphere.nacos.client.v1.discovery.ConsistencyType.EPHEMERAL;
 
 /**
  * The Client for Nacos {@link Service} {@link Instance} Open API V1
