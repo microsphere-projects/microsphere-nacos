@@ -16,21 +16,22 @@
  */
 package io.microsphere.nacos.client.v1.discovery;
 
-import io.microsphere.nacos.client.v1.discovery.model.BatchMetadataResult;
-import io.microsphere.nacos.client.v1.discovery.model.DeleteInstance;
-import io.microsphere.nacos.client.v1.discovery.model.Instance;
-import io.microsphere.nacos.client.v1.discovery.model.InstancesList;
-import io.microsphere.nacos.client.v1.discovery.model.NewInstance;
-import io.microsphere.nacos.client.v1.discovery.model.QueryInstance;
-import io.microsphere.nacos.client.v1.discovery.model.Service;
-import io.microsphere.nacos.client.v1.discovery.model.UpdateHealthInstance;
-import io.microsphere.nacos.client.v1.discovery.model.UpdateInstance;
+import io.microsphere.nacos.client.common.discovery.ConsistencyType;
+import io.microsphere.nacos.client.common.discovery.model.BatchMetadataResult;
+import io.microsphere.nacos.client.common.discovery.model.DeleteInstance;
+import io.microsphere.nacos.client.common.discovery.model.Instance;
+import io.microsphere.nacos.client.common.discovery.model.InstancesList;
+import io.microsphere.nacos.client.common.discovery.model.NewInstance;
+import io.microsphere.nacos.client.common.discovery.model.QueryInstance;
+import io.microsphere.nacos.client.common.discovery.model.Service;
+import io.microsphere.nacos.client.common.discovery.model.UpdateHealthInstance;
+import io.microsphere.nacos.client.common.discovery.model.UpdateInstance;
 import io.microsphere.nacos.client.v1.namespace.model.Namespace;
 
 import java.util.Map;
 import java.util.Set;
 
-import static io.microsphere.nacos.client.v1.discovery.ConsistencyType.EPHEMERAL;
+import static io.microsphere.nacos.client.common.discovery.ConsistencyType.EPHEMERAL;
 
 /**
  * The Client for Nacos {@link Service} {@link Instance} Open API V1

@@ -14,19 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v2.discovery.model;
+package io.microsphere.nacos.client.common.discovery.model;
 
 import io.microsphere.nacos.client.common.model.Model;
-import io.microsphere.nacos.client.v1.discovery.model.NewInstance;
 
 /**
- * The {@link Model model} {@link Class} of Nacos Service Instance
+ * The {@link Model model} {@link Class} of Service Instance to be deregistered
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see Model
+ * @see BaseInstance
  * @since 1.0.0
  */
-public class Instance extends NewInstance {
+public class DeleteInstance extends BaseInstance {
 
-    private static final long serialVersionUID = -4529712704622047343L;
+    @Override
+    public DeleteInstance from(BaseInstance that) {
+        super.from(that);
+        return this;
+    }
 }

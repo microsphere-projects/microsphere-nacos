@@ -16,26 +16,27 @@
  */
 package io.microsphere.nacos.client.v2.discovery;
 
+import io.microsphere.nacos.client.common.discovery.ConsistencyType;
+import io.microsphere.nacos.client.common.discovery.model.Instance;
+import io.microsphere.nacos.client.common.discovery.model.InstancesList;
+import io.microsphere.nacos.client.common.discovery.model.Service;
+import io.microsphere.nacos.client.common.discovery.model.UpdateHealthInstance;
+import io.microsphere.nacos.client.common.discovery.model.UpdateInstance;
 import io.microsphere.nacos.client.constants.Constants;
-import io.microsphere.nacos.client.v1.discovery.ConsistencyType;
 import io.microsphere.nacos.client.v1.discovery.InstanceClient;
-import io.microsphere.nacos.client.v1.discovery.model.BatchMetadataResult;
-import io.microsphere.nacos.client.v1.discovery.model.InstancesList;
-import io.microsphere.nacos.client.v1.discovery.model.Service;
-import io.microsphere.nacos.client.v1.discovery.model.UpdateHealthInstance;
-import io.microsphere.nacos.client.v1.discovery.model.UpdateInstance;
 import io.microsphere.nacos.client.v1.namespace.model.Namespace;
-import io.microsphere.nacos.client.v2.discovery.model.Instance;
 
 import java.util.Map;
 
+import static io.microsphere.nacos.client.common.discovery.ConsistencyType.EPHEMERAL;
+import static io.microsphere.nacos.client.constants.Constants.DEFAULT_APPLICATION_NAME;
 import static io.microsphere.nacos.client.constants.Constants.DEFAULT_CLUSTER_NAME;
 import static io.microsphere.nacos.client.constants.Constants.DEFAULT_GROUP_NAME;
+import static io.microsphere.nacos.client.constants.Constants.DEFAULT_HEALTHY_ONLY;
 import static io.microsphere.nacos.client.constants.Constants.DEFAULT_NAMESPACE_ID;
-import static io.microsphere.nacos.client.v1.discovery.ConsistencyType.EPHEMERAL;
 
 /**
- * The Client for Nacos {@link Service} {@link Instance} Open API V1
+ * The Client for Nacos {@link Service} {@link Instance} Open API V2
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see Service
@@ -362,8 +363,172 @@ public interface InstanceClientV2 {
     Instance getInstance(String namespaceId, String groupName, String clusterName, String serviceName, String ip, int port);
 
     /**
+     * Get the {@link InstancesList} of the specified {@code serviceName}
+     *
+     * @param serviceName the name of {@link Service}.
+     * @return non-null {@link InstancesList}
+     */
+    default InstancesList getInstancesList(String serviceName) {
+        return getInstancesList(serviceName, (String) null, (Integer) null);
+    }
+
+    /**
+     * Get the {@link InstancesList} of the specified {@code serviceName}, {@code ip} and {@code port}
+     *
+     * @param serviceName the name of {@link Service}.
+     * @param ip          (optional) the IP of instance.
+     * @param port        (optional) the port of instance.
+     * @return non-null {@link InstancesList}
+     */
+    default InstancesList getInstancesList(String serviceName, String ip, Integer port) {
+        return getInstancesList(DEFAULT_NAMESPACE_ID, serviceName, ip, port);
+    }
+
+    /**
+     * Get the {@link InstancesList} of the specified {@code namespaceId} and {@code serviceName}
+     *
+     * @param namespaceId (optional) {@link Namespace#getNamespaceId() the id of namespace}, if not specified,
+     *                    the {@link Constants#DEFAULT_NAMESPACE_ID "public" namespace} will be used.
+     * @param serviceName the name of {@link Service}.
+     * @return non-null {@link InstancesList}
+     */
+    default InstancesList getInstancesList(String namespaceId, String serviceName) {
+        return getInstancesList(namespaceId, serviceName, null, (Integer) null);
+    }
+
+    /**
+     * Get the {@link InstancesList} of the specified {@code namespaceId}, {@code serviceName}, {@code ip} and {@code port}
+     *
+     * @param namespaceId (optional) {@link Namespace#getNamespaceId() the id of namespace}, if not specified,
+     *                    the {@link Constants#DEFAULT_NAMESPACE_ID "public" namespace} will be used.
+     * @param serviceName the name of {@link Service}.
+     * @param ip          (optional) the IP of instance.
+     * @param port        (optional) the port of instance.
+     * @return non-null {@link InstancesList}
+     */
+    default InstancesList getInstancesList(String namespaceId, String serviceName, String ip, Integer port) {
+        return getInstancesList(namespaceId, DEFAULT_GROUP_NAME, serviceName, ip, port);
+    }
+
+    /**
+     * Get the {@link InstancesList} of the specified {@code namespaceId}, {@code groupName} and {@code serviceName}
+     *
+     * @param namespaceId (optional) {@link Namespace#getNamespaceId() the id of namespace}, if not specified,
+     *                    the {@link Constants#DEFAULT_NAMESPACE_ID "public" namespace} will be used.
+     * @param groupName   (optional) the name of group, if not specified, the {@link Constants#DEFAULT_GROUP_NAME "DEFAULT_GROUP"} will be used.
+     * @param serviceName the name of {@link Service}.
+     * @return non-null {@link InstancesList}
+     */
+    default InstancesList getInstancesList(String namespaceId, String groupName, String serviceName) {
+        return getInstancesList(namespaceId, groupName, serviceName, null, (Integer) null);
+    }
+
+    /**
+     * Get the {@link InstancesList} of the specified {@code namespaceId}, {@code groupName}, {@code serviceName}, {@code ip} and {@code port}
+     *
+     * @param namespaceId (optional) {@link Namespace#getNamespaceId() the id of namespace}, if not specified,
+     *                    the {@link Constants#DEFAULT_NAMESPACE_ID "public" namespace} will be used.
+     * @param groupName   (optional) the name of group, if not specified, the {@link Constants#DEFAULT_GROUP_NAME "DEFAULT_GROUP"} will be used.
+     * @param serviceName the name of {@link Service}.
+     * @param ip          (optional) the IP of instance.
+     * @param port        (optional) the port of instance.
+     * @return non-null {@link InstancesList}
+     */
+    default InstancesList getInstancesList(String namespaceId, String groupName, String serviceName, String ip, Integer port) {
+        return getInstancesList(namespaceId, groupName, DEFAULT_CLUSTER_NAME, serviceName, ip, port);
+    }
+
+    /**
+     * Get the {@link InstancesList} of the specified {@code namespaceId}, {@code groupName}, {@code clusterName} and
+     * {@code serviceName}
+     *
+     * @param namespaceId (optional) {@link Namespace#getNamespaceId() the id of namespace}, if not specified,
+     *                    the {@link Constants#DEFAULT_NAMESPACE_ID "public" namespace} will be used.
+     * @param groupName   (optional) the name of group, if not specified, the {@link Constants#DEFAULT_GROUP_NAME "DEFAULT_GROUP"} will be used.
+     * @param clusterName (optional) the name of cluster, if not specified, the {@link Constants#DEFAULT_CLUSTER_NAME "DEFAULT" cluster} will be used.
+     * @param serviceName the name of {@link Service}.
+     * @return non-null {@link InstancesList}
+     */
+    default InstancesList getInstancesList(String namespaceId, String groupName, String clusterName, String serviceName) {
+        return getInstancesList(namespaceId, groupName, clusterName, serviceName, (Boolean) null);
+    }
+
+    /**
      * Get the {@link InstancesList} of the specified {@code namespaceId}, {@code groupName}, {@code clusterName},
-     * * {@code serviceName}, {@code ip}, {@code port}
+     * {@code serviceName}, {@code ip} and {@code port}
+     *
+     * @param namespaceId (optional) {@link Namespace#getNamespaceId() the id of namespace}, if not specified,
+     *                    the {@link Constants#DEFAULT_NAMESPACE_ID "public" namespace} will be used.
+     * @param groupName   (optional) the name of group, if not specified, the {@link Constants#DEFAULT_GROUP_NAME "DEFAULT_GROUP"} will be used.
+     * @param clusterName (optional) the name of cluster, if not specified, the {@link Constants#DEFAULT_CLUSTER_NAME "DEFAULT" cluster} will be used.
+     * @param serviceName the name of {@link Service}.
+     * @param ip          (optional) the IP of instance.
+     * @param port        (optional) the port of instance.
+     * @return non-null {@link InstancesList}
+     */
+    default InstancesList getInstancesList(String namespaceId, String groupName, String clusterName, String serviceName,
+                                           String ip, Integer port) {
+        return getInstancesList(namespaceId, groupName, clusterName, serviceName, ip, port, DEFAULT_HEALTHY_ONLY);
+    }
+
+    /**
+     * Get the {@link InstancesList} of the specified {@code namespaceId}, {@code groupName}, {@code clusterName},
+     * {@code serviceName} and {@code healthyOnly}
+     *
+     * @param namespaceId (optional) {@link Namespace#getNamespaceId() the id of namespace}, if not specified,
+     *                    the {@link Constants#DEFAULT_NAMESPACE_ID "public" namespace} will be used.
+     * @param groupName   (optional) the name of group, if not specified, the {@link Constants#DEFAULT_GROUP_NAME "DEFAULT_GROUP"} will be used.
+     * @param clusterName (optional) the name of cluster, if not specified, the {@link Constants#DEFAULT_CLUSTER_NAME "DEFAULT" cluster} will be used.
+     * @param serviceName the name of {@link Service}.
+     * @param healthyOnly (optional) the healthy only, if not specified, {@link Constants#DEFAULT_HEALTHY_ONLY false} will be used
+     * @return non-null {@link InstancesList}
+     */
+    default InstancesList getInstancesList(String namespaceId, String groupName, String clusterName, String serviceName,
+                                           Boolean healthyOnly) {
+        return getInstancesList(namespaceId, groupName, clusterName, serviceName, healthyOnly, DEFAULT_APPLICATION_NAME);
+    }
+
+    /**
+     * Get the {@link InstancesList} of the specified {@code namespaceId}, {@code groupName}, {@code clusterName},
+     * {@code serviceName}, {@code ip}, {@code port} and {@code healthyOnly}
+     *
+     * @param namespaceId (optional) {@link Namespace#getNamespaceId() the id of namespace}, if not specified,
+     *                    the {@link Constants#DEFAULT_NAMESPACE_ID "public" namespace} will be used.
+     * @param groupName   (optional) the name of group, if not specified, the {@link Constants#DEFAULT_GROUP_NAME "DEFAULT_GROUP"} will be used.
+     * @param clusterName (optional) the name of cluster, if not specified, the {@link Constants#DEFAULT_CLUSTER_NAME "DEFAULT" cluster} will be used.
+     * @param serviceName the name of {@link Service}.
+     * @param ip          (optional) the IP of instance.
+     * @param port        (optional) the port of instance.
+     * @param healthyOnly (optional) the healthy only, if not specified, {@link Constants#DEFAULT_HEALTHY_ONLY false} will be used
+     * @return non-null {@link InstancesList}
+     */
+    default InstancesList getInstancesList(String namespaceId, String groupName, String clusterName, String serviceName,
+                                           String ip, Integer port, Boolean healthyOnly) {
+        return getInstancesList(namespaceId, groupName, clusterName, serviceName, ip, port, healthyOnly, DEFAULT_APPLICATION_NAME);
+    }
+
+    /**
+     * Get the {@link InstancesList} of the specified {@code namespaceId}, {@code groupName}, {@code clusterName},
+     * {@code serviceName} and {@code healthyOnly}
+     *
+     * @param namespaceId (optional) {@link Namespace#getNamespaceId() the id of namespace}, if not specified,
+     *                    the {@link Constants#DEFAULT_NAMESPACE_ID "public" namespace} will be used.
+     * @param groupName   (optional) the name of group, if not specified, the {@link Constants#DEFAULT_GROUP_NAME "DEFAULT_GROUP"} will be used.
+     * @param clusterName (optional) the name of cluster, if not specified, the {@link Constants#DEFAULT_CLUSTER_NAME "DEFAULT" cluster} will be used.
+     * @param serviceName the name of {@link Service}.
+     * @param healthyOnly (optional) the healthy only, if not specified, {@link Constants#DEFAULT_HEALTHY_ONLY false} will be used
+     * @param app         (optional) the app that calls this method, if not specified,
+     *                    the {@link Constants#DEFAULT_APPLICATION_NAME "microsphere-nacos-client"} will be used.
+     * @return non-null {@link InstancesList}
+     */
+    default InstancesList getInstancesList(String namespaceId, String groupName, String clusterName, String serviceName,
+                                           Boolean healthyOnly, String app) {
+        return getInstancesList(namespaceId, groupName, clusterName, serviceName, null, null, healthyOnly, app);
+    }
+
+    /**
+     * Get the {@link InstancesList} of the specified {@code namespaceId}, {@code groupName}, {@code clusterName},
+     * {@code serviceName}, {@code ip}, {@code port}, {@code healthyOnly} and {@code app}
      *
      * @param namespaceId (optional) {@link Namespace#getNamespaceId() the id of namespace}, if not specified,
      *                    the {@link Constants#DEFAULT_NAMESPACE_ID "public" namespace} will be used.
@@ -401,10 +566,9 @@ public interface InstanceClientV2 {
      *
      * @param instances one or more {@link Instance instances}
      * @param metadata  Service Instances' Metadata
-     * @return non-null {@link BatchMetadataResult}
-     * @since Nacos 1.4.x (Beta)
+     * @return <code>true</code> if update successfully, otherwise <code>false</code>
      */
-    default BatchMetadataResult batchUpdateMetadata(Iterable<Instance> instances, Map<String, String> metadata) {
+    default boolean batchUpdateMetadata(Iterable<Instance> instances, Map<String, String> metadata) {
         return batchUpdateMetadata(instances, metadata, EPHEMERAL);
     }
 
@@ -414,20 +578,18 @@ public interface InstanceClientV2 {
      * @param instances       one or more {@link Instance instances}
      * @param metadata        Service Instances' Metadata
      * @param consistencyType {@link ConsistencyType}
-     * @return non-null  {@link BatchMetadataResult}
-     * @since Nacos 1.4.x (Beta)
+     * @return <code>true</code> if update successfully, otherwise <code>false</code>
      */
-    BatchMetadataResult batchUpdateMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType);
+    boolean batchUpdateMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType);
 
     /**
      * Batch Delete Service Instances' Metadata
      *
      * @param instances one or more {@link Instance instances}
      * @param metadata  Service Instances' Metadata
-     * @return non-null {@link BatchMetadataResult}
-     * @since Nacos 1.4.x (Beta)
+     * @return <code>true</code> if delete successfully, otherwise <code>false</code>
      */
-    default BatchMetadataResult batchDeleteMetadata(Iterable<Instance> instances, Map<String, String> metadata) {
+    default boolean batchDeleteMetadata(Iterable<Instance> instances, Map<String, String> metadata) {
         return batchDeleteMetadata(instances, metadata, EPHEMERAL);
     }
 
@@ -437,9 +599,8 @@ public interface InstanceClientV2 {
      * @param instances       one or more {@link Instance instances}
      * @param metadata        Service Instances' Metadata
      * @param consistencyType {@link ConsistencyType}
-     * @return non-null {@link BatchMetadataResult}
-     * @since Nacos 1.4.x (Beta)
+     * @return <code>true</code> if delete successfully, otherwise <code>false</code>
      */
-    BatchMetadataResult batchDeleteMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType);
+    boolean batchDeleteMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType);
 
 }

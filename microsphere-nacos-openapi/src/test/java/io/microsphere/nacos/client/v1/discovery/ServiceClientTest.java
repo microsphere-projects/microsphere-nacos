@@ -17,10 +17,10 @@
 package io.microsphere.nacos.client.v1.discovery;
 
 import io.microsphere.nacos.client.OpenApiTest;
+import io.microsphere.nacos.client.common.discovery.model.Selector;
+import io.microsphere.nacos.client.common.discovery.model.Service;
 import io.microsphere.nacos.client.common.model.Page;
 import io.microsphere.nacos.client.transport.OpenApiClientException;
-import io.microsphere.nacos.client.v1.discovery.model.Selector;
-import io.microsphere.nacos.client.v1.discovery.model.Service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

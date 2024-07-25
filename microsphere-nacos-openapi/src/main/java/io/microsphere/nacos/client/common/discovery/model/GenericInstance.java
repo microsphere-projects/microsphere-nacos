@@ -14,35 +14,58 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.discovery.model;
+package io.microsphere.nacos.client.common.discovery.model;
 
 import io.microsphere.nacos.client.common.model.Model;
 
+import java.util.Map;
 
 /**
- * The {@link Model model} {@link Class} of Service Instance's healthy to be updated
+ * The generic {@link Model model} {@link Class} of Service Instance
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see BaseInstance
  * @since 1.0.0
  */
-public class UpdateHealthInstance extends BaseInstance {
+public class GenericInstance extends BaseInstance {
 
-    private static final long serialVersionUID = -3008513148278039309L;
+    private static final long serialVersionUID = -6877919356579984749L;
 
-    private final boolean healthy;
+    private Boolean enabled;
 
-    public UpdateHealthInstance(boolean healthy) {
-        this.healthy = healthy;
+    private Double weight;
+
+    private Map<String, String> metadata;
+
+    public Boolean getEnabled() {
+        return enabled;
     }
 
-    public boolean isHealthy() {
-        return healthy;
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
-    @Override
-    public UpdateHealthInstance from(BaseInstance that) {
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+    }
+
+    public GenericInstance from(GenericInstance that) {
         super.from(that);
+        this.enabled = that.enabled;
+        this.weight = that.weight;
+        this.metadata = that.metadata;
         return this;
     }
 }

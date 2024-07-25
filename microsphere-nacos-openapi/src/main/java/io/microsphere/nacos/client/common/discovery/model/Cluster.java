@@ -14,28 +14,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.discovery.model;
+package io.microsphere.nacos.client.common.discovery.model;
 
 import io.microsphere.nacos.client.common.model.Model;
 
-import java.util.List;
+import java.util.Map;
 
 /**
- * The Batch Operation {@link Model model} {@link Class} of Service Instances' Metadata
+ * Cluster Model
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see Model
  * @since 1.0.0
  */
-public class BatchMetadataResult implements Model {
+public class Cluster implements Model {
 
-    private List<String> updated;
+    private HealthChecker healthChecker;
 
-    public List<String> getUpdated() {
-        return updated;
+    private Map<String, String> metadata;
+
+    private String name;
+
+    public HealthChecker getHealthChecker() {
+        return healthChecker;
     }
 
-    public void setUpdated(List<String> updated) {
-        this.updated = updated;
+    public void setHealthChecker(HealthChecker healthChecker) {
+        this.healthChecker = healthChecker;
+    }
+
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

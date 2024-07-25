@@ -14,27 +14,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.discovery.model;
+package io.microsphere.nacos.client.common.discovery.model;
 
 import io.microsphere.nacos.client.common.model.Model;
+import io.microsphere.nacos.client.v1.discovery.ServiceClient;
+
+import java.util.List;
 
 /**
- * Selector Model
+ * The {@link Model model} {@link Class} of <a href="https://nacos.io/en/docs/v1/open-api/#2.15">Service List</a>
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see Model
+ * @see ServiceClient
  * @since 1.0.0
  */
-public class Selector {
+public class ServiceList implements Model {
 
-    private String type;
+    private int count;
 
-    public void setType(String type) {
-        this.type = type;
+    private List<String> doms;
+
+    public int getCount() {
+        return count;
     }
 
-    public String getType() {
-        return type;
+    public void setCount(int count) {
+        this.count = count;
     }
 
+    public List<String> getDoms() {
+        return doms;
+    }
+
+    public void setDoms(List<String> doms) {
+        this.doms = doms;
+    }
 }

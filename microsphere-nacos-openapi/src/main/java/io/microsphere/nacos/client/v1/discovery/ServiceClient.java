@@ -16,8 +16,8 @@
  */
 package io.microsphere.nacos.client.v1.discovery;
 
+import io.microsphere.nacos.client.common.discovery.model.Service;
 import io.microsphere.nacos.client.common.model.Page;
-import io.microsphere.nacos.client.v1.discovery.model.Service;
 import io.microsphere.nacos.client.v1.namespace.model.Namespace;
 
 import static io.microsphere.nacos.client.constants.Constants.PAGE_NUMBER;

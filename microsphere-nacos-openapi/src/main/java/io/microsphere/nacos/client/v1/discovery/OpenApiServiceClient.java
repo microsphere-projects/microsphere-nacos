@@ -16,14 +16,14 @@
  */
 package io.microsphere.nacos.client.v1.discovery;
 
+import io.microsphere.nacos.client.common.discovery.model.Selector;
+import io.microsphere.nacos.client.common.discovery.model.Service;
+import io.microsphere.nacos.client.common.discovery.model.ServiceList;
 import io.microsphere.nacos.client.common.model.Page;
 import io.microsphere.nacos.client.http.HttpMethod;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
 import io.microsphere.nacos.client.util.JsonUtils;
-import io.microsphere.nacos.client.v1.discovery.model.Selector;
-import io.microsphere.nacos.client.v1.discovery.model.Service;
-import io.microsphere.nacos.client.v1.discovery.model.ServiceList;
 
 import static io.microsphere.nacos.client.http.HttpMethod.DELETE;
 import static io.microsphere.nacos.client.http.HttpMethod.GET;

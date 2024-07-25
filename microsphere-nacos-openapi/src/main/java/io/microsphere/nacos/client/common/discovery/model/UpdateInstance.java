@@ -14,34 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.discovery.model;
+package io.microsphere.nacos.client.common.discovery.model;
 
 import io.microsphere.nacos.client.common.model.Model;
 
 /**
- * The {@link Model model} {@link Class} of Service Instance to be registered
+ * The {@link Model model} {@link Class} of Service Instance to be updated
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see BaseInstance
+ * @see GenericInstance
  * @since 1.0.0
  */
-public class NewInstance extends GenericInstance {
+public class UpdateInstance extends GenericInstance {
 
-    private static final long serialVersionUID = 2552559705966427092L;
+    private static final long serialVersionUID = 5140675711969093858L;
 
-    private Boolean healthy;
-
-    public Boolean getHealthy() {
-        return healthy;
-    }
-
-    public void setHealthy(Boolean healthy) {
-        this.healthy = healthy;
-    }
-
-    public NewInstance from(NewInstance that) {
+    @Override
+    public UpdateInstance from(GenericInstance that) {
         super.from(that);
-        this.healthy = that.healthy;
         return this;
     }
 }

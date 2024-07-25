@@ -14,39 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.discovery.model;
+package io.microsphere.nacos.client.common.discovery;
 
-import io.microsphere.nacos.client.common.model.Model;
-import io.microsphere.nacos.client.v1.discovery.ServiceClient;
+import io.microsphere.nacos.client.v1.discovery.InstanceClient;
 
-import java.util.List;
+import java.util.Map;
 
 /**
- * The {@link Model model} {@link Class} of <a href="https://nacos.io/en/docs/v1/open-api/#2.15">Service List</a>
+ * The enumeration of consistency types
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see ServiceClient
+ * @see InstanceClient#batchUpdateMetadata(Iterable, Map, ConsistencyType)
  * @since 1.0.0
  */
-public class ServiceList implements Model {
+public enum ConsistencyType {
 
-    private int count;
+    EPHEMERAL("ephemeral"),
 
-    private List<String> doms;
+    PERSIST("persist");
 
-    public int getCount() {
-        return count;
+    private final String value;
+
+    ConsistencyType(String value) {
+        this.value = value;
     }
 
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public List<String> getDoms() {
-        return doms;
-    }
-
-    public void setDoms(List<String> doms) {
-        this.doms = doms;
+    public String getValue() {
+        return value;
     }
 }

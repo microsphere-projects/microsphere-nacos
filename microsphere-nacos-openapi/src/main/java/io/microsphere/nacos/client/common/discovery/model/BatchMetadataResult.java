@@ -14,24 +14,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.discovery.model;
+package io.microsphere.nacos.client.common.discovery.model;
 
 import io.microsphere.nacos.client.common.model.Model;
 
+import java.util.List;
+
 /**
- * The {@link Model model} {@link Class} of Service Instance to be updated
+ * The Batch Operation {@link Model model} {@link Class} of Service Instances' Metadata
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see GenericInstance
+ * @see Model
  * @since 1.0.0
  */
-public class UpdateInstance extends GenericInstance {
+public class BatchMetadataResult implements Model {
 
-    private static final long serialVersionUID = 5140675711969093858L;
+    private List<String> updated;
 
-    @Override
-    public UpdateInstance from(GenericInstance that) {
-        super.from(that);
-        return this;
+    public List<String> getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(List<String> updated) {
+        this.updated = updated;
     }
 }

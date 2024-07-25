@@ -16,20 +16,21 @@
  */
 package io.microsphere.nacos.client.v1.discovery;
 
+import io.microsphere.nacos.client.common.discovery.ConsistencyType;
+import io.microsphere.nacos.client.common.discovery.model.BaseInstance;
+import io.microsphere.nacos.client.common.discovery.model.BatchMetadataResult;
+import io.microsphere.nacos.client.common.discovery.model.DeleteInstance;
+import io.microsphere.nacos.client.common.discovery.model.GenericInstance;
+import io.microsphere.nacos.client.common.discovery.model.Instance;
+import io.microsphere.nacos.client.common.discovery.model.InstancesList;
+import io.microsphere.nacos.client.common.discovery.model.NewInstance;
+import io.microsphere.nacos.client.common.discovery.model.QueryInstance;
+import io.microsphere.nacos.client.common.discovery.model.Service;
+import io.microsphere.nacos.client.common.discovery.model.UpdateHealthInstance;
+import io.microsphere.nacos.client.common.discovery.model.UpdateInstance;
 import io.microsphere.nacos.client.http.HttpMethod;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
-import io.microsphere.nacos.client.v1.discovery.model.BaseInstance;
-import io.microsphere.nacos.client.v1.discovery.model.BatchMetadataResult;
-import io.microsphere.nacos.client.v1.discovery.model.DeleteInstance;
-import io.microsphere.nacos.client.v1.discovery.model.GenericInstance;
-import io.microsphere.nacos.client.v1.discovery.model.Instance;
-import io.microsphere.nacos.client.v1.discovery.model.InstancesList;
-import io.microsphere.nacos.client.v1.discovery.model.NewInstance;
-import io.microsphere.nacos.client.v1.discovery.model.QueryInstance;
-import io.microsphere.nacos.client.v1.discovery.model.Service;
-import io.microsphere.nacos.client.v1.discovery.model.UpdateHealthInstance;
-import io.microsphere.nacos.client.v1.discovery.model.UpdateInstance;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static io.microsphere.nacos.client.common.discovery.ConsistencyType.EPHEMERAL;
 import static io.microsphere.nacos.client.constants.Constants.DEFAULT_CLUSTER_NAME;
 import static io.microsphere.nacos.client.constants.Constants.GROUP_SERVICE_NAME_SEPARATOR;
 import static io.microsphere.nacos.client.http.HttpMethod.DELETE;
@@ -62,7 +64,6 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_NAME;
 import static io.microsphere.nacos.client.util.OpenApiUtils.isOkResponse;
 import static io.microsphere.nacos.client.util.StringUtils.isBlank;
-import static io.microsphere.nacos.client.v1.discovery.ConsistencyType.EPHEMERAL;
 import static java.lang.String.format;
 
 /**

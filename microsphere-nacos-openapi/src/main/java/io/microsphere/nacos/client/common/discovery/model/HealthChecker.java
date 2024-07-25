@@ -14,48 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.discovery.model;
+package io.microsphere.nacos.client.common.discovery.model;
 
 import io.microsphere.nacos.client.common.model.Model;
 
-import java.util.Map;
-
 /**
- * Cluster Model
+ * Selector Model
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see Model
  * @since 1.0.0
  */
-public class Cluster implements Model {
+public class HealthChecker {
 
-    private HealthChecker healthChecker;
+    private String type;
 
-    private Map<String, String> metadata;
-
-    private String name;
-
-    public HealthChecker getHealthChecker() {
-        return healthChecker;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public void setHealthChecker(HealthChecker healthChecker) {
-        this.healthChecker = healthChecker;
+    public String getType() {
+        return type;
     }
 
-    public Map<String, String> getMetadata() {
-        return metadata;
-    }
-
-    public void setMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

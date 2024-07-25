@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.discovery.model;
+package io.microsphere.nacos.client.common.discovery.model;
 
 import io.microsphere.nacos.client.common.model.Model;
 
@@ -25,7 +25,7 @@ import io.microsphere.nacos.client.common.model.Model;
  * @see Model
  * @since 1.0.0
  */
-public class HealthChecker {
+public class Selector {
 
     private String type;
 
