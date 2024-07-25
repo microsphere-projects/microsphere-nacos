@@ -126,7 +126,7 @@ public class InstanceClientTest extends OpenApiTest {
         assertTrue(instancesList.getMetadata().isEmpty());
         List<Instance> instances = instancesList.getHosts();
         assertFalse(instances.isEmpty());
-        instances.forEach(this::assertBaseInstance);
+        instances.forEach(InstanceClientTest::assertBaseInstance);
 
         // Test batchUpdateMetadata()
         Map<String, String> metadata = singletonMap("test-key-2", "test-value-2");
@@ -142,13 +142,13 @@ public class InstanceClientTest extends OpenApiTest {
         assertTrue(client.deregister(deleteInstance));
     }
 
-    private void assertBaseInstance(BaseInstance instance) {
+    public static void assertBaseInstance(BaseInstance instance) {
         assertEquals(TEST_NAMESPACE_ID, instance.getNamespaceId());
         assertEquals(TEST_GROUP_NAME, instance.getGroupName());
         assertEquals(TEST_SERVICE_NAME, instance.getServiceName());
     }
 
-    private Instance createInstance() {
+    public static Instance createInstance() {
         Instance instance = new Instance();
         instance.setNamespaceId(TEST_NAMESPACE_ID);
         instance.setGroupName(TEST_GROUP_NAME);
