@@ -21,11 +21,11 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import io.microsphere.nacos.client.common.config.model.HistoryConfig;
+import io.microsphere.nacos.client.common.config.model.HistoryConfigPage;
 import io.microsphere.nacos.client.common.model.Page;
 import io.microsphere.nacos.client.io.GsonDeserializer;
 import io.microsphere.nacos.client.v1.config.ConfigClient;
-import io.microsphere.nacos.client.common.config.model.HistoryConfig;
-import io.microsphere.nacos.client.common.config.model.HistoryConfigPage;
 
 import java.lang.reflect.Type;
 import java.util.List;

@@ -17,9 +17,9 @@
 package io.microsphere.nacos.client.v2.config;
 
 import io.microsphere.nacos.client.OpenApiTest;
-import io.microsphere.nacos.client.common.model.Page;
 import io.microsphere.nacos.client.common.config.model.Config;
 import io.microsphere.nacos.client.common.config.model.HistoryConfig;
+import io.microsphere.nacos.client.common.model.Page;
 import org.junit.jupiter.api.Test;
 
 import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_APP_NAME;

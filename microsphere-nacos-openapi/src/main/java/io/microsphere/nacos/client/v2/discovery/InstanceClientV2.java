@@ -16,12 +16,18 @@
  */
 package io.microsphere.nacos.client.v2.discovery;
 
+import io.microsphere.nacos.client.v1.discovery.InstanceClient;
+import io.microsphere.nacos.client.v1.discovery.model.Instance;
+import io.microsphere.nacos.client.v1.discovery.model.Service;
+
 /**
- * TODO
+ * The Client for Nacos {@link Service} {@link Instance} Open API V1
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see TODO
+ * @see Service
+ * @see Instance
+ * @see InstanceClient
  * @since 1.0.0
  */
-public class InstanceClient {
+public class InstanceClientV2 {
 }

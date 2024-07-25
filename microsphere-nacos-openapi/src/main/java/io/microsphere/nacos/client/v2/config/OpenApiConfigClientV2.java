@@ -17,14 +17,14 @@
 package io.microsphere.nacos.client.v2.config;
 
 import io.microsphere.nacos.client.NacosClientConfig;
+import io.microsphere.nacos.client.common.config.model.HistoryConfig;
+import io.microsphere.nacos.client.common.config.model.HistoryConfigPage;
+import io.microsphere.nacos.client.common.config.model.NewConfig;
 import io.microsphere.nacos.client.common.model.Page;
 import io.microsphere.nacos.client.common.model.StringResult;
 import io.microsphere.nacos.client.http.HttpMethod;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
-import io.microsphere.nacos.client.common.config.model.Config;
-import io.microsphere.nacos.client.common.config.model.HistoryConfig;
-import io.microsphere.nacos.client.common.config.model.HistoryConfigPage;
 
 import static io.microsphere.nacos.client.http.HttpMethod.DELETE;
 import static io.microsphere.nacos.client.http.HttpMethod.GET;
@@ -81,18 +81,18 @@ public class OpenApiConfigClientV2 implements ConfigClientV2 {
     }
 
     @Override
-    public boolean publishConfig(Config config) {
-        String namespaceId = config.getNamespaceId();
-        String group = config.getGroup();
-        String dataId = config.getDataId();
-        String content = config.getContent();
-        String tags = collectionToCommaDelimitedString(config.getTags());
-        String appName = config.getAppName();
-        String operator = config.getOperator();
-        String description = config.getDescription();
-        String use = config.getUse();
-        String effect = config.getEffect();
-        String schema = config.getSchema();
+    public boolean publishConfig(NewConfig newConfig) {
+        String namespaceId = newConfig.getNamespaceId();
+        String group = newConfig.getGroup();
+        String dataId = newConfig.getDataId();
+        String content = newConfig.getContent();
+        String tags = collectionToCommaDelimitedString(newConfig.getTags());
+        String appName = newConfig.getAppName();
+        String operator = newConfig.getOperator();
+        String description = newConfig.getDescription();
+        String use = newConfig.getUse();
+        String effect = newConfig.getEffect();
+        String schema = newConfig.getSchema();
         OpenApiRequest request = configRequestBuilder(namespaceId, group, dataId, null, POST)
                 .queryParameter(CONFIG_CONTENT, content)
                 .queryParameter(CONFIG_TAGS_V2, tags)

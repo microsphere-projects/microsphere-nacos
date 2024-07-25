@@ -16,11 +16,12 @@
  */
 package io.microsphere.nacos.client.v2.config;
 
+import io.microsphere.nacos.client.common.config.model.Config;
+import io.microsphere.nacos.client.common.config.model.HistoryConfig;
+import io.microsphere.nacos.client.common.config.model.NewConfig;
 import io.microsphere.nacos.client.common.model.Page;
 import io.microsphere.nacos.client.constants.Constants;
 import io.microsphere.nacos.client.v1.config.ConfigClient;
-import io.microsphere.nacos.client.common.config.model.Config;
-import io.microsphere.nacos.client.common.config.model.HistoryConfig;
 import io.microsphere.nacos.client.v1.namespace.model.Namespace;
 
 import static io.microsphere.nacos.client.constants.Constants.DEFAULT_GROUP_NAME;
@@ -134,21 +135,21 @@ public interface ConfigClientV2 {
      * @return <code>true</code> if publish successfully, otherwise <code>false</code>
      */
     default boolean publishConfigContent(String namespaceId, String group, String dataId, String content) {
-        Config config = new Config();
-        config.setNamespaceId(namespaceId);
-        config.setGroup(group);
-        config.setDataId(dataId);
-        config.setContent(content);
-        return publishConfig(config);
+        NewConfig newConfig = new NewConfig();
+        newConfig.setNamespaceId(namespaceId);
+        newConfig.setGroup(group);
+        newConfig.setDataId(dataId);
+        newConfig.setContent(content);
+        return publishConfig(newConfig);
     }
 
     /**
-     * Publish(or Update) a {@link Config Config}
+     * Publish(or Update) a {@link NewConfig new Config}
      *
-     * @param config a {@link Config Config}
+     * @param newConfig a {@link Config Config}
      * @return <code>true</code> if publish successfully, otherwise <code>false</code>
      */
-    boolean publishConfig(Config config);
+    boolean publishConfig(NewConfig newConfig);
 
     /**
      * Delete the {@link Config} with the specified {@code group} and {@code dataId} from
