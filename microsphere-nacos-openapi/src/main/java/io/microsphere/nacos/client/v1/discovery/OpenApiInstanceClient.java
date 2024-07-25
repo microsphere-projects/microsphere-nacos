@@ -62,7 +62,7 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.METADATA
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPACE_ID;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_GROUP_NAME;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_NAME;
-import static io.microsphere.nacos.client.util.OpenApiUtils.executeOkResponse;
+import static io.microsphere.nacos.client.util.OpenApiUtils.executeMessageOK;
 import static io.microsphere.nacos.client.util.StringUtils.isBlank;
 import static java.lang.String.format;
 
@@ -292,6 +292,6 @@ public class OpenApiInstanceClient implements InstanceClient {
     }
 
     private boolean responseMessage(OpenApiRequest request) {
-        return executeOkResponse(this.openApiClient, request);
+        return executeMessageOK(this.openApiClient, request);
     }
 }
