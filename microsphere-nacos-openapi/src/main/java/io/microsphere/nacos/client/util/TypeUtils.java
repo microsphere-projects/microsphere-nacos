@@ -71,5 +71,22 @@ public abstract class TypeUtils {
         public Type getOwnerType() {
             return ownerType;
         }
+
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder(rawType.getTypeName());
+            int size = actualTypeArguments == null ? 0 : actualTypeArguments.length;
+            if (size > 0) {
+                builder.append("<");
+                for (int i = 0; i < size; i++) {
+                    if (i > 0) {
+                        builder.append(",");
+                    }
+                    builder.append(actualTypeArguments[i].getTypeName());
+                }
+                builder.append(">");
+            }
+            return builder.toString();
+        }
     }
 }
