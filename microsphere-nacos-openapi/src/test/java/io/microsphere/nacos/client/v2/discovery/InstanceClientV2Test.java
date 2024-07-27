@@ -18,15 +18,20 @@ package io.microsphere.nacos.client.v2.discovery;
 
 import io.microsphere.nacos.client.OpenApiTest;
 import io.microsphere.nacos.client.common.discovery.model.Instance;
+import io.microsphere.nacos.client.common.discovery.model.InstancesList;
 import io.microsphere.nacos.client.common.discovery.model.NewInstance;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
+import static io.microsphere.nacos.client.constants.Constants.GROUP_SERVICE_NAME_SEPARATOR;
 import static io.microsphere.nacos.client.v1.discovery.InstanceClientTest.assertBaseInstance;
 import static io.microsphere.nacos.client.v1.discovery.InstanceClientTest.createInstance;
 import static io.microsphere.nacos.client.v1.discovery.ServiceClientTest.TEST_CLUSTER;
 import static io.microsphere.nacos.client.v1.discovery.ServiceClientTest.TEST_SERVICE_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -52,25 +57,51 @@ public class InstanceClientV2Test extends OpenApiTest {
         // Test register()
         NewInstance newInstance = new NewInstance().from(instance);
         assertTrue(client.register(newInstance));
-        assertBaseInstance(instance);
+        assertBaseInstance(this.instance);
         assertEquals(TEST_CLUSTER, instance.getClusterName());
 
         // Test refresh()
         newInstance.setWeight(50.0);
         assertTrue(client.refresh(newInstance));
 
+        String ip = newInstance.getIp();
+        int port = newInstance.getPort();
+
         // Test getInstance()
-        Instance instance1 = client.getInstance(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_CLUSTER, TEST_SERVICE_NAME, newInstance.getIp(), newInstance.getPort());
-        assertEquals(newInstance.getNamespaceId(), instance1.getNamespaceId());
-        assertEquals(newInstance.getGroupName(), instance1.getGroupName());
-        assertEquals(newInstance.getClusterName(), instance1.getClusterName());
-        assertEquals(newInstance.getServiceName(), instance1.getServiceName());
-        assertEquals(newInstance.getIp(), instance1.getIp());
-        assertEquals(newInstance.getPort(), instance1.getPort());
-        assertEquals(newInstance.getHealthy(), instance1.getHealthy());
-        assertEquals(newInstance.getWeight(), instance1.getWeight());
+        Instance exsitedInstance = client.getInstance(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_CLUSTER, TEST_SERVICE_NAME, ip, port);
+        assertInstance(newInstance, exsitedInstance);
+
+        // Test getInstancesList()
+        InstancesList instancesList = client.getInstancesList(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_CLUSTER, TEST_SERVICE_NAME, ip, port);
+        assertEquals(TEST_NAMESPACE_ID, instancesList.getNamespaceId());
+        assertEquals(TEST_GROUP_NAME, instancesList.getGroupName());
+        assertEquals(TEST_CLUSTER, instancesList.getClusters());
+        assertEquals(TEST_SERVICE_NAME, instancesList.getServiceName());
+        assertEquals(TEST_GROUP_NAME + GROUP_SERVICE_NAME_SEPARATOR + TEST_SERVICE_NAME, instancesList.getName());
+        assertNotNull(instancesList.getCacheMillis());
+        assertNotNull(instancesList.getLastRefTime());
+        assertNotNull(instancesList.getChecksum());
+        assertNotNull(instancesList.getAllIPs());
+        assertNotNull(instancesList.getReachProtectionThreshold());
+        assertNotNull(instancesList.getValid());
+
+        List<Instance> instances = instancesList.getHosts();
+        assertEquals(1, instances.size());
+        Instance instance1 = instances.get(0);
+        assertInstance(newInstance, instance1);
 
         // Test deregister()
-        assertTrue(client.deregister(instance));
+        assertTrue(client.deregister(this.instance));
+    }
+
+    private void assertInstance(NewInstance one, NewInstance another) {
+        assertEquals(one.getNamespaceId(), another.getNamespaceId());
+        assertEquals(one.getGroupName(), another.getGroupName());
+        assertEquals(one.getClusterName(), another.getClusterName());
+        assertEquals(one.getServiceName(), another.getServiceName());
+        assertEquals(one.getIp(), another.getIp());
+        assertEquals(one.getPort(), another.getPort());
+        assertEquals(one.getHealthy(), another.getHealthy());
+        assertEquals(one.getWeight(), another.getWeight());
     }
 }

@@ -123,7 +123,6 @@ public class InstanceClientTest extends OpenApiTest {
         assertNotNull(instancesList.getLastRefTime());
         assertNotNull(instancesList.getEnv());
         assertTrue(instancesList.getClusters().isEmpty());
-        assertTrue(instancesList.getMetadata().isEmpty());
         List<Instance> instances = instancesList.getHosts();
         assertFalse(instances.isEmpty());
         instances.forEach(InstanceClientTest::assertBaseInstance);

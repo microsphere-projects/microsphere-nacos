@@ -30,10 +30,12 @@ import io.microsphere.nacos.client.transport.OpenApiRequest;
 
 import java.util.Map;
 
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.APP_V2;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CLUSTER_NAME;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_ENABLED;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_EPHEMERAL;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_HEALTHY;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_HEALTHY_ONLY;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_IP;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_PORT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_WEIGHT;
@@ -41,6 +43,9 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.METADATA
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPACE_ID;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_GROUP_NAME;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_NAME;
+import static io.microsphere.nacos.client.util.ModelUtils.completeInstance;
+import static io.microsphere.nacos.client.util.ModelUtils.completeInstances;
+import static io.microsphere.nacos.client.util.ModelUtils.setPropertyIfAbsent;
 import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsResultMessageOK;
 
 /**
@@ -100,13 +105,33 @@ public class OpenApiInstanceClientV2 implements InstanceClientV2 {
                 .queryParameter(INSTANCE_PORT, port)
                 .build();
         Instance instance = this.openApiClient.executeAsResult(request, Instance.class);
-        instance.setNamespaceId(namespaceId);
+        completeInstance(instance, namespaceId, groupName, serviceName);
         return instance;
     }
 
     @Override
     public InstancesList getInstancesList(String namespaceId, String groupName, String clusterName, String serviceName, String ip, Integer port, Boolean healthyOnly, String app) {
-        return null;
+        OpenApiRequest request = OpenApiRequest.Builder.create(INSTANCES_LIST_ENDPOINT)
+                .method(HttpMethod.GET)
+                .queryParameter(NAMESPACE_ID, namespaceId)
+                .queryParameter(SERVICE_GROUP_NAME, groupName)
+                .queryParameter(CLUSTER_NAME, clusterName)
+                .queryParameter(SERVICE_NAME, serviceName)
+                .queryParameter(INSTANCE_IP, ip)
+                .queryParameter(INSTANCE_PORT, port)
+                .queryParameter(INSTANCE_HEALTHY_ONLY, healthyOnly)
+                .queryParameter(APP_V2, app)
+                .build();
+
+        InstancesList instancesList = this.openApiClient.executeAsResult(request, InstancesList.class);
+
+        setPropertyIfAbsent(namespaceId, instancesList::getNamespaceId, instancesList::setNamespaceId);
+        setPropertyIfAbsent(groupName, instancesList::getGroupName, instancesList::setGroupName);
+        setPropertyIfAbsent(serviceName, instancesList::getServiceName, instancesList::setServiceName);
+
+        completeInstances(instancesList.getHosts(), namespaceId, groupName, serviceName);
+
+        return instancesList;
     }
 
     @Override

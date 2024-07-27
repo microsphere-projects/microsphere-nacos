@@ -76,6 +76,11 @@ public enum OpenApiRequestParam {
     APP_NAME("appName"),
 
     /**
+     * The request parameter of Nacos application name (V2)
+     */
+    APP_V2("app"),
+
+    /**
      * The request parameter of Nacos operator
      */
     OPERATOR("src_user"),

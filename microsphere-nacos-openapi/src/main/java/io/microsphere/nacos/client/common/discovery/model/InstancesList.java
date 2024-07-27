@@ -20,6 +20,7 @@ import io.microsphere.nacos.client.common.model.Model;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * The {@link Model model} {@link Class} of {@link Instance Instances} List
@@ -30,13 +31,15 @@ import java.util.Map;
  */
 public class InstancesList implements Model {
 
-    private static final long serialVersionUID = 6369249346713199002L;
+    private static final long serialVersionUID = 8882800045256918229L;
 
-    private String dom;
+    private String namespaceId;
+
+    private String groupName;
+
+    private String serviceName;
 
     private Long cacheMillis;
-
-    private Boolean useSpecifiedURL;
 
     private String name;
 
@@ -44,13 +47,7 @@ public class InstancesList implements Model {
 
     private Long lastRefTime;
 
-    private String env;
-
     private String clusters;
-
-    private List<Instance> hosts;
-
-    private Map<String, String> metadata;
 
     private Boolean allIPs;
 
@@ -58,12 +55,36 @@ public class InstancesList implements Model {
 
     private Boolean valid;
 
-    public String getDom() {
-        return dom;
+    private String dom;
+
+    private Boolean useSpecifiedURL;
+
+    private String env;
+
+    private List<Instance> hosts;
+
+    public String getNamespaceId() {
+        return namespaceId;
     }
 
-    public void setDom(String dom) {
-        this.dom = dom;
+    public void setNamespaceId(String namespaceId) {
+        this.namespaceId = namespaceId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 
     public Long getCacheMillis() {
@@ -72,14 +93,6 @@ public class InstancesList implements Model {
 
     public void setCacheMillis(Long cacheMillis) {
         this.cacheMillis = cacheMillis;
-    }
-
-    public Boolean getUseSpecifiedURL() {
-        return useSpecifiedURL;
-    }
-
-    public void setUseSpecifiedURL(Boolean useSpecifiedURL) {
-        this.useSpecifiedURL = useSpecifiedURL;
     }
 
     public String getName() {
@@ -106,36 +119,12 @@ public class InstancesList implements Model {
         this.lastRefTime = lastRefTime;
     }
 
-    public String getEnv() {
-        return env;
-    }
-
-    public void setEnv(String env) {
-        this.env = env;
-    }
-
     public String getClusters() {
         return clusters;
     }
 
     public void setClusters(String clusters) {
         this.clusters = clusters;
-    }
-
-    public List<Instance> getHosts() {
-        return hosts;
-    }
-
-    public void setHosts(List<Instance> hosts) {
-        this.hosts = hosts;
-    }
-
-    public Map<String, String> getMetadata() {
-        return metadata;
-    }
-
-    public void setMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
     }
 
     public Boolean getAllIPs() {
@@ -160,5 +149,80 @@ public class InstancesList implements Model {
 
     public void setValid(Boolean valid) {
         this.valid = valid;
+    }
+
+    public String getDom() {
+        return dom;
+    }
+
+    public void setDom(String dom) {
+        this.dom = dom;
+    }
+
+    public Boolean getUseSpecifiedURL() {
+        return useSpecifiedURL;
+    }
+
+    public void setUseSpecifiedURL(Boolean useSpecifiedURL) {
+        this.useSpecifiedURL = useSpecifiedURL;
+    }
+
+    public String getEnv() {
+        return env;
+    }
+
+    public void setEnv(String env) {
+        this.env = env;
+    }
+
+    public List<Instance> getHosts() {
+        return hosts;
+    }
+
+    public void setHosts(List<Instance> hosts) {
+        this.hosts = hosts;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InstancesList)) return false;
+
+        InstancesList that = (InstancesList) o;
+        return Objects.equals(namespaceId, that.namespaceId) &&
+                Objects.equals(groupName, that.groupName) &&
+                Objects.equals(serviceName, that.serviceName) &&
+                Objects.equals(cacheMillis, that.cacheMillis) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(checksum, that.checksum) &&
+                Objects.equals(lastRefTime, that.lastRefTime) &&
+                Objects.equals(clusters, that.clusters) &&
+                Objects.equals(allIPs, that.allIPs) &&
+                Objects.equals(reachProtectionThreshold, that.reachProtectionThreshold) &&
+                Objects.equals(valid, that.valid) &&
+                Objects.equals(dom, that.dom) &&
+                Objects.equals(useSpecifiedURL, that.useSpecifiedURL) &&
+                Objects.equals(env, that.env) &&
+                Objects.equals(hosts, that.hosts);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(namespaceId);
+        result = 31 * result + Objects.hashCode(groupName);
+        result = 31 * result + Objects.hashCode(serviceName);
+        result = 31 * result + Objects.hashCode(cacheMillis);
+        result = 31 * result + Objects.hashCode(name);
+        result = 31 * result + Objects.hashCode(checksum);
+        result = 31 * result + Objects.hashCode(lastRefTime);
+        result = 31 * result + Objects.hashCode(clusters);
+        result = 31 * result + Objects.hashCode(allIPs);
+        result = 31 * result + Objects.hashCode(reachProtectionThreshold);
+        result = 31 * result + Objects.hashCode(valid);
+        result = 31 * result + Objects.hashCode(dom);
+        result = 31 * result + Objects.hashCode(useSpecifiedURL);
+        result = 31 * result + Objects.hashCode(env);
+        result = 31 * result + Objects.hashCode(hosts);
+        return result;
     }
 }

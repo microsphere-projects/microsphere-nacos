@@ -19,8 +19,6 @@ package io.microsphere.nacos.client.common.discovery.model;
 import io.microsphere.nacos.client.common.model.Model;
 import io.microsphere.nacos.client.constants.Constants;
 
-import static io.microsphere.nacos.client.constants.Constants.GROUP_SERVICE_NAME_SEPARATOR;
-
 /**
  * The abstract {@link Model model} {@link Class} of Service Instance
  *
@@ -93,7 +91,6 @@ public abstract class BaseInstance implements Model {
     }
 
     public String getGroupName() {
-        getServiceName();
         return this.groupName;
     }
 
@@ -102,17 +99,7 @@ public abstract class BaseInstance implements Model {
     }
 
     public String getServiceName() {
-        String serviceName = this.serviceName;
-        if (serviceName != null) {
-            int index = serviceName.indexOf(GROUP_SERVICE_NAME_SEPARATOR);
-            if (index > -1) {
-                String groupName = serviceName.substring(0, index);
-                serviceName = serviceName.substring(index + 2);
-                setGroupName(groupName);
-                setServiceName(serviceName);
-            }
-        }
-        return serviceName;
+        return this.serviceName;
     }
 
     public void setServiceName(String serviceName) {
