@@ -21,7 +21,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import io.microsphere.nacos.client.common.namespace.model.Namespace;
 import io.microsphere.nacos.client.io.GsonDeserializer;
-import io.microsphere.nacos.client.v1.namespace.NamespaceClient;
+import io.microsphere.nacos.client.common.namespace.NamespaceClient;
 
 import java.lang.reflect.Type;
 

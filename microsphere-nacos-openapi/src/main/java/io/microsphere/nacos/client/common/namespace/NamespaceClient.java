@@ -14,20 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v2.namespace;
+package io.microsphere.nacos.client.common.namespace;
 
 import io.microsphere.nacos.client.common.namespace.model.Namespace;
 
 import java.util.List;
 
 /**
- * The Client for Nacos {@link Namespace} Open API V1
+ * The Client for Nacos {@link Namespace} Open API
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see Namespace
  * @since 1.0.0
  */
-public interface NamespaceClientV2 {
+public interface NamespaceClient {
 
     /**
      * Get the list of all Namespaces

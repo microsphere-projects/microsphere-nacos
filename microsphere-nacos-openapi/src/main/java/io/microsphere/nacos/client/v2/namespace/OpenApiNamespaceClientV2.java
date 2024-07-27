@@ -16,14 +16,13 @@
  */
 package io.microsphere.nacos.client.v2.namespace;
 
-import io.microsphere.nacos.client.common.model.Result;
 import io.microsphere.nacos.client.common.namespace.model.Namespace;
 import io.microsphere.nacos.client.common.namespace.model.NamespacesList;
 import io.microsphere.nacos.client.http.HttpMethod;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiClientException;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
-import io.microsphere.nacos.client.v1.namespace.NamespaceClient;
+import io.microsphere.nacos.client.common.namespace.NamespaceClient;
 
 import java.util.List;
 
@@ -42,7 +41,7 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPAC
  * @see NamespaceClient
  * @since 1.0.0
  */
-public class OpenApiNamespaceClientV2 implements NamespaceClientV2 {
+public class OpenApiNamespaceClientV2 implements NamespaceClient {
 
     public static final String NAMESPACE_ENDPOINT_V2 = "/v2/console/namespace";
 

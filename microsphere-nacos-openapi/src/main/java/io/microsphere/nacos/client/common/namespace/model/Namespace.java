@@ -17,7 +17,7 @@
 package io.microsphere.nacos.client.common.namespace.model;
 
 import io.microsphere.nacos.client.common.model.Model;
-import io.microsphere.nacos.client.v1.namespace.NamespaceClient;
+import io.microsphere.nacos.client.common.namespace.NamespaceClient;
 
 /**
  * The {@link Model model} {@link Class} of namespace in Open API V1

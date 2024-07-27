@@ -14,51 +14,55 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v2.namespace;
+package io.microsphere.nacos.client.v1.namespace;
 
 import io.microsphere.nacos.client.OpenApiTest;
+import io.microsphere.nacos.client.common.namespace.NamespaceClient;
 import io.microsphere.nacos.client.common.namespace.model.Namespace;
-import io.microsphere.nacos.client.v1.namespace.NamespaceClient;
-import io.microsphere.nacos.client.v1.namespace.OpenApiNamespaceClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.microsphere.nacos.client.v1.namespace.NamespaceClientTest.MODIFIED_NAMESPACE_DESC;
-import static io.microsphere.nacos.client.v1.namespace.NamespaceClientTest.MODIFIED_NAMESPACE_NAME;
-import static io.microsphere.nacos.client.v1.namespace.NamespaceClientTest.NAMESPACE_DESC;
-import static io.microsphere.nacos.client.v1.namespace.NamespaceClientTest.NAMESPACE_ID;
-import static io.microsphere.nacos.client.v1.namespace.NamespaceClientTest.NAMESPACE_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * {@link NamespaceClientV2} Test
+ * {@link OpenApiNamespaceClient} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see NamespaceClient
  * @see OpenApiNamespaceClient
  * @since 1.0.0
  */
-public class NamespaceClientV2Test extends OpenApiTest {
+public class OpenApiNamespaceClientTest extends OpenApiTest {
 
-    private NamespaceClientV2 client;
+    public static final String NAMESPACE_ID = "test-001";
+
+    public static final String NAMESPACE_NAME = "test-001";
+
+    public static final String NAMESPACE_DESC = "test-001-desc";
+
+    public static final String MODIFIED_NAMESPACE_NAME = "test-001(modified)";
+
+    public static final String MODIFIED_NAMESPACE_DESC = "test-001 DESC ...";
+
+    private NamespaceClient client;
 
     @BeforeEach
     public void before() {
-        this.client = new OpenApiNamespaceClientV2(this.openApiClient);
+        this.client = new OpenApiNamespaceClient(this.openApiClient);
         client.deleteNamespace(NAMESPACE_ID);
     }
 
     @Test
     public void test() {
-        NamespaceClientV2 client = this.client;
+        NamespaceClient namespaceClient = this.client;
 
         // Test getAllNamespace()
-        List<Namespace> namespaces = client.getAllNamespaces();
+        List<Namespace> namespaces = namespaceClient.getAllNamespaces();
         int namespacesSize = namespaces.size();
         assertNotNull(namespaces);
         assertTrue(namespacesSize > 0);
@@ -66,24 +70,24 @@ public class NamespaceClientV2Test extends OpenApiTest {
         assertEquals("public", namespace.getNamespaceName());
 
         // Test getNamespace()
-        namespace = client.getNamespace(NAMESPACE_ID);
+        namespace = namespaceClient.getNamespace(NAMESPACE_ID);
 
         // Not found
         assertNull(namespace);
 
         // Test createNamespace()
-        assertTrue(client.createNamespace(NAMESPACE_ID, NAMESPACE_NAME, NAMESPACE_DESC));
-        namespaces = client.getAllNamespaces();
+        assertTrue(namespaceClient.createNamespace(NAMESPACE_ID, NAMESPACE_NAME, NAMESPACE_DESC));
+        namespaces = namespaceClient.getAllNamespaces();
         namespace = namespaces.get(namespaces.size() - 1);
         assertEquals(NAMESPACE_ID, namespace.getNamespaceId());
         assertEquals(NAMESPACE_NAME, namespace.getNamespaceName());
 
         // Test updateNamespace()
         for (int i = 0; i < 5; i++) {
-            assertTrue(client.updateNamespace(NAMESPACE_ID, MODIFIED_NAMESPACE_NAME, MODIFIED_NAMESPACE_DESC));
+            assertTrue(namespaceClient.updateNamespace(NAMESPACE_ID, MODIFIED_NAMESPACE_NAME, MODIFIED_NAMESPACE_DESC));
         }
 
         // Test deleteNamespace()
-        assertTrue(client.deleteNamespace(NAMESPACE_ID));
+        assertTrue(namespaceClient.deleteNamespace(NAMESPACE_ID));
     }
 }

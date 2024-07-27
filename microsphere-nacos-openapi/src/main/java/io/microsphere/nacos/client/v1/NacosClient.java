@@ -19,7 +19,7 @@ package io.microsphere.nacos.client.v1;
 import io.microsphere.nacos.client.v1.config.ConfigClient;
 import io.microsphere.nacos.client.v1.discovery.InstanceClient;
 import io.microsphere.nacos.client.v1.discovery.ServiceClient;
-import io.microsphere.nacos.client.v1.namespace.NamespaceClient;
+import io.microsphere.nacos.client.common.namespace.NamespaceClient;
 import io.microsphere.nacos.client.v1.raft.RaftClient;
 import io.microsphere.nacos.client.v1.server.ServerClient;
 
