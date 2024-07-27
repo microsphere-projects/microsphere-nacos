@@ -14,14 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.namespace.io;
+package io.microsphere.nacos.client.common.namespace.io;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import io.microsphere.nacos.client.common.namespace.model.Namespace;
 import io.microsphere.nacos.client.io.GsonDeserializer;
 import io.microsphere.nacos.client.v1.namespace.NamespaceClient;
-import io.microsphere.nacos.client.v1.namespace.model.Namespace;
 
 import java.lang.reflect.Type;
 

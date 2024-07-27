@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.namespace;
+package io.microsphere.nacos.client.v2.namespace;
 
 import io.microsphere.nacos.client.common.namespace.model.Namespace;
 
@@ -27,7 +27,7 @@ import java.util.List;
  * @see Namespace
  * @since 1.0.0
  */
-public interface NamespaceClient {
+public interface NamespaceClientV2 {
 
     /**
      * Get the list of all Namespaces

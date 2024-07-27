@@ -27,7 +27,7 @@ import io.microsphere.nacos.client.common.discovery.model.QueryInstance;
 import io.microsphere.nacos.client.common.discovery.model.Service;
 import io.microsphere.nacos.client.common.discovery.model.UpdateHealthInstance;
 import io.microsphere.nacos.client.common.discovery.model.UpdateInstance;
-import io.microsphere.nacos.client.v1.namespace.model.Namespace;
+import io.microsphere.nacos.client.common.namespace.model.Namespace;
 
 import java.util.Map;
 import java.util.Set;

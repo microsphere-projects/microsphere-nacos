@@ -14,25 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.namespace;
+package io.microsphere.nacos.client.v2.namespace;
 
 import io.microsphere.nacos.client.common.model.Result;
+import io.microsphere.nacos.client.common.namespace.model.Namespace;
 import io.microsphere.nacos.client.common.namespace.model.NamespacesList;
 import io.microsphere.nacos.client.http.HttpMethod;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiClientException;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
-import io.microsphere.nacos.client.common.namespace.model.Namespace;
+import io.microsphere.nacos.client.v1.namespace.NamespaceClient;
 
 import java.util.List;
 
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CUSTOM_NAMESPACE_ID;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPACE;
+import static io.microsphere.nacos.client.http.HttpMethod.DELETE;
+import static io.microsphere.nacos.client.http.HttpMethod.GET;
+import static io.microsphere.nacos.client.http.HttpMethod.POST;
+import static io.microsphere.nacos.client.http.HttpMethod.PUT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPACE_DESCRIPTION;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPACE_ID;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPACE_NAME;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPACE_SHOW_NAME;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SHOW;
 
 /**
  * The {@link NamespaceClient} for <a href="https://nacos.io/en/docs/v1/open-api/#namespace">Open API</a>
@@ -41,19 +42,21 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SHOW;
  * @see NamespaceClient
  * @since 1.0.0
  */
-public class OpenApiNamespaceClient implements NamespaceClient {
+public class OpenApiNamespaceClientV2 implements NamespaceClientV2 {
 
-    private static final String NAMESPACES_ENDPOINT = "/v1/console/namespaces";
+    public static final String NAMESPACE_ENDPOINT_V2 = "/v2/console/namespace";
+
+    public static final String NAMESPACES_LIST_ENDPOINT_V2 = "/v2/console/namespace/list";
 
     private final OpenApiClient openApiClient;
 
-    public OpenApiNamespaceClient(OpenApiClient openApiClient) {
+    public OpenApiNamespaceClientV2(OpenApiClient openApiClient) {
         this.openApiClient = openApiClient;
     }
 
     @Override
     public List<Namespace> getAllNamespaces() {
-        OpenApiRequest request = OpenApiRequest.Builder.create(NAMESPACES_ENDPOINT)
+        OpenApiRequest request = OpenApiRequest.Builder.create(NAMESPACES_LIST_ENDPOINT_V2)
                 .build();
         NamespacesList namespacesList = this.openApiClient.execute(request, NamespacesList.class);
         return namespacesList.getData();
@@ -61,13 +64,10 @@ public class OpenApiNamespaceClient implements NamespaceClient {
 
     @Override
     public Namespace getNamespace(String namespaceId) {
-        OpenApiRequest request = OpenApiRequest.Builder.create(NAMESPACES_ENDPOINT)
-                .queryParameter(NAMESPACE_ID, namespaceId)
-                .queryParameter(SHOW, "all")
-                .build();
+        OpenApiRequest request = buildNamespaceRequest(GET, namespaceId);
         Namespace namespace = null;
         try {
-            namespace = this.openApiClient.execute(request, Namespace.class);
+            namespace = this.openApiClient.executeAsResult(request, Namespace.class);
         } catch (OpenApiClientException e) {
             // TODO log
         }
@@ -76,32 +76,36 @@ public class OpenApiNamespaceClient implements NamespaceClient {
 
     @Override
     public boolean createNamespace(String namespaceId, String namespaceName, String namespaceDesc) {
-        OpenApiRequest request = OpenApiRequest.Builder.create(NAMESPACES_ENDPOINT)
-                .method(HttpMethod.POST)
-                .queryParameter(CUSTOM_NAMESPACE_ID, namespaceId)
-                .queryParameter(NAMESPACE_NAME, namespaceName)
-                .queryParameter(NAMESPACE_DESCRIPTION, namespaceDesc)
-                .build();
-        return this.openApiClient.execute(request, boolean.class);
+        OpenApiRequest request = buildNamespaceRequest(POST, namespaceId, namespaceName, namespaceDesc);
+        return executeAsBoolean(request);
     }
 
     @Override
     public boolean updateNamespace(String namespaceId, String namespaceName, String namespaceDesc) {
-        OpenApiRequest request = OpenApiRequest.Builder.create(NAMESPACES_ENDPOINT)
-                .method(HttpMethod.PUT)
-                .queryParameter(NAMESPACE, namespaceId)
-                .queryParameter(NAMESPACE_SHOW_NAME, namespaceName)
-                .queryParameter(NAMESPACE_DESCRIPTION, namespaceDesc)
-                .build();
-        return this.openApiClient.execute(request, boolean.class);
+        OpenApiRequest request = buildNamespaceRequest(PUT, namespaceId, namespaceName, namespaceDesc);
+        return executeAsBoolean(request);
     }
 
     @Override
     public boolean deleteNamespace(String namespaceId) {
-        OpenApiRequest request = OpenApiRequest.Builder.create(NAMESPACES_ENDPOINT)
-                .method(HttpMethod.DELETE)
+        OpenApiRequest request = buildNamespaceRequest(DELETE, namespaceId);
+        return executeAsBoolean(request);
+    }
+
+    private OpenApiRequest buildNamespaceRequest(HttpMethod method, String namespaceId) {
+        return buildNamespaceRequest(method, namespaceId, null, null);
+    }
+
+    private boolean executeAsBoolean(OpenApiRequest request) {
+        return this.openApiClient.executeAsResult(request, Boolean.class);
+    }
+
+    private OpenApiRequest buildNamespaceRequest(HttpMethod method, String namespaceId, String namespaceName, String namespaceDesc) {
+        return OpenApiRequest.Builder.create(NAMESPACE_ENDPOINT_V2)
+                .method(method)
                 .queryParameter(NAMESPACE_ID, namespaceId)
+                .queryParameter(NAMESPACE_NAME, namespaceName)
+                .queryParameter(NAMESPACE_DESCRIPTION, namespaceDesc)
                 .build();
-        return this.openApiClient.execute(request, boolean.class);
     }
 }
