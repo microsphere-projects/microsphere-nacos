@@ -16,11 +16,11 @@
  */
 package io.microsphere.nacos.client.v1.discovery;
 
-import io.microsphere.nacos.client.ErrorCode;
 import io.microsphere.nacos.client.OpenApiTest;
 import io.microsphere.nacos.client.common.discovery.model.BaseInstance;
 import io.microsphere.nacos.client.common.discovery.model.BatchMetadataResult;
 import io.microsphere.nacos.client.common.discovery.model.DeleteInstance;
+import io.microsphere.nacos.client.common.discovery.model.Heartbeat;
 import io.microsphere.nacos.client.common.discovery.model.Instance;
 import io.microsphere.nacos.client.common.discovery.model.InstancesList;
 import io.microsphere.nacos.client.common.discovery.model.NewInstance;
@@ -34,6 +34,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 
+import static io.microsphere.nacos.client.ErrorCode.INTERNAL_SERVER_ERROR;
 import static io.microsphere.nacos.client.v1.discovery.ServiceClientTest.TEST_CLUSTER;
 import static io.microsphere.nacos.client.v1.discovery.ServiceClientTest.TEST_SERVICE_NAME;
 import static java.util.Arrays.asList;
@@ -75,31 +76,13 @@ public class InstanceClientTest extends OpenApiTest {
         assertBaseInstance(instance);
         assertEquals(TEST_CLUSTER, instance.getClusterName());
 
-        // Test getInstance()
-        QueryInstance queryInstance = new QueryInstance().from(instance);
-        Instance instance1 = client.getInstance(queryInstance);
-        assertBaseInstance(instance1);
-        assertEquals(instance.getIp(), instance1.getIp());
-        assertEquals(instance.getPort(), instance1.getPort());
-        assertEquals(instance.getServiceName(), instance1.getServiceName());
-        assertEquals(instance.getClusterName(), instance1.getClusterName());
-        assertEquals(instance.getHealthy(), instance1.getHealthy());
-        assertEquals(instance.getWeight(), instance1.getWeight());
 
-        // Test sendHeartbeat
-        assertTrue(client.sendHeartbeat(instance));
+        // Test sendHeartbeat()
+        Heartbeat heartbeat = client.sendHeartbeat(instance);
+        assertTrue(heartbeat.getCode() > 0);
+        assertTrue(heartbeat.getClientBeatInterval() > 0);
+        assertTrue(heartbeat.isLightBeatEnabled());
 
-        // Test refresh()
-        instance.setWeight(50.0);
-        UpdateInstance updateInstance = new UpdateInstance().from(instance);
-        assertTrue(client.refresh(updateInstance));
-        instance1 = client.getInstance(queryInstance);
-        assertEquals(instance.getIp(), instance1.getIp());
-        assertEquals(instance.getPort(), instance1.getPort());
-        assertEquals(instance.getServiceName(), instance1.getServiceName());
-        assertEquals(instance.getClusterName(), instance1.getClusterName());
-        assertEquals(instance.getHealthy(), instance1.getHealthy());
-        assertEquals(instance.getWeight(), instance1.getWeight());
 
         // Test updateHealth()
         OpenApiClientException exception = null;
@@ -110,7 +93,32 @@ public class InstanceClientTest extends OpenApiTest {
             exception = e;
         }
         assertNotNull(exception);
-        assertEquals(ErrorCode.BAD_REQUEST, exception.getErrorCode());
+        assertEquals(INTERNAL_SERVER_ERROR, exception.getErrorCode());
+
+
+        // Test getInstance()
+        QueryInstance queryInstance = new QueryInstance().from(instance);
+        Instance instance1 = client.getInstance(queryInstance);
+        assertBaseInstance(instance1);
+        assertEquals(newInstance.getIp(), instance1.getIp());
+        assertEquals(newInstance.getPort(), instance1.getPort());
+        assertEquals(newInstance.getServiceName(), instance1.getServiceName());
+        assertEquals(newInstance.getClusterName(), instance1.getClusterName());
+        assertEquals(newInstance.getHealthy(), instance1.getHealthy());
+        assertEquals(newInstance.getWeight(), instance1.getWeight());
+
+
+        // Test refresh()
+        instance.setWeight(50.0);
+        UpdateInstance updateInstance = new UpdateInstance().from(instance);
+        assertTrue(client.refresh(updateInstance));
+        instance1 = client.getInstance(queryInstance);
+        assertEquals(updateInstance.getIp(), instance1.getIp());
+        assertEquals(updateInstance.getPort(), instance1.getPort());
+        assertEquals(updateInstance.getServiceName(), instance1.getServiceName());
+        assertEquals(updateInstance.getClusterName(), instance1.getClusterName());
+        assertEquals(updateInstance.getWeight(), instance1.getWeight());
+        assertEquals(instance.getHealthy(), instance1.getHealthy());
 
 
         // Test getInstancesList()
@@ -127,14 +135,17 @@ public class InstanceClientTest extends OpenApiTest {
         assertFalse(instances.isEmpty());
         instances.forEach(InstanceClientTest::assertBaseInstance);
 
+
         // Test batchUpdateMetadata()
         Map<String, String> metadata = singletonMap("test-key-2", "test-value-2");
         BatchMetadataResult result = client.batchUpdateMetadata(asList(instance1), metadata);
         assertFalse(result.getUpdated().isEmpty());
 
+
         // Test batchDeleteMetadata()
         result = client.batchDeleteMetadata(asList(instance1), metadata);
         assertFalse(result.getUpdated().isEmpty());
+
 
         // Test deregister()
         DeleteInstance deleteInstance = new DeleteInstance().from(instance);
