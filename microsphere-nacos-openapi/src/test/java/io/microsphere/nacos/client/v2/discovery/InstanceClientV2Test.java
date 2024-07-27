@@ -17,15 +17,17 @@
 package io.microsphere.nacos.client.v2.discovery;
 
 import io.microsphere.nacos.client.OpenApiTest;
+import io.microsphere.nacos.client.common.discovery.model.Heartbeat;
 import io.microsphere.nacos.client.common.discovery.model.Instance;
 import io.microsphere.nacos.client.common.discovery.model.InstancesList;
 import io.microsphere.nacos.client.common.discovery.model.NewInstance;
+import io.microsphere.nacos.client.common.discovery.model.UpdateHealthInstance;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.microsphere.nacos.client.constants.Constants.GROUP_SERVICE_NAME_SEPARATOR;
+import static io.microsphere.nacos.client.util.ModelUtils.buildServiceName;
 import static io.microsphere.nacos.client.v1.discovery.InstanceClientTest.assertBaseInstance;
 import static io.microsphere.nacos.client.v1.discovery.InstanceClientTest.createInstance;
 import static io.microsphere.nacos.client.v1.discovery.ServiceClientTest.TEST_CLUSTER;
@@ -60,6 +62,19 @@ public class InstanceClientV2Test extends OpenApiTest {
         assertBaseInstance(this.instance);
         assertEquals(TEST_CLUSTER, instance.getClusterName());
 
+
+        // Test sendHeartbeat()
+        Heartbeat heartbeat = client.sendHeartbeat(instance);
+        assertTrue(heartbeat.getCode() > 0);
+        assertTrue(heartbeat.getClientBeatInterval() > 0);
+        assertTrue(heartbeat.isLightBeatEnabled());
+
+
+        // Test updateHealth()
+        UpdateHealthInstance updateHealthInstance = new UpdateHealthInstance(true).from(instance);
+        assertTrue(client.updateHealth(updateHealthInstance));
+
+
         // Test refresh()
         newInstance.setWeight(50.0);
         assertTrue(client.refresh(newInstance));
@@ -67,9 +82,11 @@ public class InstanceClientV2Test extends OpenApiTest {
         String ip = newInstance.getIp();
         int port = newInstance.getPort();
 
+
         // Test getInstance()
         Instance exsitedInstance = client.getInstance(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_CLUSTER, TEST_SERVICE_NAME, ip, port);
         assertInstance(newInstance, exsitedInstance);
+
 
         // Test getInstancesList()
         InstancesList instancesList = client.getInstancesList(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_CLUSTER, TEST_SERVICE_NAME, ip, port);
@@ -77,7 +94,7 @@ public class InstanceClientV2Test extends OpenApiTest {
         assertEquals(TEST_GROUP_NAME, instancesList.getGroupName());
         assertEquals(TEST_CLUSTER, instancesList.getClusters());
         assertEquals(TEST_SERVICE_NAME, instancesList.getServiceName());
-        assertEquals(TEST_GROUP_NAME + GROUP_SERVICE_NAME_SEPARATOR + TEST_SERVICE_NAME, instancesList.getName());
+        assertEquals(buildServiceName(TEST_GROUP_NAME, TEST_SERVICE_NAME), instancesList.getName());
         assertNotNull(instancesList.getCacheMillis());
         assertNotNull(instancesList.getLastRefTime());
         assertNotNull(instancesList.getChecksum());
@@ -89,6 +106,7 @@ public class InstanceClientV2Test extends OpenApiTest {
         assertEquals(1, instances.size());
         Instance instance1 = instances.get(0);
         assertInstance(newInstance, instance1);
+
 
         // Test deregister()
         assertTrue(client.deregister(this.instance));
