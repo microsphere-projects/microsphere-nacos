@@ -20,6 +20,8 @@ import io.microsphere.nacos.client.common.discovery.model.BaseInstance;
 import io.microsphere.nacos.client.common.discovery.model.Instance;
 import io.microsphere.nacos.client.common.model.Model;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -102,6 +104,22 @@ public abstract class ModelUtils {
             serviceName = instance.getServiceName();
         }
         resolveInstanceProperties(instance, serviceName);
+    }
+
+    public static String buildServiceName(String groupName, String serviceName) {
+        return groupName == null ? serviceName : groupName + GROUP_SERVICE_NAME_SEPARATOR + serviceName;
+    }
+
+    public static Map<Object, Object> getHeartbeatMap(Instance instance) {
+        Map<Object, Object> heartbeanMap = new HashMap<>(8);
+        Map<String, String> metadata = instance.getMetadata();
+        heartbeanMap.put("ip", instance.getIp());
+        heartbeanMap.put("port", instance.getPort());
+        heartbeanMap.put("serviceName", instance.getServiceName());
+        heartbeanMap.put("cluster", instance.getClusterName());
+        heartbeanMap.put("weight", instance.getWeight());
+        heartbeanMap.put("metadata", metadata);
+        return heartbeanMap;
     }
 
     static void resolveInstanceProperties(BaseInstance instance, String serviceName) {
