@@ -20,6 +20,7 @@ import io.microsphere.nacos.client.NacosClientConfig;
 import io.microsphere.nacos.client.common.discovery.ConsistencyType;
 import io.microsphere.nacos.client.common.discovery.model.BaseInstance;
 import io.microsphere.nacos.client.common.discovery.model.GenericInstance;
+import io.microsphere.nacos.client.common.discovery.model.Heartbeat;
 import io.microsphere.nacos.client.common.discovery.model.Instance;
 import io.microsphere.nacos.client.common.discovery.model.InstancesList;
 import io.microsphere.nacos.client.common.discovery.model.NewInstance;
@@ -30,8 +31,11 @@ import io.microsphere.nacos.client.transport.OpenApiRequest;
 
 import java.util.Map;
 
+import static io.microsphere.nacos.client.http.HttpMethod.DELETE;
+import static io.microsphere.nacos.client.http.HttpMethod.PUT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.APP_V2;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CLUSTER_NAME;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.HEARTBEAT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_ENABLED;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_EPHEMERAL;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_HEALTHY;
@@ -43,9 +47,13 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.METADATA
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPACE_ID;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_GROUP_NAME;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_NAME;
+import static io.microsphere.nacos.client.util.ModelUtils.buildServiceName;
 import static io.microsphere.nacos.client.util.ModelUtils.completeInstance;
 import static io.microsphere.nacos.client.util.ModelUtils.completeInstances;
+import static io.microsphere.nacos.client.util.ModelUtils.getHeartbeatMap;
 import static io.microsphere.nacos.client.util.ModelUtils.setPropertyIfAbsent;
+import static io.microsphere.nacos.client.util.OpenApiUtils.createBatchMetadataRequest;
+import static io.microsphere.nacos.client.util.OpenApiUtils.createRequestBuilder;
 import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsResultMessageOK;
 
 /**
@@ -60,11 +68,13 @@ public class OpenApiInstanceClientV2 implements InstanceClientV2 {
 
     public static final String INSTANCE_ENDPOINT = "/v2/ns/instance";
 
-    public static final String INSTANCES_LIST_ENDPOINT = "/v2/ns/instance/list";
+    public static final String INSTANCES_LIST_ENDPOINT = INSTANCE_ENDPOINT + "/list";
+
+    public static final String INSTANCE_HEARTBEAT_ENDPOINT = INSTANCE_ENDPOINT + "/beat";
+
+    private static final String INSTANCE_METADATA_BATCH_ENDPOINT = INSTANCE_ENDPOINT + "/metadata/batch";
 
     public static final String INSTANCE_HEALTH_ENDPOINT = "/v2/ns/health/instance";
-
-    private static final String METADATA_BATCH_ENDPOINT = "/v2/ns/instance/metadata/batch";
 
     private final OpenApiClient openApiClient;
 
@@ -135,25 +145,34 @@ public class OpenApiInstanceClientV2 implements InstanceClientV2 {
     }
 
     @Override
-    public boolean sendHeartbeat(Instance instance) {
-        return false;
+    public Heartbeat sendHeartbeat(Instance instance) {
+        OpenApiRequest request = createRequestBuilder(instance, INSTANCE_HEARTBEAT_ENDPOINT, PUT)
+                .queryParameter(SERVICE_NAME, buildServiceName(instance.getGroupName(), instance.getServiceName()))
+                .queryParameter(HEARTBEAT, getHeartbeatMap(instance))
+                .build();
+        return this.openApiClient.execute(request, Heartbeat.class);
     }
 
     @Override
     public boolean updateHealth(UpdateHealthInstance updateHealthInstance) {
-        return false;
+        OpenApiRequest request = buildHealthRequest(updateHealthInstance, PUT);
+        return executeAsBoolean(request);
     }
 
     @Override
     public boolean batchUpdateMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType) {
-        return false;
+        return batchMetadata(instances, metadata, consistencyType, PUT);
     }
 
     @Override
     public boolean batchDeleteMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType) {
-        return false;
+        return batchMetadata(instances, metadata, consistencyType, DELETE);
     }
 
+    private boolean batchMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType, HttpMethod method) {
+        OpenApiRequest request = createBatchMetadataRequest(instances, metadata, consistencyType, INSTANCE_METADATA_BATCH_ENDPOINT, method);
+        return executeAsBoolean(request);
+    }
 
     private OpenApiRequest buildInstanceRequest(NewInstance instance, HttpMethod method) {
         return requestBuilder(instance, method).build();
@@ -165,14 +184,7 @@ public class OpenApiInstanceClientV2 implements InstanceClientV2 {
     }
 
     private OpenApiRequest buildHealthRequest(UpdateHealthInstance instance, HttpMethod method) {
-        return OpenApiRequest.Builder.create(INSTANCE_HEALTH_ENDPOINT)
-                .method(method)
-                .queryParameter(NAMESPACE_ID, instance.getNamespaceId())
-                .queryParameter(SERVICE_GROUP_NAME, instance.getGroupName())
-                .queryParameter(SERVICE_NAME, instance.getServiceName())
-                .queryParameter(CLUSTER_NAME, instance.getClusterName())
-                .queryParameter(INSTANCE_IP, instance.getIp())
-                .queryParameter(INSTANCE_PORT, instance.getPort())
+        return createRequestBuilder(instance, INSTANCE_ENDPOINT, method)
                 .queryParameter(INSTANCE_HEALTHY, instance.isHealthy())
                 .build();
     }
@@ -186,14 +198,7 @@ public class OpenApiInstanceClientV2 implements InstanceClientV2 {
     }
 
     private OpenApiRequest.Builder requestBuilder(BaseInstance instance, HttpMethod method) {
-        return OpenApiRequest.Builder.create(INSTANCE_ENDPOINT)
-                .method(method)
-                .queryParameter(NAMESPACE_ID, instance.getNamespaceId())
-                .queryParameter(SERVICE_GROUP_NAME, instance.getGroupName())
-                .queryParameter(SERVICE_NAME, instance.getServiceName())
-                .queryParameter(CLUSTER_NAME, instance.getClusterName())
-                .queryParameter(INSTANCE_IP, instance.getIp())
-                .queryParameter(INSTANCE_PORT, instance.getPort());
+        return createRequestBuilder(instance, INSTANCE_ENDPOINT, method);
     }
 
     private boolean executeAsBoolean(OpenApiRequest request) {
