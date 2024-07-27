@@ -324,7 +324,7 @@ public enum OpenApiRequestParam {
         @Override
         public String toValue(Object rawValue) {
             String json = toJSON((Map) rawValue);
-            return encode(json);
+            return json;
         }
     },
 
