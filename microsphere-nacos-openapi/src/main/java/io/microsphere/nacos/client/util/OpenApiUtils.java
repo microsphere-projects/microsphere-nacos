@@ -111,27 +111,31 @@ public abstract class OpenApiUtils {
 
         Set<String> namespaceIds = new HashSet<>(2);
         Set<String> serviceNames = new HashSet<>(2);
+        Set<String> groupNames = new HashSet<>(2);
         List<Map<String, String>> instanceMaps = new LinkedList<>();
 
-        boolean isV2Endpoint = endpoint.startsWith("/v2/");
+        boolean isV1Endpoint = endpoint.startsWith("/v1/");
 
         consistencyType = consistencyType == null ? EPHEMERAL : consistencyType;
 
         for (Instance instance : instances) {
             String namespaceId = instance.getNamespaceId();
             String groupName = instance.getGroupName();
-            String serviceName = isV2Endpoint ? instance.getServiceName() : buildServiceName(groupName, instance.getServiceName());
+            String serviceName = isV1Endpoint ? buildServiceName(groupName, instance.getServiceName()) : instance.getServiceName();
             validateDuplication(instance, namespaceIds, "namespaceId", namespaceId);
+            validateDuplication(instance, groupNames, "groupName", groupName);
             validateDuplication(instance, serviceNames, "serviceName", serviceName);
             Map<String, String> instanceMap = buildInstanceMap(instance, consistencyType);
             instanceMaps.add(instanceMap);
         }
 
         String namespaceId = namespaceIds.iterator().next();
+        String groupName = groupNames.iterator().next();
         String serviceName = serviceNames.iterator().next();
 
         requestBuilder
                 .queryParameter(NAMESPACE_ID, namespaceId)
+                .queryParameter(SERVICE_GROUP_NAME, groupName)
                 .queryParameter(SERVICE_NAME, serviceName)
                 .queryParameter(CONSISTENCY_TYPE, consistencyType)
                 .queryParameter(INSTANCES, instanceMaps)

@@ -27,6 +27,7 @@ import io.microsphere.nacos.client.transport.OpenApiClientException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,7 @@ import static io.microsphere.nacos.client.v1.discovery.ServiceClientTest.TEST_SE
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -123,8 +125,7 @@ public class InstanceClientV2Test extends OpenApiTest {
         // Test batchUpdateMetadata()
         Map<String, String> metadata = singletonMap("test-key-2", "test-value-2");
         BatchMetadataResult result = client.batchUpdateMetadata(asList(instance1), metadata);
-        // FIXME: The result is different in the OpenAPI V1
-        assertTrue(result.getUpdated().isEmpty());
+        assertFalse(result.getUpdated().isEmpty());
 
         exsitedInstance = client.getInstance(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_CLUSTER, TEST_SERVICE_NAME, ip, port);
         Map<String, String> metadata1 = exsitedInstance.getMetadata();
@@ -133,10 +134,12 @@ public class InstanceClientV2Test extends OpenApiTest {
 
 
         // Test batchDeleteMetadata()
-        result = client.batchDeleteMetadata(asList(instance1), metadata);
-        // FIXME: The result is different in the OpenAPI V1
-        assertTrue(result.getUpdated().isEmpty());
+        result = client.batchDeleteMetadata(asList(instance1), new HashMap<>(metadata1));
+        assertFalse(result.getUpdated().isEmpty());
 
+        exsitedInstance = client.getInstance(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_CLUSTER, TEST_SERVICE_NAME, ip, port);
+        metadata1 = exsitedInstance.getMetadata();
+        assertTrue(metadata1.isEmpty());
 
         // Test deregister()
         assertTrue(client.deregister(this.instance));

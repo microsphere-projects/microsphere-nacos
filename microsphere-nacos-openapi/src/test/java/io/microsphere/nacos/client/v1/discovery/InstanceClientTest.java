@@ -54,9 +54,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class InstanceClientTest extends OpenApiTest {
 
-    public static final String TEST_IP = "127.0.0.1";
+    public static final String TEST_INSTANCE_IP = "127.0.0.1";
 
-    public static final int TEST_PORT = 8080;
+    public static final int TEST_INSTANCE_PORT = 8080;
+
+    public static final double TEST_INSTANCE_WEIGHT = 100.00;
+
+    public static final boolean TEST_INSTANCE_ENABLED = true;
+
+    public static final boolean TEST_INSTANCE_HEALTHY = true;
+
+    public static final boolean TEST_INSTANCE_EPHEMERAL = true;
+
+    public static final Map<String, String> TEST_INSTANCE_METADATA = singletonMap("test-key", "test-value");
 
     private InstanceClient client;
 
@@ -173,13 +183,13 @@ public class InstanceClientTest extends OpenApiTest {
         instance.setGroupName(TEST_GROUP_NAME);
         instance.setServiceName(TEST_SERVICE_NAME);
         instance.setClusterName(TEST_CLUSTER);
-        instance.setIp(TEST_IP);
-        instance.setPort(TEST_PORT);
-        instance.setWeight(100.0);
-        instance.setEnabled(true);
-        instance.setHealthy(true);
-        instance.setEphemeral(true);
-        instance.setMetadata(singletonMap("test-key", "test-value"));
+        instance.setIp(TEST_INSTANCE_IP);
+        instance.setPort(TEST_INSTANCE_PORT);
+        instance.setWeight(TEST_INSTANCE_WEIGHT);
+        instance.setEnabled(TEST_INSTANCE_ENABLED);
+        instance.setHealthy(TEST_INSTANCE_HEALTHY);
+        instance.setEphemeral(TEST_INSTANCE_EPHEMERAL);
+        instance.setMetadata(TEST_INSTANCE_METADATA);
         return instance;
     }
 }

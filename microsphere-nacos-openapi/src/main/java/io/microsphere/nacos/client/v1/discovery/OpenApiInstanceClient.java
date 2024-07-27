@@ -57,6 +57,7 @@ import static io.microsphere.nacos.client.util.ModelUtils.getHeartbeatMap;
 import static io.microsphere.nacos.client.util.OpenApiUtils.createBatchMetadataRequest;
 import static io.microsphere.nacos.client.util.OpenApiUtils.createRequestBuilder;
 import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsResultMessageOK;
+import static io.microsphere.nacos.client.util.OpenApiUtils.executeMessageOK;
 
 /**
  * The {@link Service} {@link Instance} for <a href="https://nacos.io/en/docs/v1/open-api/">Open API</a>
@@ -185,6 +186,6 @@ public class OpenApiInstanceClient implements InstanceClient {
     }
 
     private boolean responseMessage(OpenApiRequest request) {
-        return executeAsResultMessageOK(this.openApiClient, request);
+        return executeMessageOK(this.openApiClient, request);
     }
 }
