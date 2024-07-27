@@ -17,6 +17,7 @@
 package io.microsphere.nacos.client.v2.discovery;
 
 import io.microsphere.nacos.client.common.discovery.ConsistencyType;
+import io.microsphere.nacos.client.common.discovery.model.Heartbeat;
 import io.microsphere.nacos.client.common.discovery.model.Instance;
 import io.microsphere.nacos.client.common.discovery.model.InstancesList;
 import io.microsphere.nacos.client.common.discovery.model.NewInstance;
@@ -549,9 +550,9 @@ public interface InstanceClientV2 {
      * Send {@link Instance Instance's} Heartbeat to Nacos Server
      *
      * @param instance {@link Instance}
-     * @return <code>true</code> if send successfully, otherwise <code>false</code>
+     * @return {@link Heartbeat}
      */
-    boolean sendHeartbeat(Instance instance);
+    Heartbeat sendHeartbeat(Instance instance);
 
     /**
      * {@link UpdateHealthInstance Update Instances' Health}
