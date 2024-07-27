@@ -17,6 +17,7 @@
 package io.microsphere.nacos.client.v2.discovery;
 
 import io.microsphere.nacos.client.common.discovery.ConsistencyType;
+import io.microsphere.nacos.client.common.discovery.model.BatchMetadataResult;
 import io.microsphere.nacos.client.common.discovery.model.Heartbeat;
 import io.microsphere.nacos.client.common.discovery.model.Instance;
 import io.microsphere.nacos.client.common.discovery.model.InstancesList;
@@ -567,9 +568,9 @@ public interface InstanceClientV2 {
      *
      * @param instances one or more {@link Instance instances}
      * @param metadata  Service Instances' Metadata
-     * @return <code>true</code> if update successfully, otherwise <code>false</code>
+     * @return {@link BatchMetadataResult}
      */
-    default boolean batchUpdateMetadata(Iterable<Instance> instances, Map<String, String> metadata) {
+    default BatchMetadataResult batchUpdateMetadata(Iterable<Instance> instances, Map<String, String> metadata) {
         return batchUpdateMetadata(instances, metadata, EPHEMERAL);
     }
 
@@ -579,18 +580,18 @@ public interface InstanceClientV2 {
      * @param instances       one or more {@link Instance instances}
      * @param metadata        Service Instances' Metadata
      * @param consistencyType {@link ConsistencyType}
-     * @return <code>true</code> if update successfully, otherwise <code>false</code>
+     * @return {@link BatchMetadataResult}
      */
-    boolean batchUpdateMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType);
+    BatchMetadataResult batchUpdateMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType);
 
     /**
      * Batch Delete Service Instances' Metadata
      *
      * @param instances one or more {@link Instance instances}
      * @param metadata  Service Instances' Metadata
-     * @return <code>true</code> if delete successfully, otherwise <code>false</code>
+     * @return {@link BatchMetadataResult}
      */
-    default boolean batchDeleteMetadata(Iterable<Instance> instances, Map<String, String> metadata) {
+    default BatchMetadataResult batchDeleteMetadata(Iterable<Instance> instances, Map<String, String> metadata) {
         return batchDeleteMetadata(instances, metadata, EPHEMERAL);
     }
 
@@ -600,8 +601,8 @@ public interface InstanceClientV2 {
      * @param instances       one or more {@link Instance instances}
      * @param metadata        Service Instances' Metadata
      * @param consistencyType {@link ConsistencyType}
-     * @return <code>true</code> if delete successfully, otherwise <code>false</code>
+     * @return {@link BatchMetadataResult}
      */
-    boolean batchDeleteMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType);
+    BatchMetadataResult batchDeleteMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType);
 
 }

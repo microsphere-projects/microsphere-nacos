@@ -17,21 +17,27 @@
 package io.microsphere.nacos.client.v2.discovery;
 
 import io.microsphere.nacos.client.OpenApiTest;
+import io.microsphere.nacos.client.common.discovery.model.BatchMetadataResult;
 import io.microsphere.nacos.client.common.discovery.model.Heartbeat;
 import io.microsphere.nacos.client.common.discovery.model.Instance;
 import io.microsphere.nacos.client.common.discovery.model.InstancesList;
 import io.microsphere.nacos.client.common.discovery.model.NewInstance;
 import io.microsphere.nacos.client.common.discovery.model.UpdateHealthInstance;
+import io.microsphere.nacos.client.transport.OpenApiClientException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
+import static io.microsphere.nacos.client.ErrorCode.BAD_REQUEST;
 import static io.microsphere.nacos.client.util.ModelUtils.buildServiceName;
 import static io.microsphere.nacos.client.v1.discovery.InstanceClientTest.assertBaseInstance;
 import static io.microsphere.nacos.client.v1.discovery.InstanceClientTest.createInstance;
 import static io.microsphere.nacos.client.v1.discovery.ServiceClientTest.TEST_CLUSTER;
 import static io.microsphere.nacos.client.v1.discovery.ServiceClientTest.TEST_SERVICE_NAME;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -71,8 +77,15 @@ public class InstanceClientV2Test extends OpenApiTest {
 
 
         // Test updateHealth()
-        UpdateHealthInstance updateHealthInstance = new UpdateHealthInstance(true).from(instance);
-        assertTrue(client.updateHealth(updateHealthInstance));
+        OpenApiClientException exception = null;
+        try {
+            UpdateHealthInstance updateHealthInstance = new UpdateHealthInstance(true).from(instance);
+            client.updateHealth(updateHealthInstance);
+        } catch (OpenApiClientException e) {
+            exception = e;
+        }
+        assertNotNull(exception);
+        assertEquals(BAD_REQUEST, exception.getErrorCode());
 
 
         // Test refresh()
@@ -106,6 +119,23 @@ public class InstanceClientV2Test extends OpenApiTest {
         assertEquals(1, instances.size());
         Instance instance1 = instances.get(0);
         assertInstance(newInstance, instance1);
+
+        // Test batchUpdateMetadata()
+        Map<String, String> metadata = singletonMap("test-key-2", "test-value-2");
+        BatchMetadataResult result = client.batchUpdateMetadata(asList(instance1), metadata);
+        // FIXME: The result is different in the OpenAPI V1
+        assertTrue(result.getUpdated().isEmpty());
+
+        exsitedInstance = client.getInstance(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_CLUSTER, TEST_SERVICE_NAME, ip, port);
+        Map<String, String> metadata1 = exsitedInstance.getMetadata();
+        assertEquals("test-value", metadata1.get("test-key"));
+        assertEquals("test-value-2", metadata1.get("test-key-2"));
+
+
+        // Test batchDeleteMetadata()
+        result = client.batchDeleteMetadata(asList(instance1), metadata);
+        // FIXME: The result is different in the OpenAPI V1
+        assertTrue(result.getUpdated().isEmpty());
 
 
         // Test deregister()

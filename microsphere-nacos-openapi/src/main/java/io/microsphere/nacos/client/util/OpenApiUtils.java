@@ -33,7 +33,6 @@ import java.util.Set;
 
 import static io.microsphere.nacos.client.common.discovery.ConsistencyType.EPHEMERAL;
 import static io.microsphere.nacos.client.constants.Constants.DEFAULT_CLUSTER_NAME;
-import static io.microsphere.nacos.client.constants.Constants.GROUP_SERVICE_NAME_SEPARATOR;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CLUSTER_NAME;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONSISTENCY_TYPE;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCES;
@@ -43,6 +42,7 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.METADATA
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPACE_ID;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_GROUP_NAME;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_NAME;
+import static io.microsphere.nacos.client.util.ModelUtils.buildServiceName;
 import static java.lang.String.format;
 
 /**
@@ -113,12 +113,14 @@ public abstract class OpenApiUtils {
         Set<String> serviceNames = new HashSet<>(2);
         List<Map<String, String>> instanceMaps = new LinkedList<>();
 
+        boolean isV2Endpoint = endpoint.startsWith("/v2/");
+
         consistencyType = consistencyType == null ? EPHEMERAL : consistencyType;
 
         for (Instance instance : instances) {
             String namespaceId = instance.getNamespaceId();
             String groupName = instance.getGroupName();
-            String serviceName = groupName + GROUP_SERVICE_NAME_SEPARATOR + instance.getServiceName();
+            String serviceName = isV2Endpoint ? instance.getServiceName() : buildServiceName(groupName, instance.getServiceName());
             validateDuplication(instance, namespaceIds, "namespaceId", namespaceId);
             validateDuplication(instance, serviceNames, "serviceName", serviceName);
             Map<String, String> instanceMap = buildInstanceMap(instance, consistencyType);

@@ -54,6 +54,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class InstanceClientTest extends OpenApiTest {
 
+    public static final String TEST_IP = "127.0.0.1";
+
+    public static final int TEST_PORT = 8080;
+
     private InstanceClient client;
 
     private Instance instance;
@@ -98,27 +102,27 @@ public class InstanceClientTest extends OpenApiTest {
 
         // Test getInstance()
         QueryInstance queryInstance = new QueryInstance().from(instance);
-        Instance instance1 = client.getInstance(queryInstance);
-        assertBaseInstance(instance1);
-        assertEquals(newInstance.getIp(), instance1.getIp());
-        assertEquals(newInstance.getPort(), instance1.getPort());
-        assertEquals(newInstance.getServiceName(), instance1.getServiceName());
-        assertEquals(newInstance.getClusterName(), instance1.getClusterName());
-        assertEquals(newInstance.getHealthy(), instance1.getHealthy());
-        assertEquals(newInstance.getWeight(), instance1.getWeight());
+        Instance exsitedInstance = client.getInstance(queryInstance);
+        assertBaseInstance(exsitedInstance);
+        assertEquals(newInstance.getIp(), exsitedInstance.getIp());
+        assertEquals(newInstance.getPort(), exsitedInstance.getPort());
+        assertEquals(newInstance.getServiceName(), exsitedInstance.getServiceName());
+        assertEquals(newInstance.getClusterName(), exsitedInstance.getClusterName());
+        assertEquals(newInstance.getHealthy(), exsitedInstance.getHealthy());
+        assertEquals(newInstance.getWeight(), exsitedInstance.getWeight());
 
 
         // Test refresh()
         instance.setWeight(50.0);
         UpdateInstance updateInstance = new UpdateInstance().from(instance);
         assertTrue(client.refresh(updateInstance));
-        instance1 = client.getInstance(queryInstance);
-        assertEquals(updateInstance.getIp(), instance1.getIp());
-        assertEquals(updateInstance.getPort(), instance1.getPort());
-        assertEquals(updateInstance.getServiceName(), instance1.getServiceName());
-        assertEquals(updateInstance.getClusterName(), instance1.getClusterName());
-        assertEquals(updateInstance.getWeight(), instance1.getWeight());
-        assertEquals(instance.getHealthy(), instance1.getHealthy());
+        exsitedInstance = client.getInstance(queryInstance);
+        assertEquals(updateInstance.getIp(), exsitedInstance.getIp());
+        assertEquals(updateInstance.getPort(), exsitedInstance.getPort());
+        assertEquals(updateInstance.getServiceName(), exsitedInstance.getServiceName());
+        assertEquals(updateInstance.getClusterName(), exsitedInstance.getClusterName());
+        assertEquals(updateInstance.getWeight(), exsitedInstance.getWeight());
+        assertEquals(instance.getHealthy(), exsitedInstance.getHealthy());
 
 
         // Test getInstancesList()
@@ -138,12 +142,17 @@ public class InstanceClientTest extends OpenApiTest {
 
         // Test batchUpdateMetadata()
         Map<String, String> metadata = singletonMap("test-key-2", "test-value-2");
-        BatchMetadataResult result = client.batchUpdateMetadata(asList(instance1), metadata);
+        BatchMetadataResult result = client.batchUpdateMetadata(asList(exsitedInstance), metadata);
         assertFalse(result.getUpdated().isEmpty());
+
+        exsitedInstance = client.getInstance(queryInstance);
+        Map<String, String> metadata1 = exsitedInstance.getMetadata();
+        assertEquals("test-value", metadata1.get("test-key"));
+        assertEquals("test-value-2", metadata1.get("test-key-2"));
 
 
         // Test batchDeleteMetadata()
-        result = client.batchDeleteMetadata(asList(instance1), metadata);
+        result = client.batchDeleteMetadata(asList(exsitedInstance), metadata);
         assertFalse(result.getUpdated().isEmpty());
 
 
@@ -164,8 +173,8 @@ public class InstanceClientTest extends OpenApiTest {
         instance.setGroupName(TEST_GROUP_NAME);
         instance.setServiceName(TEST_SERVICE_NAME);
         instance.setClusterName(TEST_CLUSTER);
-        instance.setIp("127.0.0.1");
-        instance.setPort(8080);
+        instance.setIp(TEST_IP);
+        instance.setPort(TEST_PORT);
         instance.setWeight(100.0);
         instance.setEnabled(true);
         instance.setHealthy(true);

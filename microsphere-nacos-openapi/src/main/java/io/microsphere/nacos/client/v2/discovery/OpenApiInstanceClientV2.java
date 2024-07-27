@@ -19,6 +19,7 @@ package io.microsphere.nacos.client.v2.discovery;
 import io.microsphere.nacos.client.NacosClientConfig;
 import io.microsphere.nacos.client.common.discovery.ConsistencyType;
 import io.microsphere.nacos.client.common.discovery.model.BaseInstance;
+import io.microsphere.nacos.client.common.discovery.model.BatchMetadataResult;
 import io.microsphere.nacos.client.common.discovery.model.GenericInstance;
 import io.microsphere.nacos.client.common.discovery.model.Heartbeat;
 import io.microsphere.nacos.client.common.discovery.model.Instance;
@@ -160,18 +161,18 @@ public class OpenApiInstanceClientV2 implements InstanceClientV2 {
     }
 
     @Override
-    public boolean batchUpdateMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType) {
+    public BatchMetadataResult batchUpdateMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType) {
         return batchMetadata(instances, metadata, consistencyType, PUT);
     }
 
     @Override
-    public boolean batchDeleteMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType) {
+    public BatchMetadataResult batchDeleteMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType) {
         return batchMetadata(instances, metadata, consistencyType, DELETE);
     }
 
-    private boolean batchMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType, HttpMethod method) {
+    private BatchMetadataResult batchMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType, HttpMethod method) {
         OpenApiRequest request = createBatchMetadataRequest(instances, metadata, consistencyType, INSTANCE_METADATA_BATCH_ENDPOINT, method);
-        return executeAsBoolean(request);
+        return this.openApiClient.executeAsResult(request, BatchMetadataResult.class);
     }
 
     private OpenApiRequest buildInstanceRequest(NewInstance instance, HttpMethod method) {
@@ -184,7 +185,7 @@ public class OpenApiInstanceClientV2 implements InstanceClientV2 {
     }
 
     private OpenApiRequest buildHealthRequest(UpdateHealthInstance instance, HttpMethod method) {
-        return createRequestBuilder(instance, INSTANCE_ENDPOINT, method)
+        return createRequestBuilder(instance, INSTANCE_HEALTH_ENDPOINT, method)
                 .queryParameter(INSTANCE_HEALTHY, instance.isHealthy())
                 .build();
     }
