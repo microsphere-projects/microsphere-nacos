@@ -44,7 +44,7 @@ import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsMessageOK;
 import static java.util.Collections.singletonMap;
 
 /**
- * The {@link Service} for <a href="https://nacos.io/en/docs/v1/open-api/">Open API</a>
+ * The {@link Service} for <a href="https://nacos.io/en/docs/v1/open-api/#service-discovery">Open API V1 - Service Discovery</a>
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see ServiceClient
