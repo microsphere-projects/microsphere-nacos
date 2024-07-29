@@ -21,6 +21,8 @@ import io.microsphere.nacos.client.transport.OpenApiHttpClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.util.concurrent.TimeUnit;
+
 import static java.lang.String.format;
 
 /**
@@ -71,6 +73,16 @@ public abstract class OpenApiTest {
      * @param nacosClientConfig {@link NacosClientConfig}
      */
     protected void customize(NacosClientConfig nacosClientConfig) {
+    }
+
+
+    protected void await(long waitTimeInSeconds) {
+        long waitTime = TimeUnit.SECONDS.toMillis(waitTimeInSeconds);
+        try {
+            Thread.sleep(waitTime);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @AfterEach
