@@ -16,6 +16,8 @@
  */
 package io.microsphere.nacos.client.v1.discovery;
 
+import io.microsphere.nacos.client.NacosClientConfig;
+import io.microsphere.nacos.client.common.OpenApiTemplateClient;
 import io.microsphere.nacos.client.common.discovery.ServiceClient;
 import io.microsphere.nacos.client.common.discovery.model.Selector;
 import io.microsphere.nacos.client.common.discovery.model.Service;
@@ -49,53 +51,52 @@ import static java.util.Collections.singletonMap;
  * @see OpenApiClient
  * @since 1.0.0
  */
-public class OpenApiServiceClient implements ServiceClient {
+public class OpenApiServiceClient extends OpenApiTemplateClient implements ServiceClient {
 
-    public static final String SERVICE_ENDPOINT = "/v1/ns/service";
+    protected static final String SERVICE_ENDPOINT = "/ns/service";
 
-    public static final String SERVICES_LIST_ENDPOINT = "/v1/ns/service/list";
+    protected static final String SERVICES_LIST_ENDPOINT = SERVICE_ENDPOINT + "/list";
 
-    private final OpenApiClient openApiClient;
-
-    public OpenApiServiceClient(OpenApiClient openApiClient) {
-        this.openApiClient = openApiClient;
+    public OpenApiServiceClient(OpenApiClient openApiClient, NacosClientConfig nacosClientConfig) {
+        super(openApiClient, nacosClientConfig);
     }
 
     @Override
     public boolean createService(Service service) {
         OpenApiRequest request = buildServiceRequest(service, POST);
-        return responseMessage(request);
+        return responseBoolean(request);
     }
 
     @Override
     public boolean deleteService(String namespaceId, String groupName, String serviceName) {
         OpenApiRequest request = buildServiceRequest(namespaceId, groupName, serviceName, DELETE);
-        return responseMessage(request);
+        return responseBoolean(request);
     }
 
     @Override
     public boolean updateService(Service service) {
         OpenApiRequest request = buildServiceRequest(service, PUT);
-        return responseMessage(request);
+        return responseBoolean(request);
     }
 
     @Override
     public Service getService(String namespaceId, String groupName, String serviceName) {
         OpenApiRequest request = buildServiceRequest(namespaceId, groupName, serviceName, GET);
-        return this.openApiClient.execute(request, Service.class);
+        return response(request, Service.class);
     }
 
     @Override
     public Page<String> getServiceNames(String namespaceId, String groupName, int pageNumber, int pageSize) {
-        OpenApiRequest request = OpenApiRequest.Builder.create(SERVICES_LIST_ENDPOINT)
+        OpenApiRequest request = OpenApiRequest.Builder.create(getServicesListEndpoint())
                 .queryParameter(NAMESPACE_ID, namespaceId)
                 .queryParameter(SERVICE_GROUP_NAME, groupName)
                 .queryParameter(PAGE_NUMBER, pageNumber)
                 .queryParameter(PAGE_SIZE, pageSize)
                 .build();
-        ServiceList serviceList = this.openApiClient.execute(request, ServiceList.class);
+        ServiceList serviceList = response(request, ServiceList.class);
         return new Page<>(serviceList.getCount(), serviceList.getDoms(), pageNumber, pageSize);
     }
+
 
     private OpenApiRequest buildServiceRequest(String namespaceId, String groupName, String serviceName, HttpMethod method) {
         OpenApiRequest request = OpenApiRequest.Builder.create(SERVICE_ENDPOINT)
@@ -108,7 +109,7 @@ public class OpenApiServiceClient implements ServiceClient {
     }
 
     private OpenApiRequest buildServiceRequest(Service service, HttpMethod method) {
-        return OpenApiRequest.Builder.create(SERVICE_ENDPOINT)
+        return OpenApiRequest.Builder.create(getServiceEndpoint())
                 .method(method)
                 .queryParameter(NAMESPACE_ID, service.getNamespaceId())
                 .queryParameter(SERVICE_GROUP_NAME, service.getGroupName())
@@ -119,7 +120,15 @@ public class OpenApiServiceClient implements ServiceClient {
                 .build();
     }
 
-    private boolean responseMessage(OpenApiRequest request) {
+    protected String getServiceEndpoint() {
+        return getEndpointPath() + SERVICE_ENDPOINT;
+    }
+
+    protected String getServicesListEndpoint() {
+        return getEndpointPath() + SERVICES_LIST_ENDPOINT;
+    }
+
+    protected boolean responseBoolean(OpenApiRequest request) {
         return executeAsMessageOK(this.openApiClient, request);
     }
 
