@@ -35,7 +35,7 @@ import static io.microsphere.nacos.client.util.OpenApiUtils.createRequestBuilder
 import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsResultMessageOK;
 
 /**
- * The {@link InstanceClient} for <a href="https://nacos.io/en/docs/latest/manual/user/open-api">Open API</a>
+ * The {@link InstanceClient} for <a href="https://nacos.io/en/docs/v2/open-api/#service-discovery">Open API V2 - Service Discovery</a>
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see InstanceClient
