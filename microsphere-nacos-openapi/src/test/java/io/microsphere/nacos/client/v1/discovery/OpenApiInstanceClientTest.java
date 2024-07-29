@@ -112,6 +112,7 @@ public class OpenApiInstanceClientTest extends OpenApiTest {
 
 
         // Test getInstance()
+        await(5);
         QueryInstance queryInstance = new QueryInstance().from(instance);
         Instance exsitedInstance = client.getInstance(queryInstance);
         assertBaseInstance(exsitedInstance);
@@ -127,6 +128,8 @@ public class OpenApiInstanceClientTest extends OpenApiTest {
         instance.setWeight(50.0);
         UpdateInstance updateInstance = new UpdateInstance().from(instance);
         assertTrue(client.refresh(updateInstance));
+
+        await(5);
         exsitedInstance = client.getInstance(queryInstance);
         assertEquals(updateInstance.getIp(), exsitedInstance.getIp());
         assertEquals(updateInstance.getPort(), exsitedInstance.getPort());
@@ -137,6 +140,7 @@ public class OpenApiInstanceClientTest extends OpenApiTest {
 
 
         // Test getInstancesList()
+        await(5);
         InstancesList instancesList = client.getInstancesList(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_SERVICE_NAME);
         assertEquals(TEST_SERVICE_NAME, instancesList.getDom());
         assertEquals(3000, instancesList.getCacheMillis());
