@@ -14,27 +14,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.config.event;
+package io.microsphere.nacos.client.common.config.event;
 
-import io.microsphere.nacos.client.common.config.model.Config;
-
-import java.util.EventListener;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * The {@link EventListener} for {@link ConfigChangedEvent}
+ * The Composite {@link ConfigChangedListener}
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see ConfigChangedEvent
- * @see EventListener
- * @see Config
+ * @see ConfigChangedListener
  * @since 1.0.0
  */
-public interface ConfigChangedListener extends EventListener {
+public class CompositeConfigChangedListener implements ConfigChangedListener {
 
-    /**
-     * Callback method when {@link ConfigChangedEvent} is triggered
-     *
-     * @param event {@link ConfigChangedEvent}
-     */
-    void onEvent(ConfigChangedEvent event);
+    private final CopyOnWriteArrayList<ConfigChangedListener> listeners;
+
+    public CompositeConfigChangedListener() {
+        this.listeners = new CopyOnWriteArrayList<>();
+    }
+
+    @Override
+    public void onEvent(ConfigChangedEvent event) {
+        listeners.forEach(listener -> listener.onEvent(event));
+    }
+
+    public void addListener(ConfigChangedListener listener) {
+        this.listeners.add(listener);
+    }
+
+    public void removeListener(ConfigChangedListener listener) {
+        this.listeners.remove(listener);
+    }
 }

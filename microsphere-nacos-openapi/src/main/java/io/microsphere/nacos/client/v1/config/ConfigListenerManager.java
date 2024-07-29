@@ -21,8 +21,8 @@ import io.microsphere.nacos.client.common.config.ConfigClient;
 import io.microsphere.nacos.client.common.config.model.Config;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
-import io.microsphere.nacos.client.v1.config.event.ConfigChangedEvent;
-import io.microsphere.nacos.client.v1.config.event.ConfigChangedListener;
+import io.microsphere.nacos.client.common.config.event.ConfigChangedEvent;
+import io.microsphere.nacos.client.common.config.event.ConfigChangedListener;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -42,9 +42,9 @@ import static io.microsphere.nacos.client.constants.Constants.LISTENING_CONFIG_S
 import static io.microsphere.nacos.client.http.HttpMethod.POST;
 import static io.microsphere.nacos.client.transport.OpenApiRequestHeader.LONG_PULLING_TIMEOUT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.LISTENING_CONFIGS;
-import static io.microsphere.nacos.client.v1.config.event.ConfigChangedEvent.ofCreated;
-import static io.microsphere.nacos.client.v1.config.event.ConfigChangedEvent.ofDeleted;
-import static io.microsphere.nacos.client.v1.config.event.ConfigChangedEvent.ofModified;
+import static io.microsphere.nacos.client.common.config.event.ConfigChangedEvent.ofCreated;
+import static io.microsphere.nacos.client.common.config.event.ConfigChangedEvent.ofDeleted;
+import static io.microsphere.nacos.client.common.config.event.ConfigChangedEvent.ofModified;
 import static io.microsphere.nacos.client.v1.config.util.ConfigUtil.buildConfigId;
 import static io.microsphere.nacos.client.v1.config.util.ConfigUtil.buildListeningConfigDataPacket;
 import static java.lang.Runtime.getRuntime;

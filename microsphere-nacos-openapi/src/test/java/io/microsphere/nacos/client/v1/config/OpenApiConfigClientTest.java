@@ -25,7 +25,7 @@ import io.microsphere.nacos.client.common.config.model.Config;
 import io.microsphere.nacos.client.common.config.model.HistoryConfig;
 import io.microsphere.nacos.client.common.config.model.NewConfig;
 import io.microsphere.nacos.client.common.model.Page;
-import io.microsphere.nacos.client.v1.config.event.ConfigChangedEvent;
+import io.microsphere.nacos.client.common.config.event.ConfigChangedEvent;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;

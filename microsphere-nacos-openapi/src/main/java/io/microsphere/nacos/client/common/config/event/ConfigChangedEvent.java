@@ -14,15 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.config.event;
+package io.microsphere.nacos.client.common.config.event;
 
 import io.microsphere.nacos.client.common.config.model.Config;
 
 import java.util.EventObject;
 
-import static io.microsphere.nacos.client.v1.config.event.ConfigChangedEvent.Kind.CREATED;
-import static io.microsphere.nacos.client.v1.config.event.ConfigChangedEvent.Kind.DELETED;
-import static io.microsphere.nacos.client.v1.config.event.ConfigChangedEvent.Kind.MODIFIED;
+import static io.microsphere.nacos.client.common.config.event.ConfigChangedEvent.Kind.CREATED;
+import static io.microsphere.nacos.client.common.config.event.ConfigChangedEvent.Kind.DELETED;
+import static io.microsphere.nacos.client.common.config.event.ConfigChangedEvent.Kind.MODIFIED;
 
 /**
  * The {@link EventObject Event} raised when the Nacos {@link Config} is changed
