@@ -65,6 +65,7 @@ import static io.microsphere.nacos.client.util.ModelUtils.setPropertyIfAbsent;
 import static io.microsphere.nacos.client.util.OpenApiUtils.createBatchMetadataRequest;
 import static io.microsphere.nacos.client.util.OpenApiUtils.createRequestBuilder;
 import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsMessageOK;
+import static io.microsphere.nacos.client.util.StringUtils.isBlank;
 
 /**
  * The {@link Service} {@link Instance} for <a href="https://nacos.io/en/docs/v1/open-api/">Open API</a>
@@ -140,11 +141,20 @@ public class OpenApiInstanceClient extends OpenApiTemplateClient implements Inst
         setPropertyIfAbsent(groupName, instancesList::getGroupName, instancesList::setGroupName);
         setPropertyIfAbsent(serviceName, instancesList::getServiceName, instancesList::setServiceName);
 
+        // the "clusters" is "" in the V1 Endpoint, but is "DEFAULT" in the V2 Endpoint
+        if (isBlank(instancesList.getClusters())) {
+            instancesList.setClusters(clusterName);
+        }
+
+        // the "dom" is serviceName in the V1 Endpoint, but is null in the V2 Endpoint
+        if (isBlank(instancesList.getDom())) {
+            instancesList.setDom(serviceName);
+        }
+
         completeInstances(instancesList.getHosts(), namespaceId, groupName, serviceName);
 
         return instancesList;
     }
-
 
     @Override
     public Heartbeat sendHeartbeat(Instance instance) {

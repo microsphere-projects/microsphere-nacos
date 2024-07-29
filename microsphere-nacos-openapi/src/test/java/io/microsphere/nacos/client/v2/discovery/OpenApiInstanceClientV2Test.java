@@ -16,9 +16,8 @@
  */
 package io.microsphere.nacos.client.v2.discovery;
 
-import io.microsphere.nacos.client.common.config.ConfigClient;
-import io.microsphere.nacos.client.v1.config.OpenApiConfigClientTest;
-import io.microsphere.nacos.client.v2.config.OpenApiConfigClientV2;
+import io.microsphere.nacos.client.common.discovery.InstanceClient;
+import io.microsphere.nacos.client.v1.discovery.OpenApiInstanceClientTest;
 
 /**
  * {@link OpenApiInstanceClientV2} Test
@@ -27,10 +26,10 @@ import io.microsphere.nacos.client.v2.config.OpenApiConfigClientV2;
  * @see OpenApiInstanceClientV2
  * @since 1.0.0
  */
-public class OpenApiInstanceClientV2Test extends OpenApiConfigClientTest {
+public class OpenApiInstanceClientV2Test extends OpenApiInstanceClientTest {
 
     @Override
-    protected ConfigClient createConfigClient() {
-        return new OpenApiConfigClientV2(this.openApiClient, this.nacosClientConfig);
+    protected InstanceClient createInstanceClient() {
+        return new OpenApiInstanceClientV2(this.openApiClient, this.nacosClientConfig);
     }
 }

@@ -56,7 +56,7 @@ public class ServiceClientTest extends OpenApiTest {
     private ServiceClient client;
 
     @BeforeEach
-    public void before() {
+    public void setup() {
         client = new OpenApiServiceClient(openApiClient);
         try {
             client.deleteService(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_SERVICE_NAME);

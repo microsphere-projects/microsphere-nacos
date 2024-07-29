@@ -65,6 +65,11 @@ public abstract class OpenApiTest {
         customize(config);
         this.openApiClient = new OpenApiHttpClient(config);
         this.nacosClientConfig = config;
+
+        setup();
+    }
+
+    protected void setup() {
     }
 
     /**

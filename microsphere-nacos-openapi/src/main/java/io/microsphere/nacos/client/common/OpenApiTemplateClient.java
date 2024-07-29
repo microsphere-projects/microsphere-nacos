@@ -110,6 +110,9 @@ public abstract class OpenApiTemplateClient {
      * @return the result
      */
     protected <T> T response(OpenApiRequest request, Type payloadType) {
-        return this.openApiClient.execute(request, payloadType);
+        if (isOpenApiV1()) {
+            return this.openApiClient.execute(request, payloadType);
+        }
+        return this.openApiClient.executeAsResult(request, payloadType);
     }
 }

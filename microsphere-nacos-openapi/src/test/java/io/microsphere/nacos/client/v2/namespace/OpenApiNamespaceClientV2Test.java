@@ -48,7 +48,7 @@ public class OpenApiNamespaceClientV2Test extends OpenApiTest {
     private NamespaceClient client;
 
     @BeforeEach
-    public void before() {
+    public void setup() {
         this.client = new OpenApiNamespaceClientV2(this.openApiClient);
         client.deleteNamespace(NAMESPACE_ID);
     }

@@ -27,8 +27,6 @@ import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
 import io.microsphere.nacos.client.v1.config.OpenApiConfigClient;
 
-import java.lang.reflect.Type;
-
 import static io.microsphere.nacos.client.OpenApiVersion.V1;
 import static io.microsphere.nacos.client.OpenApiVersion.V2;
 import static io.microsphere.nacos.client.http.HttpMethod.GET;
@@ -144,11 +142,6 @@ public class OpenApiConfigClientV2 extends OpenApiConfigClient implements Config
     @Override
     protected String getConfigHistoryListEndpoint() {
         return getEndpointPath() + V2_CONFIG_HISTORY_LIST_ENDPOINT;
-    }
-
-    @Override
-    protected <T> T response(OpenApiRequest request, Type dataType) {
-        return this.openApiClient.executeAsResult(request, dataType);
     }
 }
 
