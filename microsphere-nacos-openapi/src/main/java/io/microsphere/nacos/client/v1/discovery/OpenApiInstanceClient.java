@@ -56,7 +56,6 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_
 import static io.microsphere.nacos.client.util.ModelUtils.getHeartbeatMap;
 import static io.microsphere.nacos.client.util.OpenApiUtils.createBatchMetadataRequest;
 import static io.microsphere.nacos.client.util.OpenApiUtils.createRequestBuilder;
-import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsResultMessageOK;
 import static io.microsphere.nacos.client.util.OpenApiUtils.executeMessageOK;
 
 /**

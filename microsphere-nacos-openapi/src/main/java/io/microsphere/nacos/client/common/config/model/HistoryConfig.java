@@ -16,8 +16,8 @@
  */
 package io.microsphere.nacos.client.common.config.model;
 
-import io.microsphere.nacos.client.common.model.Model;
 import io.microsphere.nacos.client.common.config.ConfigOperationType;
+import io.microsphere.nacos.client.common.model.Model;
 
 /**
  * The {@link Model model} {@link Class} for Nacos History Configuration

@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static io.microsphere.nacos.client.util.IOUtils.encode;
 import static io.microsphere.nacos.client.util.JsonUtils.toJSON;
 import static io.microsphere.nacos.client.util.StringUtils.collectionToCommaDelimitedString;
 

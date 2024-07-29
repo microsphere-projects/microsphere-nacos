@@ -17,8 +17,8 @@
 package io.microsphere.nacos.client.v1.config.util;
 
 import io.microsphere.nacos.client.common.config.model.Config;
-import io.microsphere.nacos.client.constants.Constants;
 import io.microsphere.nacos.client.common.namespace.model.Namespace;
+import io.microsphere.nacos.client.constants.Constants;
 
 import static io.microsphere.nacos.client.constants.Constants.LISTENING_CONFIG_FIELD_SEPARATOR_CHAR;
 import static io.microsphere.nacos.client.constants.Constants.LISTENING_CONFIG_SEPARATOR_CHAR;

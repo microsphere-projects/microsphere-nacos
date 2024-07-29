@@ -17,8 +17,8 @@
 package io.microsphere.nacos.client.v2.namespace;
 
 import io.microsphere.nacos.client.OpenApiTest;
-import io.microsphere.nacos.client.common.namespace.model.Namespace;
 import io.microsphere.nacos.client.common.namespace.NamespaceClient;
+import io.microsphere.nacos.client.common.namespace.model.Namespace;
 import io.microsphere.nacos.client.v1.namespace.OpenApiNamespaceClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

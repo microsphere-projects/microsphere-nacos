@@ -17,12 +17,12 @@
 package io.microsphere.nacos.client.v1.namespace;
 
 import io.microsphere.nacos.client.common.namespace.NamespaceClient;
+import io.microsphere.nacos.client.common.namespace.model.Namespace;
 import io.microsphere.nacos.client.common.namespace.model.NamespacesList;
 import io.microsphere.nacos.client.http.HttpMethod;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiClientException;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
-import io.microsphere.nacos.client.common.namespace.model.Namespace;
 
 import java.util.List;
 
