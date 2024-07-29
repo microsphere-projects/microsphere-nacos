@@ -44,16 +44,6 @@ import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsResultMessa
  */
 public class OpenApiInstanceClientV2 extends OpenApiInstanceClient implements InstanceClient {
 
-    public static final String INSTANCE_ENDPOINT = "/v2/ns/instance";
-
-    public static final String INSTANCES_LIST_ENDPOINT = INSTANCE_ENDPOINT + "/list";
-
-    public static final String INSTANCE_HEARTBEAT_ENDPOINT = INSTANCE_ENDPOINT + "/beat";
-
-    private static final String INSTANCE_METADATA_BATCH_ENDPOINT = INSTANCE_ENDPOINT + "/metadata/batch";
-
-    public static final String INSTANCE_HEALTH_ENDPOINT = "/v2/ns/health/instance";
-
     public OpenApiInstanceClientV2(OpenApiClient openApiClient, NacosClientConfig nacosClientConfig) {
         super(openApiClient, nacosClientConfig);
     }
