@@ -14,21 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1;
+package io.microsphere.nacos.client.v2.discovery;
 
 import io.microsphere.nacos.client.common.config.ConfigClient;
-import io.microsphere.nacos.client.common.namespace.NamespaceClient;
-import io.microsphere.nacos.client.common.discovery.InstanceClient;
-import io.microsphere.nacos.client.v1.discovery.ServiceClient;
-import io.microsphere.nacos.client.v1.raft.RaftClient;
-import io.microsphere.nacos.client.v1.server.ServerClient;
+import io.microsphere.nacos.client.v1.config.OpenApiConfigClientTest;
+import io.microsphere.nacos.client.v2.config.OpenApiConfigClientV2;
 
 /**
- * Nacos Client for Open API V1
+ * {@link OpenApiInstanceClientV2} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see ServerClient
+ * @see OpenApiInstanceClientV2
  * @since 1.0.0
  */
-public interface NacosClient extends ConfigClient, ServiceClient, InstanceClient, NamespaceClient, ServerClient, RaftClient {
+public class OpenApiInstanceClientV2Test extends OpenApiConfigClientTest {
+
+    @Override
+    protected ConfigClient createConfigClient() {
+        return new OpenApiConfigClientV2(this.openApiClient, this.nacosClientConfig);
+    }
 }

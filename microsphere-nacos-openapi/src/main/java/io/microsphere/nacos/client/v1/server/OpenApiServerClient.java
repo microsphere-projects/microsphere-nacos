@@ -27,7 +27,7 @@ import static io.microsphere.nacos.client.http.HttpMethod.PUT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVER_SWITCH_DEBUG;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVER_SWITCH_ENTRY;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVER_SWITCH_VALUE;
-import static io.microsphere.nacos.client.util.OpenApiUtils.executeMessageOK;
+import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsMessageOK;
 
 /**
  * The {@link ServerClient} for Open API
@@ -72,7 +72,7 @@ public class OpenApiServerClient implements ServerClient {
                 .queryParameter(SERVER_SWITCH_VALUE, switchValue)
                 .queryParameter(SERVER_SWITCH_DEBUG, debug)
                 .build();
-        return executeMessageOK(this.openApiClient, request);
+        return executeAsMessageOK(this.openApiClient, request);
     }
 
     @Override

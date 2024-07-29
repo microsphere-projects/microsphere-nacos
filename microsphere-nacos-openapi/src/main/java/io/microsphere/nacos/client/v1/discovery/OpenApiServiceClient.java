@@ -37,7 +37,7 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_NAME;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_PROTECT_THRESHOLD;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_SELECTOR;
-import static io.microsphere.nacos.client.util.OpenApiUtils.executeMessageOK;
+import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsMessageOK;
 import static java.util.Collections.singletonMap;
 
 /**
@@ -119,7 +119,7 @@ public class OpenApiServiceClient implements ServiceClient {
     }
 
     private boolean responseMessage(OpenApiRequest request) {
-        return executeMessageOK(this.openApiClient, request);
+        return executeAsMessageOK(this.openApiClient, request);
     }
 
     private String toJSON(Selector selector) {

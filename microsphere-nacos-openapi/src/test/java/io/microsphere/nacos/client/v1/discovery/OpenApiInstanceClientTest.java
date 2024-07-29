@@ -17,6 +17,7 @@
 package io.microsphere.nacos.client.v1.discovery;
 
 import io.microsphere.nacos.client.OpenApiTest;
+import io.microsphere.nacos.client.common.discovery.InstanceClient;
 import io.microsphere.nacos.client.common.discovery.model.BaseInstance;
 import io.microsphere.nacos.client.common.discovery.model.BatchMetadataResult;
 import io.microsphere.nacos.client.common.discovery.model.DeleteInstance;
@@ -45,14 +46,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * {@link InstanceClient} Test
+ * {@link OpenApiInstanceClient} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see InstanceClient
  * @see OpenApiInstanceClient
  * @since 1.0.0
  */
-public class InstanceClientTest extends OpenApiTest {
+public class OpenApiInstanceClientTest extends OpenApiTest {
 
     public static final String TEST_INSTANCE_IP = "127.0.0.1";
 
@@ -74,7 +75,7 @@ public class InstanceClientTest extends OpenApiTest {
 
     @BeforeEach
     public void before() {
-        this.client = new OpenApiInstanceClient(this.openApiClient);
+        this.client = new OpenApiInstanceClient(this.openApiClient, this.nacosClientConfig);
         this.instance = createInstance();
         DeleteInstance deleteInstance = new DeleteInstance();
         deleteInstance.from(instance);
@@ -147,7 +148,7 @@ public class InstanceClientTest extends OpenApiTest {
         assertTrue(instancesList.getClusters().isEmpty());
         List<Instance> instances = instancesList.getHosts();
         assertFalse(instances.isEmpty());
-        instances.forEach(InstanceClientTest::assertBaseInstance);
+        instances.forEach(OpenApiInstanceClientTest::assertBaseInstance);
 
 
         // Test batchUpdateMetadata()

@@ -34,7 +34,7 @@ import java.util.Map;
 
 import static io.microsphere.nacos.client.http.HttpMethod.DELETE;
 import static io.microsphere.nacos.client.http.HttpMethod.PUT;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.APP_V2;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.APP;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CLUSTER_NAME;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.HEARTBEAT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_ENABLED;
@@ -131,7 +131,7 @@ public class OpenApiInstanceClientV2 implements InstanceClientV2 {
                 .queryParameter(INSTANCE_IP, ip)
                 .queryParameter(INSTANCE_PORT, port)
                 .queryParameter(INSTANCE_HEALTHY_ONLY, healthyOnly)
-                .queryParameter(APP_V2, app)
+                .queryParameter(APP, app)
                 .build();
 
         InstancesList instancesList = this.openApiClient.executeAsResult(request, InstancesList.class);
@@ -147,7 +147,7 @@ public class OpenApiInstanceClientV2 implements InstanceClientV2 {
 
     @Override
     public Heartbeat sendHeartbeat(Instance instance) {
-        OpenApiRequest request = createRequestBuilder(instance, INSTANCE_HEARTBEAT_ENDPOINT, PUT)
+        OpenApiRequest request = createRequestBuilder(INSTANCE_HEARTBEAT_ENDPOINT, PUT, instance)
                 .queryParameter(SERVICE_NAME, buildServiceName(instance.getGroupName(), instance.getServiceName()))
                 .queryParameter(HEARTBEAT, getHeartbeatMap(instance))
                 .build();
@@ -185,7 +185,7 @@ public class OpenApiInstanceClientV2 implements InstanceClientV2 {
     }
 
     private OpenApiRequest buildHealthRequest(UpdateHealthInstance instance, HttpMethod method) {
-        return createRequestBuilder(instance, INSTANCE_HEALTH_ENDPOINT, method)
+        return createRequestBuilder(INSTANCE_HEALTH_ENDPOINT, method, instance)
                 .queryParameter(INSTANCE_HEALTHY, instance.isHealthy())
                 .build();
     }
@@ -199,7 +199,7 @@ public class OpenApiInstanceClientV2 implements InstanceClientV2 {
     }
 
     private OpenApiRequest.Builder requestBuilder(BaseInstance instance, HttpMethod method) {
-        return createRequestBuilder(instance, INSTANCE_ENDPOINT, method);
+        return createRequestBuilder(INSTANCE_ENDPOINT, method, instance);
     }
 
     private boolean executeAsBoolean(OpenApiRequest request) {

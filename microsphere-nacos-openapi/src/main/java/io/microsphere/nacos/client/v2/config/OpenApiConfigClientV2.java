@@ -17,8 +17,10 @@
 package io.microsphere.nacos.client.v2.config;
 
 import io.microsphere.nacos.client.NacosClientConfig;
+import io.microsphere.nacos.client.OpenApiVersion;
 import io.microsphere.nacos.client.common.config.ConfigClient;
 import io.microsphere.nacos.client.common.config.ConfigType;
+import io.microsphere.nacos.client.common.config.model.Config;
 import io.microsphere.nacos.client.common.config.model.NewConfig;
 import io.microsphere.nacos.client.http.HttpMethod;
 import io.microsphere.nacos.client.transport.OpenApiClient;
@@ -27,8 +29,11 @@ import io.microsphere.nacos.client.v1.config.OpenApiConfigClient;
 
 import java.lang.reflect.Type;
 
+import static io.microsphere.nacos.client.OpenApiVersion.V1;
+import static io.microsphere.nacos.client.OpenApiVersion.V2;
+import static io.microsphere.nacos.client.http.HttpMethod.GET;
 import static io.microsphere.nacos.client.http.HttpMethod.POST;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.APP_NAME;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_APP;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_CONTENT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_DATA_ID;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_EFFECT;
@@ -36,10 +41,12 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_G
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_SCHEMA;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_TAG;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_TAGS_V2;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_TENANT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_USE;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.DESCRIPTION;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPACE_ID;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.OPERATOR_V2;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SHOW;
 import static io.microsphere.nacos.client.util.StringUtils.collectionToCommaDelimitedString;
 
 /**
@@ -47,20 +54,36 @@ import static io.microsphere.nacos.client.util.StringUtils.collectionToCommaDeli
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see ConfigClient
+ * @see OpenApiConfigClient
  * @since 1.0.0
  */
 public class OpenApiConfigClientV2 extends OpenApiConfigClient implements ConfigClient {
 
-    public static final String V2_CONFIG_ENDPOINT = "/v2/cs/config";
+    protected static final String V2_CONFIG_ENDPOINT = "/cs/config";
 
-    public static final String V2_CONFIG_HISTORY_ENDPOINT = "/v2/cs/history";
-
-    public static final String V2_CONFIG_HISTORY_LIST_ENDPOINT = "/v2/cs/history/list";
-
-    public static final String V2_CONFIG_HISTORY_PREVIOUS_ENDPOINT = "/v2/cs/history/previous";
+    protected static final String V2_CONFIG_HISTORY_LIST_ENDPOINT = "/cs/history/list";
 
     public OpenApiConfigClientV2(OpenApiClient openApiClient, NacosClientConfig nacosClientConfig) {
         super(openApiClient, nacosClientConfig);
+    }
+
+    @Override
+    public OpenApiVersion getOpenApiVersion() {
+        return V2;
+    }
+
+    @Override
+    public Config getConfig(String namespaceId, String group, String dataId) {
+        // No getConfig endpoint is not found in Open API V2
+        String configEndpoint = V1.getEndpointPath() + CONFIG_ENDPOINT;
+        OpenApiRequest request = OpenApiRequest.Builder.create(configEndpoint)
+                .method(GET)
+                .queryParameter(CONFIG_TENANT, namespaceId)
+                .queryParameter(CONFIG_GROUP, group)
+                .queryParameter(CONFIG_DATA_ID, dataId)
+                .queryParameter(SHOW, "all")
+                .build();
+        return super.response(request, Config.class);
     }
 
     @Override
@@ -92,7 +115,7 @@ public class OpenApiConfigClientV2 extends OpenApiConfigClient implements Config
         OpenApiRequest request = configRequestBuilder(namespaceId, group, dataId, null, POST)
                 .queryParameter(CONFIG_CONTENT, content)
                 .queryParameter(CONFIG_TAGS_V2, tags)
-                .queryParameter(APP_NAME, appName)
+                .queryParameter(CONFIG_APP, appName)
                 .queryParameter(OPERATOR_V2, operator)
                 .queryParameter(DESCRIPTION, description)
                 .queryParameter(CONFIG_USE, use)
@@ -115,22 +138,12 @@ public class OpenApiConfigClientV2 extends OpenApiConfigClient implements Config
 
     @Override
     protected String getConfigEndpoint() {
-        return V2_CONFIG_ENDPOINT;
-    }
-
-    @Override
-    protected String getConfigHistoryEndpoint() {
-        return V2_CONFIG_HISTORY_ENDPOINT;
+        return getEndpointPath() + V2_CONFIG_ENDPOINT;
     }
 
     @Override
     protected String getConfigHistoryListEndpoint() {
-        return V2_CONFIG_HISTORY_LIST_ENDPOINT;
-    }
-
-    @Override
-    protected String getConfigHistoryPreviousEndpoint() {
-        return V2_CONFIG_HISTORY_PREVIOUS_ENDPOINT;
+        return getEndpointPath() + V2_CONFIG_HISTORY_LIST_ENDPOINT;
     }
 
     @Override

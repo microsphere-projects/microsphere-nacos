@@ -77,9 +77,13 @@ public class OpenApiConfigClientTest extends OpenApiTest {
         nacosClientConfig.setLongPollingTimeout(LONG_POLLING_TIMEOUT);
     }
 
+    protected ConfigClient createConfigClient() {
+        return new OpenApiConfigClient(this.openApiClient, this.nacosClientConfig);
+    }
+
     @Test
     public void test() throws Exception {
-        ConfigClient client = new OpenApiConfigClient(this.openApiClient, this.nacosClientConfig);
+        ConfigClient client = createConfigClient();
 
         AtomicReference<ConfigChangedEvent> eventRef = new AtomicReference<>();
         // Test

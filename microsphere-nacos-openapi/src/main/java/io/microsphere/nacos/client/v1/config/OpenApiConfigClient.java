@@ -17,6 +17,7 @@
 package io.microsphere.nacos.client.v1.config;
 
 import io.microsphere.nacos.client.NacosClientConfig;
+import io.microsphere.nacos.client.common.OpenApiTemplateClient;
 import io.microsphere.nacos.client.common.config.ConfigClient;
 import io.microsphere.nacos.client.common.config.ConfigType;
 import io.microsphere.nacos.client.common.config.event.ConfigChangedListener;
@@ -29,13 +30,11 @@ import io.microsphere.nacos.client.http.HttpMethod;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
 
-import java.lang.reflect.Type;
-
 import static io.microsphere.nacos.client.constants.Constants.SEARCH_PARAM_VALUE;
 import static io.microsphere.nacos.client.http.HttpMethod.DELETE;
 import static io.microsphere.nacos.client.http.HttpMethod.GET;
 import static io.microsphere.nacos.client.http.HttpMethod.POST;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.APP_NAME;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_APP;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_CONTENT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_DATA_ID;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_EFFECT;
@@ -57,29 +56,25 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SHOW;
 import static io.microsphere.nacos.client.util.StringUtils.collectionToCommaDelimitedString;
 
 /**
- * The {@link ConfigClient} for for <a href="https://nacos.io/en/docs/v1/open-api/#configuration-management">Open API</a>
+ * The {@link ConfigClient} for for <a href="https://nacos.io/en/docs/open-api/#configuration-management">Open API</a>
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see ConfigClient
+ * @see OpenApiTemplateClient
  * @since 1.0.0
  */
-public class OpenApiConfigClient implements ConfigClient {
+public class OpenApiConfigClient extends OpenApiTemplateClient implements ConfigClient {
 
-    public static final String CONFIG_ENDPOINT = "/v1/cs/configs";
+    protected static final String CONFIG_ENDPOINT = "/cs/configs";
 
-    public static final String CONFIG_HISTORY_ENDPOINT = "/v1/cs/history";
+    protected static final String CONFIG_HISTORY_ENDPOINT = "/cs/history";
 
-    public static final String CONFIG_HISTORY_PREVIOUS_ENDPOINT = "/v1/cs/history/previous";
-
-    protected final OpenApiClient openApiClient;
-
-    protected final NacosClientConfig nacosClientConfig;
+    protected static final String CONFIG_HISTORY_PREVIOUS_ENDPOINT = "/cs/history/previous";
 
     protected final ConfigListenerManager configListenerManager;
 
     public OpenApiConfigClient(OpenApiClient openApiClient, NacosClientConfig nacosClientConfig) {
-        this.openApiClient = openApiClient;
-        this.nacosClientConfig = nacosClientConfig;
+        super(openApiClient, nacosClientConfig);
         this.configListenerManager = new ConfigListenerManager(this, openApiClient, nacosClientConfig);
     }
 
@@ -113,7 +108,7 @@ public class OpenApiConfigClient implements ConfigClient {
         OpenApiRequest request = configRequestBuilder(namespaceId, group, dataId, null, POST)
                 .queryParameter(CONFIG_CONTENT, content)
                 .queryParameter(CONFIG_TAGS, tags)
-                .queryParameter(APP_NAME, appName)
+                .queryParameter(CONFIG_APP, appName)
                 .queryParameter(OPERATOR, operator)
                 .queryParameter(DESCRIPTION, description)
                 .queryParameter(CONFIG_USE, use)
@@ -203,23 +198,19 @@ public class OpenApiConfigClient implements ConfigClient {
     }
 
     protected String getConfigEndpoint() {
-        return CONFIG_ENDPOINT;
+        return getEndpointPath() + CONFIG_ENDPOINT;
     }
 
     protected String getConfigHistoryEndpoint() {
-        return CONFIG_HISTORY_ENDPOINT;
+        return getEndpointPath() + CONFIG_HISTORY_ENDPOINT;
     }
 
     protected String getConfigHistoryListEndpoint() {
-        return CONFIG_HISTORY_ENDPOINT;
+        return getEndpointPath() + CONFIG_HISTORY_ENDPOINT;
     }
 
     protected String getConfigHistoryPreviousEndpoint() {
-        return CONFIG_HISTORY_PREVIOUS_ENDPOINT;
-    }
-
-    protected <T> T response(OpenApiRequest request, Type payloadType) {
-        return this.openApiClient.execute(request, payloadType);
+        return getEndpointPath() + CONFIG_HISTORY_PREVIOUS_ENDPOINT;
     }
 }
 

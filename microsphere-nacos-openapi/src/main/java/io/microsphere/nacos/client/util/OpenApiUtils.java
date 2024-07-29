@@ -68,7 +68,7 @@ public abstract class OpenApiUtils {
      * @param request       {@link OpenApiRequest}
      * @return <code>true</code> if OK, otherwise <code>false</code>
      */
-    public static boolean executeMessageOK(OpenApiClient openApiClient, OpenApiRequest request) {
+    public static boolean executeAsMessageOK(OpenApiClient openApiClient, OpenApiRequest request) {
         String message = openApiClient.execute(request, String.class);
         return RESPONSE_MESSAGE_OK.equals(message);
     }
@@ -88,12 +88,12 @@ public abstract class OpenApiUtils {
     /**
      * Create the {@link OpenApiRequest.Builder} for {@link BaseInstance Nacos Service Instance}
      *
-     * @param instance {@link BaseInstance Nacos Service Instance}
      * @param endpoint the endpoint of {@link BaseInstance Nacos Service Instance}
      * @param method   {@link HttpMethod}
+     * @param instance {@link BaseInstance Nacos Service Instance}
      * @return {@link OpenApiRequest.Builder}
      */
-    public static OpenApiRequest.Builder createRequestBuilder(BaseInstance instance, String endpoint, HttpMethod method) {
+    public static OpenApiRequest.Builder createRequestBuilder(String endpoint, HttpMethod method, BaseInstance instance) {
         return OpenApiRequest.Builder.create(endpoint)
                 .method(method)
                 .queryParameter(NAMESPACE_ID, instance.getNamespaceId())

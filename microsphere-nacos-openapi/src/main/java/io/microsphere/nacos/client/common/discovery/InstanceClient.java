@@ -14,19 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v2.discovery;
+package io.microsphere.nacos.client.common.discovery;
 
-import io.microsphere.nacos.client.common.discovery.ConsistencyType;
 import io.microsphere.nacos.client.common.discovery.model.BatchMetadataResult;
+import io.microsphere.nacos.client.common.discovery.model.DeleteInstance;
 import io.microsphere.nacos.client.common.discovery.model.Heartbeat;
 import io.microsphere.nacos.client.common.discovery.model.Instance;
 import io.microsphere.nacos.client.common.discovery.model.InstancesList;
 import io.microsphere.nacos.client.common.discovery.model.NewInstance;
+import io.microsphere.nacos.client.common.discovery.model.QueryInstance;
 import io.microsphere.nacos.client.common.discovery.model.Service;
 import io.microsphere.nacos.client.common.discovery.model.UpdateHealthInstance;
+import io.microsphere.nacos.client.common.discovery.model.UpdateInstance;
 import io.microsphere.nacos.client.common.namespace.model.Namespace;
 import io.microsphere.nacos.client.constants.Constants;
-import io.microsphere.nacos.client.common.discovery.InstanceClient;
+import io.microsphere.nacos.client.v1.discovery.ServiceClient;
 
 import java.util.Map;
 
@@ -38,15 +40,16 @@ import static io.microsphere.nacos.client.constants.Constants.DEFAULT_HEALTHY_ON
 import static io.microsphere.nacos.client.constants.Constants.DEFAULT_NAMESPACE_ID;
 
 /**
- * The Client for Nacos {@link Service} {@link Instance} Open API V2
+ * The Client for Nacos {@link Service} {@link Instance} Open API V1
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see Service
+ * @see InstancesList
  * @see Instance
- * @see InstanceClient
+ * @see Service
+ * @see ServiceClient
  * @since 1.0.0
  */
-public interface InstanceClientV2 {
+public interface InstanceClient {
 
     /**
      * Register {@link NewInstance a new instance} with parameters :
@@ -129,13 +132,13 @@ public interface InstanceClientV2 {
      * </tbody>
      * </table>
      *
-     * @param instance {@link NewInstance a new instance}
+     * @param newInstance {@link NewInstance a new instance}
      * @return <code>true</code> if register successfully, otherwise <code>false</code>
      */
-    boolean register(NewInstance instance);
+    boolean register(NewInstance newInstance);
 
     /**
-     * Deregister a {@link NewInstance} with parameters :
+     * Deregister a {@link DeleteInstance} with parameters :
      * <table>
      * <thead>
      * <tr>
@@ -147,58 +150,10 @@ public interface InstanceClientV2 {
      * </thead>
      * <tbody>
      * <tr>
-     * <td>ip</td>
-     * <td>String</td>
-     * <td>yes</td>
-     * <td>IP of instance</td>
-     * </tr>
-     * <tr>
-     * <td>port</td>
-     * <td>int</td>
-     * <td>yes</td>
-     * <td>Port of instance</td>
-     * </tr>
-     * <tr>
-     * <td>namespaceId</td>
-     * <td>String</td>
-     * <td>no</td>
-     * <td>ID of namespace</td>
-     * </tr>
-     * <tr>
-     * <td>weight</td>
-     * <td>double</td>
-     * <td>no</td>
-     * <td>Weight</td>
-     * </tr>
-     * <tr>
-     * <td>enabled</td>
-     * <td>boolean</td>
-     * <td>no</td>
-     * <td>enabled or not</td>
-     * </tr>
-     * <tr>
-     * <td>healthy</td>
-     * <td>boolean</td>
-     * <td>no</td>
-     * <td>healthy or not</td>
-     * </tr>
-     * <tr>
-     * <td>metadata</td>
-     * <td>String</td>
-     * <td>no</td>
-     * <td>extended information</td>
-     * </tr>
-     * <tr>
-     * <td>clusterName</td>
-     * <td>String</td>
-     * <td>no</td>
-     * <td>cluster name</td>
-     * </tr>
-     * <tr>
      * <td>serviceName</td>
      * <td>String</td>
      * <td>yes</td>
-     * <td>service name</td>
+     * <td>Service name</td>
      * </tr>
      * <tr>
      * <td>groupName</td>
@@ -212,16 +167,40 @@ public interface InstanceClientV2 {
      * <td>no</td>
      * <td>if instance is ephemeral</td>
      * </tr>
+     * <tr>
+     * <td>ip</td>
+     * <td>String</td>
+     * <td>yes</td>
+     * <td>IP of instance</td>
+     * </tr>
+     * <tr>
+     * <td>port</td>
+     * <td>int</td>
+     * <td>yes</td>
+     * <td>Port of instance</td>
+     * </tr>
+     * <tr>
+     * <td>clusterName</td>
+     * <td>String</td>
+     * <td>no</td>
+     * <td>Cluster name</td>
+     * </tr>
+     * <tr>
+     * <td>namespaceId</td>
+     * <td>String</td>
+     * <td>no</td>
+     * <td>ID of namespace</td>
+     * </tr>
      * </tbody>
      * </table>
      *
-     * @param instance {@link NewInstance an instance to be deregistered}
+     * @param deleteInstance {@link DeleteInstance an instance to be deregistered}
      * @return <code>true</code> if deregister successfully, otherwise <code>false</code>
      */
-    boolean deregister(NewInstance instance);
+    boolean deregister(DeleteInstance deleteInstance);
 
     /**
-     * Refresh the registered {@link NewInstance} with parameters:
+     * Refresh the registered {@link UpdateInstance} with parameters:
      * <table>
      * <thead>
      * <tr>
@@ -233,6 +212,24 @@ public interface InstanceClientV2 {
      * </thead>
      * <tbody>
      * <tr>
+     * <td>serviceName</td>
+     * <td>String</td>
+     * <td>yes</td>
+     * <td>Service name</td>
+     * </tr>
+     * <tr>
+     * <td>groupName</td>
+     * <td>String</td>
+     * <td>no</td>
+     * <td>group name</td>
+     * </tr>
+     * <tr>
+     * <td>ephemeral</td>
+     * <td>boolean</td>
+     * <td>no</td>
+     * <td>if instance is ephemeral</td>
+     * </tr>
+     * <tr>
      * <td>ip</td>
      * <td>String</td>
      * <td>yes</td>
@@ -243,6 +240,12 @@ public interface InstanceClientV2 {
      * <td>int</td>
      * <td>yes</td>
      * <td>Port of instance</td>
+     * </tr>
+     * <tr>
+     * <td>clusterName</td>
+     * <td>String</td>
+     * <td>no</td>
+     * <td>Cluster name</td>
      * </tr>
      * <tr>
      * <td>namespaceId</td>
@@ -260,51 +263,21 @@ public interface InstanceClientV2 {
      * <td>enabled</td>
      * <td>boolean</td>
      * <td>no</td>
-     * <td>enabled or not</td>
-     * </tr>
-     * <tr>
-     * <td>healthy</td>
-     * <td>boolean</td>
-     * <td>no</td>
-     * <td>healthy or not</td>
+     * <td>If enabled</td>
      * </tr>
      * <tr>
      * <td>metadata</td>
-     * <td>String</td>
+     * <td>JSON</td>
      * <td>no</td>
-     * <td>extended information</td>
-     * </tr>
-     * <tr>
-     * <td>clusterName</td>
-     * <td>String</td>
-     * <td>no</td>
-     * <td>cluster name</td>
-     * </tr>
-     * <tr>
-     * <td>serviceName</td>
-     * <td>String</td>
-     * <td>yes</td>
-     * <td>service name</td>
-     * </tr>
-     * <tr>
-     * <td>groupName</td>
-     * <td>String</td>
-     * <td>no</td>
-     * <td>group name</td>
-     * </tr>
-     * <tr>
-     * <td>ephemeral</td>
-     * <td>boolean</td>
-     * <td>no</td>
-     * <td>if instance is ephemeral</td>
+     * <td>Extended information</td>
      * </tr>
      * </tbody>
      * </table>
      *
-     * @param instance an instance to be refreshed
+     * @param updateInstance {@link UpdateInstance an instance to be refreshed}
      * @return <code>true</code> if refresh successfully, otherwise <code>false</code>
      */
-    boolean refresh(NewInstance instance);
+    boolean refresh(UpdateInstance updateInstance);
 
     /**
      * Get the {@link Instance} for the {@link Constants#DEFAULT_NAMESPACE_ID "public" namespace},
@@ -362,7 +335,78 @@ public interface InstanceClientV2 {
      * @param port        the port of instance
      * @return non-null {@link Instance}
      */
-    Instance getInstance(String namespaceId, String groupName, String clusterName, String serviceName, String ip, int port);
+    default Instance getInstance(String namespaceId, String groupName, String clusterName, String serviceName, String ip, int port) {
+        QueryInstance queryInstance = new QueryInstance();
+        queryInstance.setNamespaceId(namespaceId);
+        queryInstance.setGroupName(groupName);
+        queryInstance.setClusterName(clusterName);
+        queryInstance.setServiceName(serviceName);
+        queryInstance.setIp(ip);
+        queryInstance.setPort(port);
+        return getInstance(queryInstance);
+    }
+
+    /**
+     * Get the {@link Instance} of the specified {@link QueryInstance} with parameters :
+     * <table>
+     * <thead>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * </thead>
+     * <tbody>
+     * <tr>
+     * <td>namespaceId</td>
+     * <td>String</td>
+     * <td>no</td>
+     * <td>ID of namespace</td>
+     * </tr>
+     * <tr>
+     * <td>serviceName</td>
+     * <td>String</td>
+     * <td>yes</td>
+     * <td>Service name</td>
+     * </tr>
+     * <tr>
+     * <td>groupName</td>
+     * <td>String</td>
+     * <td>no</td>
+     * <td>group name</td>
+     * </tr>
+     * <tr>
+     * <td>ephemeral</td>
+     * <td>boolean</td>
+     * <td>no</td>
+     * <td>if instance is ephemeral</td>
+     * </tr>
+     * <tr>
+     * <td>ip</td>
+     * <td>String</td>
+     * <td>yes</td>
+     * <td>IP of instance</td>
+     * </tr>
+     * <tr>
+     * <td>port</td>
+     * <td>String</td>
+     * <td>yes</td>
+     * <td>Port of instance</td>
+     * </tr>
+     * <tr>
+     * <td>cluster</td>
+     * <td>String</td>
+     * <td>no</td>
+     * <td>Cluster name</td>
+     * </tr>
+     * </tbody>
+     * </table>
+     *
+     * @param queryInstance {@link QueryInstance}
+     * @return non-null {@link Instance}
+     */
+    Instance getInstance(QueryInstance queryInstance);
 
     /**
      * Get the {@link InstancesList} of the specified {@code serviceName}
@@ -551,7 +595,7 @@ public interface InstanceClientV2 {
      * Send {@link Instance Instance's} Heartbeat to Nacos Server
      *
      * @param instance {@link Instance}
-     * @return {@link Heartbeat}
+     * @return {@link Heartbeat} instance
      */
     Heartbeat sendHeartbeat(Instance instance);
 
@@ -568,7 +612,8 @@ public interface InstanceClientV2 {
      *
      * @param instances one or more {@link Instance instances}
      * @param metadata  Service Instances' Metadata
-     * @return {@link BatchMetadataResult}
+     * @return non-null {@link BatchMetadataResult}
+     * @since Nacos 1.4.x (Beta)
      */
     default BatchMetadataResult batchUpdateMetadata(Iterable<Instance> instances, Map<String, String> metadata) {
         return batchUpdateMetadata(instances, metadata, EPHEMERAL);
@@ -580,7 +625,8 @@ public interface InstanceClientV2 {
      * @param instances       one or more {@link Instance instances}
      * @param metadata        Service Instances' Metadata
      * @param consistencyType {@link ConsistencyType}
-     * @return {@link BatchMetadataResult}
+     * @return non-null  {@link BatchMetadataResult}
+     * @since Nacos 1.4.x (Beta)
      */
     BatchMetadataResult batchUpdateMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType);
 
@@ -589,7 +635,8 @@ public interface InstanceClientV2 {
      *
      * @param instances one or more {@link Instance instances}
      * @param metadata  Service Instances' Metadata
-     * @return {@link BatchMetadataResult}
+     * @return non-null {@link BatchMetadataResult}
+     * @since Nacos 1.4.x (Beta)
      */
     default BatchMetadataResult batchDeleteMetadata(Iterable<Instance> instances, Map<String, String> metadata) {
         return batchDeleteMetadata(instances, metadata, EPHEMERAL);
@@ -601,8 +648,8 @@ public interface InstanceClientV2 {
      * @param instances       one or more {@link Instance instances}
      * @param metadata        Service Instances' Metadata
      * @param consistencyType {@link ConsistencyType}
-     * @return {@link BatchMetadataResult}
+     * @return non-null {@link BatchMetadataResult}
+     * @since Nacos 1.4.x (Beta)
      */
     BatchMetadataResult batchDeleteMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType);
-
 }

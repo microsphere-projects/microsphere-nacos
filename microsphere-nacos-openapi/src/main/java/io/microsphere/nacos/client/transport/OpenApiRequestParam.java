@@ -72,12 +72,7 @@ public enum OpenApiRequestParam {
     /**
      * The request parameter of Nacos application name
      */
-    APP_NAME("appName"),
-
-    /**
-     * The request parameter of Nacos application name (V2)
-     */
-    APP_V2("app"),
+    APP("app"),
 
     /**
      * The request parameter of Nacos operator
@@ -201,6 +196,11 @@ public enum OpenApiRequestParam {
      * The request parameter of Nacos configuration's tags (V2)
      */
     CONFIG_TAGS_V2("configTags"),
+
+    /**
+     * The request parameter of Nacos application name
+     */
+    CONFIG_APP("appName"),
 
     /**
      * The request parameter of Nacos configuration's use

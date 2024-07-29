@@ -16,7 +16,10 @@
  */
 package io.microsphere.nacos.client.v1.discovery;
 
+import io.microsphere.nacos.client.NacosClientConfig;
+import io.microsphere.nacos.client.common.OpenApiTemplateClient;
 import io.microsphere.nacos.client.common.discovery.ConsistencyType;
+import io.microsphere.nacos.client.common.discovery.InstanceClient;
 import io.microsphere.nacos.client.common.discovery.model.BaseInstance;
 import io.microsphere.nacos.client.common.discovery.model.BatchMetadataResult;
 import io.microsphere.nacos.client.common.discovery.model.DeleteInstance;
@@ -32,31 +35,36 @@ import io.microsphere.nacos.client.common.discovery.model.UpdateInstance;
 import io.microsphere.nacos.client.http.HttpMethod;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
+import io.microsphere.nacos.client.transport.OpenApiRequestParam;
 import io.microsphere.nacos.client.util.ModelUtils;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static io.microsphere.nacos.client.http.HttpMethod.DELETE;
 import static io.microsphere.nacos.client.http.HttpMethod.GET;
 import static io.microsphere.nacos.client.http.HttpMethod.POST;
 import static io.microsphere.nacos.client.http.HttpMethod.PUT;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.APP;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CLUSTERS;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CLUSTER_NAME;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.HEARTBEAT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_ENABLED;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_EPHEMERAL;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_HEALTHY;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_HEALTHY_ONLY;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_IP;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_PORT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_WEIGHT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.METADATA;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPACE_ID;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_GROUP_NAME;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_NAME;
+import static io.microsphere.nacos.client.util.ModelUtils.completeInstances;
 import static io.microsphere.nacos.client.util.ModelUtils.getHeartbeatMap;
+import static io.microsphere.nacos.client.util.ModelUtils.setPropertyIfAbsent;
 import static io.microsphere.nacos.client.util.OpenApiUtils.createBatchMetadataRequest;
 import static io.microsphere.nacos.client.util.OpenApiUtils.createRequestBuilder;
-import static io.microsphere.nacos.client.util.OpenApiUtils.executeMessageOK;
+import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsMessageOK;
 
 /**
  * The {@link Service} {@link Instance} for <a href="https://nacos.io/en/docs/v1/open-api/">Open API</a>
@@ -66,77 +74,90 @@ import static io.microsphere.nacos.client.util.OpenApiUtils.executeMessageOK;
  * @see OpenApiClient
  * @since 1.0.0
  */
-public class OpenApiInstanceClient implements InstanceClient {
+public class OpenApiInstanceClient extends OpenApiTemplateClient implements InstanceClient {
 
-    public static final String INSTANCE_ENDPOINT = "/v1/ns/instance";
+    protected static final String INSTANCE_ENDPOINT = "/ns/instance";
 
-    public static final String INSTANCES_LIST_ENDPOINT = INSTANCE_ENDPOINT + "/list";
+    protected static final String INSTANCES_LIST_ENDPOINT = INSTANCE_ENDPOINT + "/list";
 
-    public static final String INSTANCE_HEARTBEAT_ENDPOINT = INSTANCE_ENDPOINT + "/beat";
+    protected static final String INSTANCE_HEARTBEAT_ENDPOINT = INSTANCE_ENDPOINT + "/beat";
 
-    private static final String INSTANCE_METADATA_BATCH_ENDPOINT = INSTANCE_ENDPOINT + "/metadata/batch";
+    protected static final String INSTANCE_METADATA_BATCH_ENDPOINT = INSTANCE_ENDPOINT + "/metadata/batch";
 
-    public static final String INSTANCE_HEALTH_ENDPOINT = "/v1/ns/health/instance";
+    protected static final String INSTANCE_HEALTH_ENDPOINT = "/ns/health/instance";
 
-    private final OpenApiClient openApiClient;
-
-    public OpenApiInstanceClient(OpenApiClient openApiClient) {
-        this.openApiClient = openApiClient;
+    public OpenApiInstanceClient(OpenApiClient openApiClient, NacosClientConfig nacosClientConfig) {
+        super(openApiClient, nacosClientConfig);
     }
 
     @Override
     public boolean register(NewInstance newInstance) {
-        OpenApiRequest request = requestBuilder(newInstance, POST).build();
-        return responseMessage(request);
+        OpenApiRequest request = instanceRequestBuilder(newInstance, POST).build();
+        return responseBoolean(request);
     }
 
     @Override
     public boolean deregister(DeleteInstance instance) {
-        OpenApiRequest request = requestBuilder(instance, DELETE).build();
-        return responseMessage(request);
+        OpenApiRequest request = instanceRequestBuilder(instance, DELETE).build();
+        return responseBoolean(request);
     }
 
     @Override
     public boolean refresh(UpdateInstance updateInstance) {
-        OpenApiRequest request = requestBuilder(updateInstance, PUT).build();
-        return responseMessage(request);
-    }
-
-    @Override
-    public InstancesList getInstancesList(String namespaceId, String groupName, String serviceName, Set<String> clusters, boolean healthyOnly) {
-        OpenApiRequest request = OpenApiRequest.Builder.create(INSTANCES_LIST_ENDPOINT)
-                .queryParameter(NAMESPACE_ID, namespaceId)
-                .queryParameter(SERVICE_GROUP_NAME, groupName)
-                .queryParameter(SERVICE_NAME, serviceName)
-                .queryParameter(CLUSTERS, clusters)
-                .queryParameter(INSTANCE_HEALTHY_ONLY, healthyOnly)
-                .build();
-        InstancesList instancesList = this.openApiClient.execute(request, InstancesList.class);
-        List<Instance> instances = instancesList.getHosts();
-        ModelUtils.completeInstances(instances, namespaceId, groupName, serviceName);
-        return instancesList;
+        OpenApiRequest request = instanceRequestBuilder(updateInstance, PUT).build();
+        return responseBoolean(request);
     }
 
     @Override
     public Instance getInstance(QueryInstance queryInstance) {
-        OpenApiRequest request = requestBuilder(queryInstance, GET).build();
-        Instance instance = this.openApiClient.execute(request, Instance.class);
+        OpenApiRequest request = instanceRequestBuilder(queryInstance, GET).build();
+        Instance instance = response(request, Instance.class);
         completeInstance(instance, queryInstance);
         return instance;
     }
 
     @Override
+    public InstancesList getInstancesList(String namespaceId, String groupName, String clusterName, String serviceName,
+                                          String ip, Integer port, Boolean healthyOnly, String app) {
+
+        OpenApiRequestParam clusterParam = isOpenApiV1() ? CLUSTERS : CLUSTER_NAME;
+
+        OpenApiRequest request = OpenApiRequest.Builder.create(getInstancesListEndpoint())
+                .method(HttpMethod.GET)
+                .queryParameter(NAMESPACE_ID, namespaceId)
+                .queryParameter(SERVICE_GROUP_NAME, groupName)
+                .queryParameter(clusterParam, clusterName)
+                .queryParameter(SERVICE_NAME, serviceName)
+                .queryParameter(INSTANCE_IP, ip)
+                .queryParameter(INSTANCE_PORT, port)
+                .queryParameter(INSTANCE_HEALTHY_ONLY, healthyOnly)
+                .queryParameter(APP, app)
+                .build();
+
+        InstancesList instancesList = response(request, InstancesList.class);
+
+        setPropertyIfAbsent(namespaceId, instancesList::getNamespaceId, instancesList::setNamespaceId);
+        setPropertyIfAbsent(groupName, instancesList::getGroupName, instancesList::setGroupName);
+        setPropertyIfAbsent(serviceName, instancesList::getServiceName, instancesList::setServiceName);
+
+        completeInstances(instancesList.getHosts(), namespaceId, groupName, serviceName);
+
+        return instancesList;
+    }
+
+
+    @Override
     public Heartbeat sendHeartbeat(Instance instance) {
-        OpenApiRequest request = createRequestBuilder(instance, INSTANCE_HEARTBEAT_ENDPOINT, PUT)
+        OpenApiRequest request = createRequestBuilder(getInstanceHeartbeatEndpoint(), PUT, instance)
                 .queryParameter(HEARTBEAT, getHeartbeatMap(instance))
                 .build();
-        return this.openApiClient.execute(request, Heartbeat.class);
+        return response(request, Heartbeat.class);
     }
 
     @Override
     public boolean updateHealth(UpdateHealthInstance updateHealthInstance) {
         OpenApiRequest request = buildHealthRequest(updateHealthInstance, PUT);
-        return responseMessage(request);
+        return responseBoolean(request);
     }
 
     @Override
@@ -150,41 +171,61 @@ public class OpenApiInstanceClient implements InstanceClient {
     }
 
     private BatchMetadataResult batchMetadata(Iterable<Instance> instances, Map<String, String> metadata, ConsistencyType consistencyType, HttpMethod method) {
-        OpenApiRequest request = createBatchMetadataRequest(instances, metadata, consistencyType, INSTANCE_METADATA_BATCH_ENDPOINT, method);
-        return this.openApiClient.execute(request, BatchMetadataResult.class);
-    }
-
-    private OpenApiRequest.Builder requestBuilder(NewInstance instance, HttpMethod method) {
-        return requestBuilder((GenericInstance) instance, method)
-                .queryParameter(INSTANCE_HEALTHY, instance.getHealthy());
+        OpenApiRequest request = createBatchMetadataRequest(instances, metadata, consistencyType, getInstanceMetadataBatchEndpoint(), method);
+        return response(request, BatchMetadataResult.class);
     }
 
     private OpenApiRequest buildHealthRequest(UpdateHealthInstance instance, HttpMethod method) {
-        return createRequestBuilder(instance, INSTANCE_HEALTH_ENDPOINT, method)
+        return createRequestBuilder(getInstanceHealthEndpoint(), method, instance)
                 .queryParameter(INSTANCE_HEALTHY, instance.isHealthy())
                 .build();
     }
 
-    private OpenApiRequest.Builder requestBuilder(GenericInstance instance, HttpMethod method) {
-        return requestBuilder((BaseInstance) instance, method)
+    private OpenApiRequest.Builder instanceRequestBuilder(NewInstance instance, HttpMethod method) {
+        return instanceRequestBuilder((GenericInstance) instance, method)
+                .queryParameter(INSTANCE_HEALTHY, instance.getHealthy());
+    }
+
+    protected OpenApiRequest.Builder instanceRequestBuilder(GenericInstance instance, HttpMethod method) {
+        return instanceRequestBuilder((BaseInstance) instance, method)
                 .queryParameter(INSTANCE_WEIGHT, instance.getWeight())
                 .queryParameter(INSTANCE_ENABLED, instance.getEnabled())
                 .queryParameter(INSTANCE_EPHEMERAL, instance.getEphemeral())
                 .queryParameter(METADATA, instance.getMetadata());
     }
 
-    private OpenApiRequest.Builder requestBuilder(BaseInstance instance, HttpMethod method) {
-        return createRequestBuilder(instance, INSTANCE_ENDPOINT, method);
+    protected OpenApiRequest.Builder instanceRequestBuilder(BaseInstance instance, HttpMethod method) {
+        return createRequestBuilder(getInstanceEndpoint(), method, instance);
     }
 
-    private void completeInstance(Instance instance, BaseInstance baseInstance) {
+    protected void completeInstance(Instance instance, BaseInstance baseInstance) {
         String namespaceId = baseInstance.getNamespaceId();
         String groupName = baseInstance.getGroupName();
         String serviceName = baseInstance.getServiceName();
         ModelUtils.completeInstance(instance, namespaceId, groupName, serviceName);
     }
 
-    private boolean responseMessage(OpenApiRequest request) {
-        return executeMessageOK(this.openApiClient, request);
+    protected String getInstanceEndpoint() {
+        return getEndpointPath() + INSTANCE_ENDPOINT;
+    }
+
+    protected String getInstancesListEndpoint() {
+        return getEndpointPath() + INSTANCES_LIST_ENDPOINT;
+    }
+
+    protected String getInstanceHeartbeatEndpoint() {
+        return getEndpointPath() + INSTANCE_HEARTBEAT_ENDPOINT;
+    }
+
+    protected String getInstanceMetadataBatchEndpoint() {
+        return getEndpointPath() + INSTANCE_METADATA_BATCH_ENDPOINT;
+    }
+
+    protected String getInstanceHealthEndpoint() {
+        return getEndpointPath() + INSTANCE_HEALTH_ENDPOINT;
+    }
+
+    protected boolean responseBoolean(OpenApiRequest request) {
+        return executeAsMessageOK(this.openApiClient, request);
     }
 }
