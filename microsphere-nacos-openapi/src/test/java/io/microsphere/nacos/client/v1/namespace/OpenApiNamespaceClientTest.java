@@ -51,7 +51,7 @@ public class OpenApiNamespaceClientTest extends OpenApiTest {
     private NamespaceClient client;
 
     @Override
-    public void setup() {
+    protected void setup() {
         this.client = createNamespaceClient();
         client.deleteNamespace(NAMESPACE_ID);
     }
