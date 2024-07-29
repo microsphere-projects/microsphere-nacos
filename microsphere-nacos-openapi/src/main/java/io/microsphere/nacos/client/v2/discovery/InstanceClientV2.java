@@ -17,6 +17,7 @@
 package io.microsphere.nacos.client.v2.discovery;
 
 import io.microsphere.nacos.client.common.discovery.ConsistencyType;
+import io.microsphere.nacos.client.common.discovery.InstanceClient;
 import io.microsphere.nacos.client.common.discovery.model.BatchMetadataResult;
 import io.microsphere.nacos.client.common.discovery.model.Heartbeat;
 import io.microsphere.nacos.client.common.discovery.model.Instance;
@@ -26,7 +27,6 @@ import io.microsphere.nacos.client.common.discovery.model.Service;
 import io.microsphere.nacos.client.common.discovery.model.UpdateHealthInstance;
 import io.microsphere.nacos.client.common.namespace.model.Namespace;
 import io.microsphere.nacos.client.constants.Constants;
-import io.microsphere.nacos.client.common.discovery.InstanceClient;
 
 import java.util.Map;
 
