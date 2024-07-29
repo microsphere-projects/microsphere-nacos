@@ -17,7 +17,7 @@
 package io.microsphere.nacos.client.common.config.model;
 
 import io.microsphere.nacos.client.common.model.Model;
-import io.microsphere.nacos.client.v1.config.ConfigType;
+import io.microsphere.nacos.client.common.config.ConfigType;
 
 import java.util.HashSet;
 import java.util.Set;

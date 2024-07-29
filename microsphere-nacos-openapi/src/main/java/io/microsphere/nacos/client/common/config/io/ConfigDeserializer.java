@@ -20,8 +20,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import io.microsphere.nacos.client.common.config.model.Config;
 import io.microsphere.nacos.client.io.GsonDeserializer;
-import io.microsphere.nacos.client.v1.config.ConfigClient;
-import io.microsphere.nacos.client.v1.config.ConfigType;
+import io.microsphere.nacos.client.common.config.ConfigClient;
+import io.microsphere.nacos.client.common.config.ConfigType;
 
 import java.lang.reflect.Type;
 import java.util.HashSet;

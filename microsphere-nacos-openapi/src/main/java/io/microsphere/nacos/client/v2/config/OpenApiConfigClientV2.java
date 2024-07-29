@@ -17,25 +17,22 @@
 package io.microsphere.nacos.client.v2.config;
 
 import io.microsphere.nacos.client.NacosClientConfig;
-import io.microsphere.nacos.client.common.config.model.HistoryConfig;
-import io.microsphere.nacos.client.common.config.model.HistoryConfigPage;
+import io.microsphere.nacos.client.common.config.ConfigClient;
+import io.microsphere.nacos.client.common.config.ConfigType;
 import io.microsphere.nacos.client.common.config.model.NewConfig;
-import io.microsphere.nacos.client.common.model.Page;
-import io.microsphere.nacos.client.common.model.StringResult;
 import io.microsphere.nacos.client.http.HttpMethod;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
+import io.microsphere.nacos.client.v1.config.OpenApiConfigClient;
 
-import static io.microsphere.nacos.client.http.HttpMethod.DELETE;
-import static io.microsphere.nacos.client.http.HttpMethod.GET;
+import java.lang.reflect.Type;
+
 import static io.microsphere.nacos.client.http.HttpMethod.POST;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.APP_NAME;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_CONTENT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_DATA_ID;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_EFFECT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_GROUP;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_ID;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_REVISION;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_SCHEMA;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_TAG;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_TAGS_V2;
@@ -43,41 +40,40 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_U
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.DESCRIPTION;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPACE_ID;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.OPERATOR_V2;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.PAGE_NUMBER;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.PAGE_SIZE;
 import static io.microsphere.nacos.client.util.StringUtils.collectionToCommaDelimitedString;
 
 /**
- * The {@link ConfigClientV2} for <a href="https://nacos.io/en/docs/v2/open-api/#configuration-management">Open API</a>
+ * The {@link ConfigClient} for <a href="https://nacos.io/en/docs/v2/open-api/#configuration-management">Open API V2</a>
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see ConfigClientV2
+ * @see ConfigClient
  * @since 1.0.0
  */
-public class OpenApiConfigClientV2 implements ConfigClientV2 {
+public class OpenApiConfigClientV2 extends OpenApiConfigClient implements ConfigClient {
 
-    private static final String CONFIG_ENDPOINT = "/v2/cs/config";
+    public static final String V2_CONFIG_ENDPOINT = "/v2/cs/config";
 
-    private static final String CONFIG_HISTORY_ENDPOINT = "/v2/cs/history";
+    public static final String V2_CONFIG_HISTORY_ENDPOINT = "/v2/cs/history";
 
-    private static final String CONFIG_HISTORY_LIST_ENDPOINT = "/v2/cs/history/list";
+    public static final String V2_CONFIG_HISTORY_LIST_ENDPOINT = "/v2/cs/history/list";
 
-    private static final String CONFIG_HISTORY_PREVIOUS_ENDPOINT = "/v2/cs/history/previous";
-
-    private final OpenApiClient openApiClient;
-
-    private final NacosClientConfig nacosClientConfig;
+    public static final String V2_CONFIG_HISTORY_PREVIOUS_ENDPOINT = "/v2/cs/history/previous";
 
     public OpenApiConfigClientV2(OpenApiClient openApiClient, NacosClientConfig nacosClientConfig) {
-        this.openApiClient = openApiClient;
-        this.nacosClientConfig = nacosClientConfig;
+        super(openApiClient, nacosClientConfig);
     }
 
     @Override
-    public String getConfigContent(String namespaceId, String group, String dataId, String tag) {
-        OpenApiRequest request = buildGetConfigRequest(namespaceId, group, dataId, tag);
-        StringResult result = openApiClient.execute(request, StringResult.class);
-        return result.isSuccess() ? result.getData() : null;
+    public boolean publishConfigContent(String namespaceId, String group, String dataId, String content, ConfigType configType) {
+        NewConfig newConfig = new NewConfig();
+        newConfig.setNamespaceId(namespaceId);
+        newConfig.setGroup(group);
+        newConfig.setDataId(dataId);
+        newConfig.setContent(content);
+        if (configType != null) {
+            newConfig.setType(configType);
+        }
+        return publishConfig(newConfig);
     }
 
     @Override
@@ -103,71 +99,12 @@ public class OpenApiConfigClientV2 implements ConfigClientV2 {
                 .queryParameter(CONFIG_EFFECT, effect)
                 .queryParameter(CONFIG_SCHEMA, schema)
                 .build();
-        return responseBoolean(request);
-    }
-
-
-    @Override
-    public boolean deleteConfig(String namespaceId, String group, String dataId, String tag) {
-        OpenApiRequest request = configRequestBuilder(namespaceId, group, dataId, tag, DELETE).build();
-        return responseBoolean(request);
+        return response(request, Boolean.class);
     }
 
     @Override
-    public Page<HistoryConfig> getHistoryConfigs(String namespaceId, String group, String dataId, int pageNumber, int pageSize) {
-        if (pageNumber < 1) {
-            throw new IllegalArgumentException("The argument 'pageNumber' must be greater than 0");
-        }
-        if (pageSize < 1) {
-            throw new IllegalArgumentException("The argument 'pageSize' must be greater than 0");
-        }
-        if (pageSize > MAX_PAGE_SIZE) {
-            throw new IllegalArgumentException("The argument 'pageSize' must less than or equal 1");
-        }
-
-        OpenApiRequest request = requestBuilder(CONFIG_HISTORY_LIST_ENDPOINT, namespaceId, group, dataId, GET)
-                .queryParameter(PAGE_NUMBER, pageNumber)
-                .queryParameter(PAGE_SIZE, pageSize)
-                .build();
-
-        HistoryConfigPage page = this.openApiClient.executeAsResult(request, HistoryConfigPage.class);
-        page.setPageNumber(pageNumber);
-        page.setPageSize(pageSize);
-        return page;
-    }
-
-    @Override
-    public HistoryConfig getHistoryConfig(String namespaceId, String group, String dataId, long revision) {
-        OpenApiRequest request = requestBuilder(CONFIG_HISTORY_ENDPOINT, namespaceId, group, dataId, GET)
-                .queryParameter(CONFIG_REVISION, revision)
-                .build();
-        return responseHistoryConfig(request);
-    }
-
-    @Override
-    public HistoryConfig getPreviousHistoryConfig(String namespaceId, String group, String dataId, String id) {
-        OpenApiRequest request = requestBuilder(CONFIG_HISTORY_PREVIOUS_ENDPOINT, namespaceId, group, dataId, GET)
-                .queryParameter(CONFIG_ID, id)
-                .build();
-        return responseHistoryConfig(request);
-    }
-
-    private OpenApiRequest buildGetConfigRequest(String namespaceId, String group, String dataId, String tag) {
-        return configRequestBuilder(namespaceId, group, dataId, tag, GET)
-                .build();
-    }
-
-    private OpenApiRequest.Builder configRequestBuilder(String namespaceId, String group, String dataId, String tag, HttpMethod method) {
-        return requestBuilder(CONFIG_ENDPOINT, namespaceId, group, dataId, tag, method);
-    }
-
-    private OpenApiRequest.Builder requestBuilder(String endpoint, String namespaceId, String group, String dataId,
-                                                  HttpMethod method) {
-        return requestBuilder(endpoint, namespaceId, group, dataId, null, method);
-    }
-
-    private OpenApiRequest.Builder requestBuilder(String endpoint, String namespaceId, String group, String dataId,
-                                                  String tag, HttpMethod method) {
+    protected OpenApiRequest.Builder requestBuilder(String endpoint, String namespaceId, String group, String dataId,
+                                                    String tag, HttpMethod method) {
         return OpenApiRequest.Builder.create(endpoint).method(method)
                 .queryParameter(NAMESPACE_ID, namespaceId)
                 .queryParameter(CONFIG_GROUP, group)
@@ -176,12 +113,29 @@ public class OpenApiConfigClientV2 implements ConfigClientV2 {
                 ;
     }
 
-    private boolean responseBoolean(OpenApiRequest request) {
-        return this.openApiClient.executeAsResult(request, Boolean.class);
+    @Override
+    protected String getConfigEndpoint() {
+        return V2_CONFIG_ENDPOINT;
     }
 
-    private HistoryConfig responseHistoryConfig(OpenApiRequest request) {
-        return this.openApiClient.executeAsResult(request, HistoryConfig.class);
+    @Override
+    protected String getConfigHistoryEndpoint() {
+        return V2_CONFIG_HISTORY_ENDPOINT;
+    }
+
+    @Override
+    protected String getConfigHistoryListEndpoint() {
+        return V2_CONFIG_HISTORY_LIST_ENDPOINT;
+    }
+
+    @Override
+    protected String getConfigHistoryPreviousEndpoint() {
+        return V2_CONFIG_HISTORY_PREVIOUS_ENDPOINT;
+    }
+
+    @Override
+    protected <T> T response(OpenApiRequest request, Type dataType) {
+        return this.openApiClient.executeAsResult(request, dataType);
     }
 }
 

@@ -18,6 +18,8 @@ package io.microsphere.nacos.client.v1.config;
 
 import io.microsphere.nacos.client.NacosClientConfig;
 import io.microsphere.nacos.client.OpenApiTest;
+import io.microsphere.nacos.client.common.config.ConfigClient;
+import io.microsphere.nacos.client.common.config.ConfigType;
 import io.microsphere.nacos.client.common.config.model.BaseConfig;
 import io.microsphere.nacos.client.common.config.model.Config;
 import io.microsphere.nacos.client.common.config.model.HistoryConfig;
@@ -38,13 +40,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * {@link ConfigClient} Test
+ * {@link OpenApiConfigClient} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see ConfigClient
+ * @see OpenApiConfigClient
  * @since 1.0.0
  */
-public class ConfigClientTest extends OpenApiTest {
+public class OpenApiConfigClientTest extends OpenApiTest {
 
     public static final String TEST_DATA_ID = "test-config";
 

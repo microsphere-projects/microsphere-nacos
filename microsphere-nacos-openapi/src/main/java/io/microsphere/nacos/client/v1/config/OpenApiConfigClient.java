@@ -17,6 +17,8 @@
 package io.microsphere.nacos.client.v1.config;
 
 import io.microsphere.nacos.client.NacosClientConfig;
+import io.microsphere.nacos.client.common.config.ConfigClient;
+import io.microsphere.nacos.client.common.config.ConfigType;
 import io.microsphere.nacos.client.common.config.model.Config;
 import io.microsphere.nacos.client.common.config.model.HistoryConfig;
 import io.microsphere.nacos.client.common.config.model.HistoryConfigPage;
@@ -26,6 +28,8 @@ import io.microsphere.nacos.client.http.HttpMethod;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
 import io.microsphere.nacos.client.v1.config.event.ConfigChangedListener;
+
+import java.lang.reflect.Type;
 
 import static io.microsphere.nacos.client.constants.Constants.SEARCH_PARAM_VALUE;
 import static io.microsphere.nacos.client.http.HttpMethod.DELETE;
@@ -40,6 +44,7 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_I
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_REVISION;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_SCHEMA;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_SEARCH;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_TAG;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_TAGS;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_TENANT;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_TYPE;
@@ -60,17 +65,17 @@ import static io.microsphere.nacos.client.util.StringUtils.collectionToCommaDeli
  */
 public class OpenApiConfigClient implements ConfigClient {
 
-    private static final String CONFIG_ENDPOINT = "/v1/cs/configs";
+    public static final String CONFIG_ENDPOINT = "/v1/cs/configs";
 
-    private static final String CONFIG_HISTORY_ENDPOINT = "/v1/cs/history";
+    public static final String CONFIG_HISTORY_ENDPOINT = "/v1/cs/history";
 
-    private static final String CONFIG_HISTORY_PREVIOUS_ENDPOINT = "/v1/cs/history/previous";
+    public static final String CONFIG_HISTORY_PREVIOUS_ENDPOINT = "/v1/cs/history/previous";
 
-    private final OpenApiClient openApiClient;
+    protected final OpenApiClient openApiClient;
 
-    private final NacosClientConfig nacosClientConfig;
+    protected final NacosClientConfig nacosClientConfig;
 
-    private final ConfigListenerManager configListenerManager;
+    protected final ConfigListenerManager configListenerManager;
 
     public OpenApiConfigClient(OpenApiClient openApiClient, NacosClientConfig nacosClientConfig) {
         this.openApiClient = openApiClient;
@@ -79,15 +84,15 @@ public class OpenApiConfigClient implements ConfigClient {
     }
 
     @Override
-    public String getConfigContent(String namespaceId, String group, String dataId) {
-        OpenApiRequest request = buildGetConfigRequest(namespaceId, group, dataId, false);
-        return openApiClient.execute(request, String.class);
+    public String getConfigContent(String namespaceId, String group, String dataId, String tag) {
+        OpenApiRequest request = buildGetConfigRequest(namespaceId, group, dataId, tag, false);
+        return response(request, String.class);
     }
 
     @Override
     public Config getConfig(String namespaceId, String group, String dataId) {
-        OpenApiRequest request = buildGetConfigRequest(namespaceId, group, dataId, true);
-        return openApiClient.execute(request, Config.class);
+        OpenApiRequest request = buildGetConfigRequest(namespaceId, group, dataId, null, true);
+        return response(request, Config.class);
     }
 
     @Override
@@ -105,7 +110,7 @@ public class OpenApiConfigClient implements ConfigClient {
         String schema = newConfig.getSchema();
         ConfigType configType = newConfig.getType();
         String type = configType == null ? null : configType.getValue();
-        OpenApiRequest request = configRequestBuilder(namespaceId, group, dataId, POST)
+        OpenApiRequest request = configRequestBuilder(namespaceId, group, dataId, null, POST)
                 .queryParameter(CONFIG_CONTENT, content)
                 .queryParameter(CONFIG_TAGS, tags)
                 .queryParameter(APP_NAME, appName)
@@ -115,13 +120,13 @@ public class OpenApiConfigClient implements ConfigClient {
                 .queryParameter(CONFIG_EFFECT, effect)
                 .queryParameter(CONFIG_SCHEMA, schema)
                 .queryParameter(CONFIG_TYPE, type).build();
-        return responseBoolean(request);
+        return response(request, Boolean.class);
     }
 
     @Override
-    public boolean deleteConfig(String namespaceId, String group, String dataId) {
-        OpenApiRequest request = configRequestBuilder(namespaceId, group, dataId, DELETE).build();
-        return responseBoolean(request);
+    public boolean deleteConfig(String namespaceId, String group, String dataId, String tag) {
+        OpenApiRequest request = configRequestBuilder(namespaceId, group, dataId, tag, DELETE).build();
+        return response(request, Boolean.class);
     }
 
     @Override
@@ -136,13 +141,13 @@ public class OpenApiConfigClient implements ConfigClient {
             throw new IllegalArgumentException("The argument 'pageSize' must less than or equal 1");
         }
 
-        OpenApiRequest request = historyConfigRequestBuilder(namespaceId, group, dataId, GET)
+        OpenApiRequest request = requestBuilder(getConfigHistoryListEndpoint(), namespaceId, group, dataId, GET)
                 .queryParameter(CONFIG_SEARCH, SEARCH_PARAM_VALUE)
                 .queryParameter(PAGE_NUMBER, pageNumber)
                 .queryParameter(PAGE_SIZE, pageSize)
                 .build();
 
-        HistoryConfigPage page = this.openApiClient.execute(request, HistoryConfigPage.class);
+        HistoryConfigPage page = response(request, HistoryConfigPage.class);
         page.setPageNumber(pageNumber);
         page.setPageSize(pageSize);
         return page;
@@ -150,18 +155,18 @@ public class OpenApiConfigClient implements ConfigClient {
 
     @Override
     public HistoryConfig getHistoryConfig(String namespaceId, String group, String dataId, long revision) {
-        OpenApiRequest request = historyConfigRequestBuilder(namespaceId, group, dataId, GET)
+        OpenApiRequest request = requestBuilder(getConfigHistoryEndpoint(), namespaceId, group, dataId, GET)
                 .queryParameter(CONFIG_REVISION, revision)
                 .build();
-        return responseHistoryConfig(request);
+        return response(request, HistoryConfig.class);
     }
 
     @Override
     public HistoryConfig getPreviousHistoryConfig(String namespaceId, String group, String dataId, String id) {
-        OpenApiRequest request = requestBuilder(CONFIG_HISTORY_PREVIOUS_ENDPOINT, namespaceId, group, dataId, GET)
+        OpenApiRequest request = requestBuilder(getConfigHistoryPreviousEndpoint(), namespaceId, group, dataId, GET)
                 .queryParameter(CONFIG_ID, id)
                 .build();
-        return responseHistoryConfig(request);
+        return response(request, HistoryConfig.class);
     }
 
     @Override
@@ -174,33 +179,47 @@ public class OpenApiConfigClient implements ConfigClient {
         this.configListenerManager.removeEventListener(namespaceId, group, dataId, listener);
     }
 
-    private OpenApiRequest buildGetConfigRequest(String namespaceId, String group, String dataId, boolean showDetails) {
-        return configRequestBuilder(namespaceId, group, dataId, GET)
+    protected OpenApiRequest buildGetConfigRequest(String namespaceId, String group, String dataId, String tag, boolean showDetails) {
+        return configRequestBuilder(namespaceId, group, dataId, tag, GET)
                 .queryParameter(SHOW, showDetails ? "all" : null)
                 .build();
     }
 
-    private OpenApiRequest.Builder historyConfigRequestBuilder(String namespaceId, String group, String dataId, HttpMethod method) {
-        return requestBuilder(CONFIG_HISTORY_ENDPOINT, namespaceId, group, dataId, method);
+    protected OpenApiRequest.Builder configRequestBuilder(String namespaceId, String group, String dataId, String tag, HttpMethod method) {
+        return requestBuilder(getConfigEndpoint(), namespaceId, group, dataId, tag, method);
     }
 
-    private OpenApiRequest.Builder configRequestBuilder(String namespaceId, String group, String dataId, HttpMethod method) {
-        return requestBuilder(CONFIG_ENDPOINT, namespaceId, group, dataId, method);
+    protected OpenApiRequest.Builder requestBuilder(String endpoint, String namespaceId, String group, String dataId, HttpMethod method) {
+        return requestBuilder(endpoint, namespaceId, group, dataId, null, method);
     }
 
-    private OpenApiRequest.Builder requestBuilder(String endpoint, String namespaceId, String group, String dataId, HttpMethod method) {
+    protected OpenApiRequest.Builder requestBuilder(String endpoint, String namespaceId, String group, String dataId, String tag, HttpMethod method) {
         return OpenApiRequest.Builder.create(endpoint).method(method)
                 .queryParameter(CONFIG_TENANT, namespaceId)
                 .queryParameter(CONFIG_GROUP, group)
-                .queryParameter(CONFIG_DATA_ID, dataId);
+                .queryParameter(CONFIG_DATA_ID, dataId)
+                .queryParameter(CONFIG_TAG, tag)
+                ;
     }
 
-    private boolean responseBoolean(OpenApiRequest request) {
-        return this.openApiClient.execute(request, boolean.class);
+    protected String getConfigEndpoint() {
+        return CONFIG_ENDPOINT;
     }
 
-    private HistoryConfig responseHistoryConfig(OpenApiRequest request) {
-        return this.openApiClient.execute(request, HistoryConfig.class);
+    protected String getConfigHistoryEndpoint() {
+        return CONFIG_HISTORY_ENDPOINT;
+    }
+
+    protected String getConfigHistoryListEndpoint() {
+        return CONFIG_HISTORY_ENDPOINT;
+    }
+
+    protected String getConfigHistoryPreviousEndpoint() {
+        return CONFIG_HISTORY_PREVIOUS_ENDPOINT;
+    }
+
+    protected <T> T response(OpenApiRequest request, Type payloadType) {
+        return this.openApiClient.execute(request, payloadType);
     }
 }
 

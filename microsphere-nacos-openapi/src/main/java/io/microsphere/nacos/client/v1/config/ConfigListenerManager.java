@@ -17,6 +17,7 @@
 package io.microsphere.nacos.client.v1.config;
 
 import io.microsphere.nacos.client.NacosClientConfig;
+import io.microsphere.nacos.client.common.config.ConfigClient;
 import io.microsphere.nacos.client.common.config.model.Config;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;

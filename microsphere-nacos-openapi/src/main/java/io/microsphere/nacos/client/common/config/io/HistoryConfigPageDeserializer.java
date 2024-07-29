@@ -25,7 +25,7 @@ import io.microsphere.nacos.client.common.config.model.HistoryConfig;
 import io.microsphere.nacos.client.common.config.model.HistoryConfigPage;
 import io.microsphere.nacos.client.common.model.Page;
 import io.microsphere.nacos.client.io.GsonDeserializer;
-import io.microsphere.nacos.client.v1.config.ConfigClient;
+import io.microsphere.nacos.client.common.config.ConfigClient;
 
 import java.lang.reflect.Type;
 import java.util.List;

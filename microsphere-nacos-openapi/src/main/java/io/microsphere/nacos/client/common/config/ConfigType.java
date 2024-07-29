@@ -14,39 +14,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.config;
+package io.microsphere.nacos.client.common.config;
+
+import io.microsphere.nacos.client.common.config.model.Config;
 
 /**
- * The enumeration of Nacos Configuration Operation Type
+ * The enumeration of Nacos Configuration types
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see Enum
+ * @see Config
  * @since 1.0.0
  */
-public enum ConfigOperationType {
+public enum ConfigType {
 
-    INSERT("I"),
-    UPDATE("U"),
-    DELETE("D"),
-
-    ;
+    TEXT,
+    JSON,
+    XML,
+    YAML,
+    HTML,
+    PROPERTIES("Properties");
 
     private final String value;
 
-    ConfigOperationType(String value) {
+    ConfigType() {
+        this.value = this.name();
+    }
+
+    ConfigType(String value) {
         this.value = value;
     }
 
+    /**
+     * The value of {@link ConfigType}
+     *
+     * @return non-null
+     */
     public String getValue() {
         return value;
     }
 
-    public static ConfigOperationType of(String value) {
-        for (ConfigOperationType type : values()) {
-            if (type.getValue().equals(value.trim())) {
+    public static ConfigType of(String value) {
+        for (ConfigType type : values()) {
+            if (type.getValue().equalsIgnoreCase(value.trim())) {
                 return type;
             }
         }
-        throw new IllegalArgumentException("Unsupported ConfigOperationType value : " + value);
+        throw new IllegalArgumentException("Unsupported ConfigType value : " + value);
     }
 }

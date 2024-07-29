@@ -17,37 +17,38 @@
 package io.microsphere.nacos.client.v2.config;
 
 import io.microsphere.nacos.client.OpenApiTest;
+import io.microsphere.nacos.client.common.config.ConfigClient;
 import io.microsphere.nacos.client.common.config.model.Config;
 import io.microsphere.nacos.client.common.config.model.HistoryConfig;
 import io.microsphere.nacos.client.common.model.Page;
 import org.junit.jupiter.api.Test;
 
-import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_APP_NAME;
-import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_CONTENT;
-import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_DESCRIPTION;
-import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_EFFECT;
-import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_OPERATOR;
-import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_SCHEMA;
-import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_TAGS;
-import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_CONFIG_USE;
-import static io.microsphere.nacos.client.v1.config.ConfigClientTest.TEST_DATA_ID;
+import static io.microsphere.nacos.client.v1.config.OpenApiConfigClientTest.TEST_CONFIG_APP_NAME;
+import static io.microsphere.nacos.client.v1.config.OpenApiConfigClientTest.TEST_CONFIG_CONTENT;
+import static io.microsphere.nacos.client.v1.config.OpenApiConfigClientTest.TEST_CONFIG_DESCRIPTION;
+import static io.microsphere.nacos.client.v1.config.OpenApiConfigClientTest.TEST_CONFIG_EFFECT;
+import static io.microsphere.nacos.client.v1.config.OpenApiConfigClientTest.TEST_CONFIG_OPERATOR;
+import static io.microsphere.nacos.client.v1.config.OpenApiConfigClientTest.TEST_CONFIG_SCHEMA;
+import static io.microsphere.nacos.client.v1.config.OpenApiConfigClientTest.TEST_CONFIG_TAGS;
+import static io.microsphere.nacos.client.v1.config.OpenApiConfigClientTest.TEST_CONFIG_USE;
+import static io.microsphere.nacos.client.v1.config.OpenApiConfigClientTest.TEST_DATA_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * The {@link ConfigClientV2} Test
+ * The {@link OpenApiConfigClientV2} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see ConfigClientV2
+ * @see OpenApiConfigClientV2
  * @since 1.0.0
  */
-public class ConfigClientV2Test extends OpenApiTest {
+public class OpenApiConfigClientV2Test extends OpenApiTest {
 
     @Test
     public void test() {
-        ConfigClientV2 client = new OpenApiConfigClientV2(this.openApiClient, this.nacosClientConfig);
+        ConfigClient client = new OpenApiConfigClientV2(this.openApiClient, this.nacosClientConfig);
 
         // Delete first
         assertTrue(client.deleteConfig(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_DATA_ID));
