@@ -73,7 +73,7 @@ public class OpenApiInstanceClientTest extends OpenApiTest {
 
 
     @Override
-    public void setup() {
+    protected void setup() {
         this.client = createInstanceClient();
         this.instance = createInstance();
         DeleteInstance deleteInstance = new DeleteInstance();
