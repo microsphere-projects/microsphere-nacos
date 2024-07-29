@@ -75,6 +75,15 @@ public abstract class OpenApiTemplateClient {
     }
 
     /**
+     * Get the endpoint path
+     *
+     * @return non-null
+     */
+    protected String getEndpointPath() {
+        return getOpenApiVersion().getEndpointPath();
+    }
+
+    /**
      * Whether the {@link OpenApiVersion} is {@link OpenApiVersion#V1}
      *
      * @return {@code true} if the {@link OpenApiVersion} is {@link OpenApiVersion#V1}
