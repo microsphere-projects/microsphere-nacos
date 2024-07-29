@@ -19,7 +19,6 @@ package io.microsphere.nacos.client.v1.namespace;
 import io.microsphere.nacos.client.OpenApiTest;
 import io.microsphere.nacos.client.common.namespace.NamespaceClient;
 import io.microsphere.nacos.client.common.namespace.model.Namespace;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -51,10 +50,14 @@ public class OpenApiNamespaceClientTest extends OpenApiTest {
 
     private NamespaceClient client;
 
-    @BeforeEach
+    @Override
     public void setup() {
-        this.client = new OpenApiNamespaceClient(this.openApiClient);
+        this.client = createNamespaceClient();
         client.deleteNamespace(NAMESPACE_ID);
+    }
+
+    protected NamespaceClient createNamespaceClient() {
+        return new OpenApiNamespaceClient(this.openApiClient);
     }
 
     @Test
