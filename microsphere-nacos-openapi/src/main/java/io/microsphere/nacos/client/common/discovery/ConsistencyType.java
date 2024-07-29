@@ -16,8 +16,6 @@
  */
 package io.microsphere.nacos.client.common.discovery;
 
-import io.microsphere.nacos.client.v1.discovery.InstanceClient;
-
 import java.util.Map;
 
 /**
