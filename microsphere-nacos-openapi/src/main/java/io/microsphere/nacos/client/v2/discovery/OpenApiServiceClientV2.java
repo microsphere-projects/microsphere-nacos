@@ -17,12 +17,16 @@
 package io.microsphere.nacos.client.v2.discovery;
 
 import io.microsphere.nacos.client.NacosClientConfig;
+import io.microsphere.nacos.client.OpenApiVersion;
 import io.microsphere.nacos.client.common.discovery.ServiceClient;
 import io.microsphere.nacos.client.common.discovery.model.Service;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
 import io.microsphere.nacos.client.v1.discovery.OpenApiServiceClient;
 
+import java.lang.reflect.Type;
+
+import static io.microsphere.nacos.client.OpenApiVersion.V2;
 import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsResultMessageOK;
 
 /**
@@ -30,6 +34,7 @@ import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsResultMessa
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see ServiceClient
+ * @see OpenApiServiceClient
  * @see OpenApiClient
  * @since 1.0.0
  */
@@ -39,6 +44,17 @@ public class OpenApiServiceClientV2 extends OpenApiServiceClient {
         super(openApiClient, nacosClientConfig);
     }
 
+    @Override
+    public OpenApiVersion getOpenApiVersion() {
+        return V2;
+    }
+
+    @Override
+    protected <T> T response(OpenApiRequest request, Type payloadType) {
+        return this.openApiClient.executeAsResult(request, payloadType);
+    }
+
+    @Override
     protected boolean responseBoolean(OpenApiRequest request) {
         return executeAsResultMessageOK(this.openApiClient, request);
     }

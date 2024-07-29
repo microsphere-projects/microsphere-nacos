@@ -14,49 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.common.discovery.model;
+package io.microsphere.nacos.client.v2.discovery;
 
+import io.microsphere.nacos.client.OpenApiVersion;
 import io.microsphere.nacos.client.common.discovery.ServiceClient;
-import io.microsphere.nacos.client.common.model.Model;
-
-import java.util.List;
+import io.microsphere.nacos.client.v1.discovery.OpenApiServiceClientTest;
 
 /**
- * The {@link Model model} {@link Class} of <a href="https://nacos.io/en/docs/v1/open-api/#2.15">Service List</a>
+ * {@link OpenApiServiceClientV2} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see ServiceClient
+ * @see OpenApiServiceClientV2
  * @since 1.0.0
  */
-public class ServiceList implements Model {
+public class OpenApiServiceClientV2Test extends OpenApiServiceClientTest {
 
-    private int count;
-
-    private List<String> doms;
-
-    private List<String> services;
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public List<String> getDoms() {
-        return doms;
-    }
-
-    public void setDoms(List<String> doms) {
-        this.doms = doms;
-    }
-
-    public List<String> getServices() {
-        return services;
-    }
-
-    public void setServices(List<String> services) {
-        this.services = services;
+    @Override
+    protected ServiceClient createServiceClient() {
+        return new OpenApiServiceClientV2(this.openApiClient, this.nacosClientConfig);
     }
 }

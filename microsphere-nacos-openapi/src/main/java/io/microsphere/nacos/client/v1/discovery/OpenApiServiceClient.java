@@ -28,6 +28,8 @@ import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
 import io.microsphere.nacos.client.util.JsonUtils;
 
+import java.util.List;
+
 import static io.microsphere.nacos.client.http.HttpMethod.DELETE;
 import static io.microsphere.nacos.client.http.HttpMethod.GET;
 import static io.microsphere.nacos.client.http.HttpMethod.POST;
@@ -40,7 +42,9 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_NAME;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_PROTECT_THRESHOLD;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_SELECTOR;
+import static io.microsphere.nacos.client.util.ModelUtils.setPropertyIfAbsent;
 import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsMessageOK;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonMap;
 
 /**
@@ -82,7 +86,12 @@ public class OpenApiServiceClient extends OpenApiTemplateClient implements Servi
     @Override
     public Service getService(String namespaceId, String groupName, String serviceName) {
         OpenApiRequest request = buildServiceRequest(namespaceId, groupName, serviceName, GET);
-        return response(request, Service.class);
+        Service service = response(request, Service.class);
+
+        setPropertyIfAbsent(namespaceId, service::getNamespaceId, service::setNamespaceId);
+        setPropertyIfAbsent(groupName, service::getGroupName, service::setGroupName);
+        setPropertyIfAbsent(serviceName, service::getName, service::setName);
+        return service;
     }
 
     @Override
@@ -94,7 +103,10 @@ public class OpenApiServiceClient extends OpenApiTemplateClient implements Servi
                 .queryParameter(PAGE_SIZE, pageSize)
                 .build();
         ServiceList serviceList = response(request, ServiceList.class);
-        return new Page<>(serviceList.getCount(), serviceList.getDoms(), pageNumber, pageSize);
+        setPropertyIfAbsent(serviceList.getDoms(), serviceList::getServices, serviceList::setServices);
+        setPropertyIfAbsent(serviceList.getServices(), serviceList::getDoms, serviceList::setDoms);
+        List<String> serviceNames = serviceList.getServices() == null ? emptyList() : serviceList.getServices();
+        return new Page<>(serviceList.getCount(), serviceNames, pageNumber, pageSize);
     }
 
 
