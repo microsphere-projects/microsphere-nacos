@@ -28,7 +28,6 @@ import io.microsphere.nacos.client.common.discovery.model.UpdateHealthInstance;
 import io.microsphere.nacos.client.common.discovery.model.UpdateInstance;
 import io.microsphere.nacos.client.common.namespace.model.Namespace;
 import io.microsphere.nacos.client.constants.Constants;
-import io.microsphere.nacos.client.v1.discovery.ServiceClient;
 
 import java.util.Map;
 
@@ -40,7 +39,7 @@ import static io.microsphere.nacos.client.constants.Constants.DEFAULT_HEALTHY_ON
 import static io.microsphere.nacos.client.constants.Constants.DEFAULT_NAMESPACE_ID;
 
 /**
- * The Client for Nacos {@link Service} {@link Instance} Open API V1
+ * The Client for Nacos {@link Service} {@link Instance}
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see InstancesList

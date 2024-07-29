@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.v1.discovery;
+package io.microsphere.nacos.client.common.discovery;
 
 import io.microsphere.nacos.client.common.discovery.model.Service;
 import io.microsphere.nacos.client.common.model.Page;
@@ -24,7 +24,7 @@ import static io.microsphere.nacos.client.constants.Constants.PAGE_NUMBER;
 import static io.microsphere.nacos.client.constants.Constants.PAGE_SIZE;
 
 /**
- * The Client for Nacos {@link Service} Open API V1
+ * The Client for Nacos {@link Service}
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see Page

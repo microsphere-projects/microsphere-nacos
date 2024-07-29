@@ -17,7 +17,7 @@
 package io.microsphere.nacos.client.common.discovery.model;
 
 import io.microsphere.nacos.client.common.model.Model;
-import io.microsphere.nacos.client.v1.discovery.ServiceClient;
+import io.microsphere.nacos.client.common.discovery.ServiceClient;
 
 import java.util.List;
 

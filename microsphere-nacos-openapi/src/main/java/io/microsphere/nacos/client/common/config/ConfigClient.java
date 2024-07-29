@@ -29,7 +29,7 @@ import static io.microsphere.nacos.client.constants.Constants.DEFAULT_NAMESPACE_
 import static io.microsphere.nacos.client.constants.Constants.PAGE_NUMBER;
 
 /**
- * The Client for Nacos {@link Config} Open API
+ * The Client for Nacos {@link Config}
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see Config
