@@ -56,7 +56,7 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SHOW;
 import static io.microsphere.nacos.client.util.StringUtils.collectionToCommaDelimitedString;
 
 /**
- * The {@link ConfigClient} for for <a href="https://nacos.io/en/docs/open-api/#configuration-management">Open API</a>
+ * The {@link ConfigClient} for for <a href="https://nacos.io/en/docs/v2/open-api/#configuration-management">Open API V1 - Configuration Management</a>
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see ConfigClient
