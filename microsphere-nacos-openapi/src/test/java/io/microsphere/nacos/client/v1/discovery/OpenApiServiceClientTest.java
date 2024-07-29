@@ -22,7 +22,6 @@ import io.microsphere.nacos.client.common.discovery.model.Selector;
 import io.microsphere.nacos.client.common.discovery.model.Service;
 import io.microsphere.nacos.client.common.model.Page;
 import io.microsphere.nacos.client.transport.OpenApiClientException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -39,14 +38,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * {@link ServiceClient} Test
+ * {@link OpenApiServiceClient} Test
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see ServiceClient
  * @see OpenApiServiceClient
  * @since 1.0.0
  */
-public class ServiceClientTest extends OpenApiTest {
+public class OpenApiServiceClientTest extends OpenApiTest {
 
     public static final String TEST_SERVICE_NAME = "test-service";
 
@@ -56,13 +55,17 @@ public class ServiceClientTest extends OpenApiTest {
 
     private ServiceClient client;
 
-    @BeforeEach
-    public void setup() {
-        client = new OpenApiServiceClient(openApiClient);
+    @Override
+    protected void setup() {
+        client = createServiceClient();
         try {
             client.deleteService(TEST_NAMESPACE_ID, TEST_GROUP_NAME, TEST_SERVICE_NAME);
         } catch (Throwable ignore) {
         }
+    }
+
+    protected ServiceClient createServiceClient() {
+        return new OpenApiServiceClient(this.openApiClient, this.nacosClientConfig);
     }
 
     @Test

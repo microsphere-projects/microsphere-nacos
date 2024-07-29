@@ -99,7 +99,7 @@ public class OpenApiServiceClient extends OpenApiTemplateClient implements Servi
 
 
     private OpenApiRequest buildServiceRequest(String namespaceId, String groupName, String serviceName, HttpMethod method) {
-        OpenApiRequest request = OpenApiRequest.Builder.create(SERVICE_ENDPOINT)
+        OpenApiRequest request = OpenApiRequest.Builder.create(getServiceEndpoint())
                 .method(method)
                 .queryParameter(NAMESPACE_ID, namespaceId)
                 .queryParameter(SERVICE_GROUP_NAME, groupName)

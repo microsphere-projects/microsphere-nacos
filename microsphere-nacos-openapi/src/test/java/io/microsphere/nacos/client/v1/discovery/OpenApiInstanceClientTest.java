@@ -34,8 +34,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 
-import static io.microsphere.nacos.client.v1.discovery.ServiceClientTest.TEST_CLUSTER;
-import static io.microsphere.nacos.client.v1.discovery.ServiceClientTest.TEST_SERVICE_NAME;
+import static io.microsphere.nacos.client.v1.discovery.OpenApiServiceClientTest.TEST_CLUSTER;
+import static io.microsphere.nacos.client.v1.discovery.OpenApiServiceClientTest.TEST_SERVICE_NAME;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
