@@ -18,6 +18,9 @@ package io.microsphere.nacos.client.common.model;
 
 import java.util.List;
 
+import static io.microsphere.nacos.client.util.CollectionUtils.size;
+import static java.util.Collections.emptyList;
+
 /**
  * The {@link Model} {@link Class} for page
  *
@@ -41,7 +44,7 @@ public class Page<E> implements Model {
     private int pageSize;
 
     public Page(int totalElements, List<E> elements, int pageNumber, int pageSize) {
-        this((elements.size() == 0 ? 1 : (int) Math.ceil((double) totalElements / (double) pageSize)), totalElements, elements);
+        this((size(elements) == 0 ? 1 : (int) Math.ceil((double) totalElements / (double) pageSize)), totalElements, elements);
         this.pageNumber = pageNumber;
         this.pageSize = pageSize;
     }
@@ -49,7 +52,7 @@ public class Page<E> implements Model {
     public Page(int totalPages, int totalElements, List<E> elements) {
         this.totalPages = totalPages;
         this.totalElements = totalElements;
-        this.elements = elements;
+        this.elements = elements == null ? emptyList() : elements;
     }
 
     public void setPageNumber(int pageNumber) {
