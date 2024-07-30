@@ -16,7 +16,6 @@
  */
 package io.microsphere.nacos.client.v2.discovery;
 
-import io.microsphere.nacos.client.OpenApiVersion;
 import io.microsphere.nacos.client.common.discovery.ServiceClient;
 import io.microsphere.nacos.client.v1.discovery.OpenApiServiceClientTest;
 
