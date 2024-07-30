@@ -28,8 +28,6 @@ import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
 import io.microsphere.nacos.client.util.JsonUtils;
 
-import java.util.List;
-
 import static io.microsphere.nacos.client.http.HttpMethod.DELETE;
 import static io.microsphere.nacos.client.http.HttpMethod.GET;
 import static io.microsphere.nacos.client.http.HttpMethod.POST;
@@ -44,7 +42,6 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_SELECTOR;
 import static io.microsphere.nacos.client.util.ModelUtils.setPropertyIfAbsent;
 import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsMessageOK;
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonMap;
 
 /**
@@ -105,8 +102,7 @@ public class OpenApiServiceClient extends OpenApiTemplateClient implements Servi
         ServiceList serviceList = response(request, ServiceList.class);
         setPropertyIfAbsent(serviceList.getDoms(), serviceList::getServices, serviceList::setServices);
         setPropertyIfAbsent(serviceList.getServices(), serviceList::getDoms, serviceList::setDoms);
-        List<String> serviceNames = serviceList.getServices() == null ? emptyList() : serviceList.getServices();
-        return new Page<>(serviceList.getCount(), serviceNames, pageNumber, pageSize);
+        return new Page<>(serviceList.getCount(), serviceList.getServices(), pageNumber, pageSize);
     }
 
 
