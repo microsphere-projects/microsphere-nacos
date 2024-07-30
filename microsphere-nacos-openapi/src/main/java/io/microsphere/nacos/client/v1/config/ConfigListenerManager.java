@@ -234,7 +234,11 @@ class ConfigListenerManager {
 
         if (listeningConfigs != null) {
             int longPollingTimeout = this.nacosClientConfig.getLongPollingTimeout();
-            OpenApiRequest request = OpenApiRequest.Builder.create(LISTENER_ENDPOINT).method(POST).queryParameter(LISTENING_CONFIGS, listeningConfigs).header(LONG_PULLING_TIMEOUT, longPollingTimeout).build();
+            OpenApiRequest request = OpenApiRequest.Builder.create(LISTENER_ENDPOINT)
+                    .method(POST)
+                    .queryParameter(LISTENING_CONFIGS, listeningConfigs)
+                    .header(LONG_PULLING_TIMEOUT, longPollingTimeout)
+                    .build();
             String changedConfigIdsContent = this.openApiClient.execute(request, String.class);
             changedConfigIds = changedConfigIdsContent == null ? null : changedConfigIdsContent.split(LISTENING_CONFIG_SEPARATOR);
         }
