@@ -29,6 +29,7 @@ import io.microsphere.nacos.client.v1.server.ServerClient;
  * Nacos Client for Open API V1
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
+ * @see AuthenticationClient
  * @see ConfigClient
  * @see ServiceClient
  * @see InstanceClient
