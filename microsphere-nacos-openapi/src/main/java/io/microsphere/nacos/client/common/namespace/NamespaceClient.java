@@ -16,6 +16,7 @@
  */
 package io.microsphere.nacos.client.common.namespace;
 
+import io.microsphere.nacos.client.Client;
 import io.microsphere.nacos.client.common.namespace.model.Namespace;
 
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
  * @see Namespace
  * @since 1.0.0
  */
-public interface NamespaceClient {
+public interface NamespaceClient extends Client {
 
     /**
      * Get the list of all Namespaces
