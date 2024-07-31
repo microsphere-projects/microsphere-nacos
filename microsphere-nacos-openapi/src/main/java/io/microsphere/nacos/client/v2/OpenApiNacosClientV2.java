@@ -55,6 +55,7 @@ import io.microsphere.nacos.client.v1.raft.RaftClient;
 import io.microsphere.nacos.client.v1.server.OpenApiServerClient;
 import io.microsphere.nacos.client.v1.server.ServerClient;
 import io.microsphere.nacos.client.v2.client.model.ClientInfo;
+import io.microsphere.nacos.client.v2.client.model.ClientInstance;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -63,6 +64,7 @@ import java.util.Map;
 import static io.microsphere.nacos.client.OpenApiVersion.V2;
 import static io.microsphere.nacos.client.http.HttpMethod.GET;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CLIENT_ID;
+import static io.microsphere.nacos.client.util.TypeUtils.ofParameterizedType;
 
 /**
  * {@link NacosClientV2} for Open API
@@ -76,6 +78,14 @@ public class OpenApiNacosClientV2 extends OpenApiTemplateClient implements Nacos
     protected static final String CLIENT_ENDPOINT = "/v2/ns/client";
 
     protected static final String CLIENT_LIST_ENDPOINT = CLIENT_ENDPOINT + "/list";
+
+    protected static final String CLIENT_REGISTERED_INSTANCES_ENDPOINT = CLIENT_ENDPOINT + "/publish/list";
+
+    protected static final String CLIENT_SUBSCRIBED_INSTANCES_ENDPOINT = CLIENT_ENDPOINT + "/subscribe/list";
+
+    protected static final String CLIENT_REGISTERED_SERVICES_ENDPOINT = CLIENT_ENDPOINT + "/service/publisher/list";
+
+    protected static final String CLIENT_SUBSCRIBED_SERVICES_ENDPOINT = CLIENT_ENDPOINT + "/service/subscriber/list";
 
     private final AuthenticationClient authenticationClient;
 
@@ -535,10 +545,20 @@ public class OpenApiNacosClientV2 extends OpenApiTemplateClient implements Nacos
 
     @Override
     public ClientInfo getClientInfo(String clientId) {
-        OpenApiRequest request = OpenApiRequest.Builder.create(CLIENT_ENDPOINT)
+        OpenApiRequest request = clientRequest(CLIENT_ENDPOINT, clientId);
+        return response(request, ClientInfo.class);
+    }
+
+    @Override
+    public List<ClientInstance> getRegisteredInstances(String clientId) {
+        OpenApiRequest request = clientRequest(CLIENT_REGISTERED_INSTANCES_ENDPOINT, clientId);
+        return response(request, ofParameterizedType(List.class, ClientInstance.class));
+    }
+
+    private OpenApiRequest clientRequest(String endpoint, String clientId) {
+        return OpenApiRequest.Builder.create(endpoint)
                 .method(GET)
                 .queryParameter(CLIENT_ID, clientId)
                 .build();
-        return response(request, ClientInfo.class);
     }
 }
