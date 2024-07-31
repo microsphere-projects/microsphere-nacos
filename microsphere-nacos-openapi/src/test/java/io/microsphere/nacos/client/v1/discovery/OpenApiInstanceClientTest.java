@@ -71,7 +71,6 @@ public class OpenApiInstanceClientTest extends OpenApiTest {
 
     private Instance instance;
 
-
     @Override
     protected void setup() {
         this.client = createInstanceClient();
@@ -86,7 +85,7 @@ public class OpenApiInstanceClientTest extends OpenApiTest {
         return new OpenApiInstanceClient(this.openApiClient, this.nacosClientConfig);
     }
 
-    protected Instance createInstance() {
+    public static Instance createInstance() {
         Instance instance = new Instance();
         instance.setNamespaceId(TEST_NAMESPACE_ID);
         instance.setGroupName(TEST_GROUP_NAME);
@@ -101,7 +100,6 @@ public class OpenApiInstanceClientTest extends OpenApiTest {
         instance.setMetadata(TEST_INSTANCE_METADATA);
         return instance;
     }
-
 
     @Test
     public void test() {
