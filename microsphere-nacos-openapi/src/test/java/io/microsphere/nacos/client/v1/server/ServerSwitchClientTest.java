@@ -38,7 +38,7 @@ public class ServerSwitchClientTest extends OpenApiTest {
 
     @Test
     public void test() {
-        ServerSwitchClient client = new OpenApiServerClient(this.openApiClient);
+        ServerSwitchClient client = new OpenApiServerClient(this.openApiClient, this.nacosClientConfig);
 
         // Test getSwitch()
         ServerSwitch sw = client.getServerSwitch();
