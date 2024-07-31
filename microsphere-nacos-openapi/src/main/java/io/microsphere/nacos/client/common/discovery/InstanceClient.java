@@ -16,6 +16,7 @@
  */
 package io.microsphere.nacos.client.common.discovery;
 
+import io.microsphere.nacos.client.Client;
 import io.microsphere.nacos.client.common.discovery.model.BatchMetadataResult;
 import io.microsphere.nacos.client.common.discovery.model.DeleteInstance;
 import io.microsphere.nacos.client.common.discovery.model.Heartbeat;
@@ -48,7 +49,7 @@ import static io.microsphere.nacos.client.constants.Constants.DEFAULT_NAMESPACE_
  * @see ServiceClient
  * @since 1.0.0
  */
-public interface InstanceClient {
+public interface InstanceClient extends Client {
 
     /**
      * Register {@link NewInstance a new instance} with parameters :
