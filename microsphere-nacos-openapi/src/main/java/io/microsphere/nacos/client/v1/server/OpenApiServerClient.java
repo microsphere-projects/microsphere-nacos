@@ -16,6 +16,8 @@
  */
 package io.microsphere.nacos.client.v1.server;
 
+import io.microsphere.nacos.client.NacosClientConfig;
+import io.microsphere.nacos.client.common.OpenApiTemplateClient;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
 import io.microsphere.nacos.client.v1.server.model.ServerMetrics;
@@ -36,7 +38,7 @@ import static io.microsphere.nacos.client.util.OpenApiUtils.executeAsMessageOK;
  * @see ServerClient
  * @since 1.0.0
  */
-public class OpenApiServerClient implements ServerClient {
+public class OpenApiServerClient extends OpenApiTemplateClient implements ServerClient {
 
     public static final String SERVER_SWITCH_ENDPOINT = "/v1/ns/operator/switches";
 
@@ -44,10 +46,8 @@ public class OpenApiServerClient implements ServerClient {
 
     public static final String SERVERS_LIST_ENDPOINT = "/v1/ns/operator/servers";
 
-    private final OpenApiClient openApiClient;
-
-    public OpenApiServerClient(OpenApiClient openApiClient) {
-        this.openApiClient = openApiClient;
+    public OpenApiServerClient(OpenApiClient openApiClient, NacosClientConfig nacosClientConfig) {
+        super(openApiClient, nacosClientConfig);
     }
 
     @Override
