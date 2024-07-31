@@ -34,7 +34,7 @@ public class RaftClientTest extends OpenApiTest {
 
     @Test
     public void test() {
-        RaftClient raftClient = new OpenApiRaftClient(this.openApiClient);
+        RaftClient raftClient = new OpenApiRaftClient(this.openApiClient, this.nacosClientConfig);
 
         RaftModel raftModel = raftClient.getRaftModel();
         RaftPeer leader = raftModel.getLeader();
