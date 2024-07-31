@@ -24,6 +24,8 @@ import io.microsphere.nacos.client.common.discovery.ServiceClient;
 import io.microsphere.nacos.client.common.namespace.NamespaceClient;
 import io.microsphere.nacos.client.v1.NacosClient;
 
+import java.util.List;
+
 /**
  * Nacos Client for Open API V2
  *
@@ -36,5 +38,13 @@ import io.microsphere.nacos.client.v1.NacosClient;
  * @see NacosClient
  * @since 1.0.0
  */
-public interface NacosClientV2 extends AuthenticationClient, ConfigClient, ServiceClient, InstanceClient, NamespaceClient, Client {
+public interface NacosClientV2 extends AuthenticationClient, ConfigClient, ServiceClient, InstanceClient, NamespaceClient,
+        Client {
+
+    /**
+     * Get all client ids
+     *
+     * @return non-null
+     */
+    List<String> getAllClientIds();
 }
