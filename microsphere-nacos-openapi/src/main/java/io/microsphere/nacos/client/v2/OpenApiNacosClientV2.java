@@ -56,6 +56,7 @@ import io.microsphere.nacos.client.v1.server.OpenApiServerClient;
 import io.microsphere.nacos.client.v1.server.ServerClient;
 import io.microsphere.nacos.client.v2.client.model.ClientInfo;
 import io.microsphere.nacos.client.v2.client.model.ClientInstance;
+import io.microsphere.nacos.client.v2.client.model.ClientSubscriber;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -81,7 +82,7 @@ public class OpenApiNacosClientV2 extends OpenApiTemplateClient implements Nacos
 
     protected static final String CLIENT_REGISTERED_INSTANCES_ENDPOINT = CLIENT_ENDPOINT + "/publish/list";
 
-    protected static final String CLIENT_SUBSCRIBED_INSTANCES_ENDPOINT = CLIENT_ENDPOINT + "/subscribe/list";
+    protected static final String CLIENT_SUBSCRIBERS_ENDPOINT = CLIENT_ENDPOINT + "/subscribe/list";
 
     protected static final String CLIENT_REGISTERED_SERVICES_ENDPOINT = CLIENT_ENDPOINT + "/service/publisher/list";
 
@@ -553,6 +554,12 @@ public class OpenApiNacosClientV2 extends OpenApiTemplateClient implements Nacos
     public List<ClientInstance> getRegisteredInstances(String clientId) {
         OpenApiRequest request = clientRequest(CLIENT_REGISTERED_INSTANCES_ENDPOINT, clientId);
         return response(request, ofParameterizedType(List.class, ClientInstance.class));
+    }
+
+    @Override
+    public List<ClientSubscriber> getSubscribers(String clientId) {
+        OpenApiRequest request = clientRequest(CLIENT_SUBSCRIBERS_ENDPOINT, clientId);
+        return response(request, ofParameterizedType(List.class, ClientSubscriber.class));
     }
 
     private OpenApiRequest clientRequest(String endpoint, String clientId) {
