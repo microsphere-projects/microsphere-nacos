@@ -17,6 +17,7 @@
 package io.microsphere.nacos.client.common.auth;
 
 import io.microsphere.nacos.client.Client;
+import io.microsphere.nacos.client.NacosClientConfig;
 import io.microsphere.nacos.client.common.auth.model.Authentication;
 
 /**
@@ -33,5 +34,17 @@ public interface AuthenticationClient extends Client {
      *
      * @return the instance of {@link Authentication}
      */
-    Authentication authenticate();
+    default Authentication authenticate() {
+        NacosClientConfig nacosClientConfig = getNacosClientConfig();
+        String userName = nacosClientConfig.getUserName();
+        String password = nacosClientConfig.getPassword();
+        return authenticate(userName, password);
+    }
+
+    /**
+     * The client authenticates the Nacos Server
+     *
+     * @return the instance of {@link Authentication}
+     */
+    Authentication authenticate(String userName, String password);
 }
