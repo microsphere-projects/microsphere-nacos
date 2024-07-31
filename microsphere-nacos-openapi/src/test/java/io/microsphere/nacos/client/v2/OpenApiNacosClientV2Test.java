@@ -21,12 +21,15 @@ import io.microsphere.nacos.client.common.discovery.model.DeleteInstance;
 import io.microsphere.nacos.client.common.discovery.model.Instance;
 import io.microsphere.nacos.client.common.discovery.model.NewInstance;
 import io.microsphere.nacos.client.v2.client.model.ClientInfo;
+import io.microsphere.nacos.client.v2.client.model.ClientInstance;
+import io.microsphere.nacos.client.v2.client.model.ClientSubscriber;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static io.microsphere.nacos.client.v1.discovery.OpenApiInstanceClientTest.TEST_INSTANCE_IP;
 import static io.microsphere.nacos.client.v1.discovery.OpenApiInstanceClientTest.TEST_INSTANCE_PORT;
+import static io.microsphere.nacos.client.v1.discovery.OpenApiInstanceClientTest.assertBaseInstance;
 import static io.microsphere.nacos.client.v1.discovery.OpenApiInstanceClientTest.createInstance;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -68,6 +71,19 @@ public class OpenApiNacosClientV2Test extends OpenApiTest {
         String clientId = allClientIds.get(0);
         ClientInfo clientInfo = client.getClientInfo(clientId);
         assertClientInfo(clientInfo, clientId);
+
+        // Test getRegisteredInstances()
+        List<ClientInstance> registeredInstances = client.getRegisteredInstances(clientId);
+        assertEquals(1, registeredInstances.size());
+        ClientInstance registeredInstance = registeredInstances.get(0);
+        assertBaseInstance(registeredInstance);
+
+        // Test getSubscribers()
+        List<ClientSubscriber> clientSubscribers = client.getSubscribers(clientId);
+        assertTrue(clientSubscribers.isEmpty());
+
+        client.getInstancesList(registeredInstance.getNamespaceId(), registeredInstance.getGroupName(), registeredInstance.getServiceName());
+        clientSubscribers = client.getSubscribers(clientId);
 
         // deregister
         assertTrue(client.deregister(DeleteInstance.build(instance)));
