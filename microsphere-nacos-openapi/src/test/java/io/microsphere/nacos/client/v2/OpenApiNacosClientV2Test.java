@@ -20,7 +20,7 @@ import io.microsphere.nacos.client.OpenApiTest;
 import io.microsphere.nacos.client.common.discovery.model.DeleteInstance;
 import io.microsphere.nacos.client.common.discovery.model.Instance;
 import io.microsphere.nacos.client.common.discovery.model.NewInstance;
-import io.microsphere.nacos.client.v2.client.model.ClientInfo;
+import io.microsphere.nacos.client.v2.client.model.ClientDetail;
 import io.microsphere.nacos.client.v2.client.model.ClientInstance;
 import io.microsphere.nacos.client.v2.client.model.ClientSubscriber;
 import org.junit.jupiter.api.Test;
@@ -69,8 +69,8 @@ public class OpenApiNacosClientV2Test extends OpenApiTest {
 
         // Test getClientInfo()
         String clientId = allClientIds.get(0);
-        ClientInfo clientInfo = client.getClientInfo(clientId);
-        assertClientInfo(clientInfo, clientId);
+        ClientDetail clientDetail = client.getClientDetail(clientId);
+        assertClientDetail(clientDetail, clientId);
 
         // Test getRegisteredInstances()
         List<ClientInstance> registeredInstances = client.getRegisteredInstances(clientId);
@@ -90,15 +90,15 @@ public class OpenApiNacosClientV2Test extends OpenApiTest {
 
     }
 
-    private void assertClientInfo(ClientInfo clientInfo, String clientId) {
-        assertEquals(clientId, clientInfo.getClientId());
-        assertTrue(clientInfo.isEphemeral());
-        assertTrue(clientInfo.getLastUpdatedTime() < System.currentTimeMillis());
-        assertEquals("ipPort", clientInfo.getClientType());
-        assertEquals(TEST_INSTANCE_IP, clientInfo.getClientIp());
-        assertEquals(TEST_INSTANCE_PORT, clientInfo.getClientPort());
-        assertNull(clientInfo.getConnectType());
-        assertNull(clientInfo.getAppName());
-        assertNull(clientInfo.getVersion());
+    private void assertClientDetail(ClientDetail clientDetail, String clientId) {
+        assertEquals(clientId, clientDetail.getClientId());
+        assertTrue(clientDetail.isEphemeral());
+        assertTrue(clientDetail.getLastUpdatedTime() < System.currentTimeMillis());
+        assertEquals("ipPort", clientDetail.getClientType());
+        assertEquals(TEST_INSTANCE_IP, clientDetail.getClientIp());
+        assertEquals(TEST_INSTANCE_PORT, clientDetail.getClientPort());
+        assertNull(clientDetail.getConnectType());
+        assertNull(clientDetail.getAppName());
+        assertNull(clientDetail.getVersion());
     }
 }
