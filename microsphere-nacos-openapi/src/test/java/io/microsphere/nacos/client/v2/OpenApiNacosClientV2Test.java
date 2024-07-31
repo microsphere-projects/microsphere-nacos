@@ -17,11 +17,21 @@
 package io.microsphere.nacos.client.v2;
 
 import io.microsphere.nacos.client.OpenApiTest;
+import io.microsphere.nacos.client.common.discovery.model.DeleteInstance;
+import io.microsphere.nacos.client.common.discovery.model.Instance;
+import io.microsphere.nacos.client.common.discovery.model.NewInstance;
+import io.microsphere.nacos.client.v2.client.model.ClientInfo;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static io.microsphere.nacos.client.v1.discovery.OpenApiInstanceClientTest.TEST_INSTANCE_IP;
+import static io.microsphere.nacos.client.v1.discovery.OpenApiInstanceClientTest.TEST_INSTANCE_PORT;
+import static io.microsphere.nacos.client.v1.discovery.OpenApiInstanceClientTest.createInstance;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * {@link OpenApiNacosClientV2} Test
@@ -32,18 +42,47 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 public class OpenApiNacosClientV2Test extends OpenApiTest {
 
-    private NacosClientV2 nacosClientV2;
+    private NacosClientV2 client;
+
+    private Instance instance;
 
     @Override
     protected void setup() {
-        this.nacosClientV2 = new OpenApiNacosClientV2(this.openApiClient, this.nacosClientConfig);
+        this.client = new OpenApiNacosClientV2(this.openApiClient, this.nacosClientConfig);
+        this.instance = createInstance();
+        this.client.deregister(DeleteInstance.build(this.instance));
     }
 
     @Test
     public void test() {
+        NewInstance newInstance = new NewInstance().from(instance);
+        // register
+        assertTrue(client.register(newInstance));
 
         // Test getAllClientIds();
-        List<String> allClientIds = nacosClientV2.getAllClientIds();
+        List<String> allClientIds = client.getAllClientIds();
         assertNotNull(allClientIds);
+        assertEquals(1, allClientIds.size());
+
+        // Test getClientInfo()
+        String clientId = allClientIds.get(0);
+        ClientInfo clientInfo = client.getClientInfo(clientId);
+        assertClientInfo(clientInfo, clientId);
+
+        // deregister
+        assertTrue(client.deregister(DeleteInstance.build(instance)));
+
+    }
+
+    private void assertClientInfo(ClientInfo clientInfo, String clientId) {
+        assertEquals(clientId, clientInfo.getClientId());
+        assertTrue(clientInfo.isEphemeral());
+        assertTrue(clientInfo.getLastUpdatedTime() < System.currentTimeMillis());
+        assertEquals("ipPort", clientInfo.getClientType());
+        assertEquals(TEST_INSTANCE_IP, clientInfo.getClientIp());
+        assertEquals(TEST_INSTANCE_PORT, clientInfo.getClientPort());
+        assertNull(clientInfo.getConnectType());
+        assertNull(clientInfo.getAppName());
+        assertNull(clientInfo.getVersion());
     }
 }
