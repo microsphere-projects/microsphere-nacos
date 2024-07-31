@@ -7,3 +7,4 @@ io.microsphere.nacos.client.v1.server.io.ServerMetricsDeserializer
 io.microsphere.nacos.client.v1.server.io.ServerDeserializer
 io.microsphere.nacos.client.v1.raft.io.RaftModelDeserializer
 io.microsphere.nacos.client.v2.client.io.ClientInstanceDeserializer
+io.microsphere.nacos.client.v2.client.io.ClientSubscriberDeserializer
