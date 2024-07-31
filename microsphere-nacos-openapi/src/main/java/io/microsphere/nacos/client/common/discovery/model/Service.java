@@ -28,13 +28,11 @@ import java.util.Map;
  * @see Model
  * @since 1.0.0
  */
-public class Service implements Model {
+public class Service extends DiscoverableModel {
+
+    private static final long serialVersionUID = 7899190967578400875L;
 
     private Map<String, String> metadata;
-
-    private String groupName;
-
-    private String namespaceId;
 
     private String name;
 
@@ -50,22 +48,6 @@ public class Service implements Model {
 
     public void setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-    public String getNamespaceId() {
-        return namespaceId;
-    }
-
-    public void setNamespaceId(String namespaceId) {
-        this.namespaceId = namespaceId;
     }
 
     public String getName() {
