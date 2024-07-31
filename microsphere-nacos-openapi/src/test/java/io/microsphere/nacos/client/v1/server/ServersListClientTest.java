@@ -38,7 +38,7 @@ public class ServersListClientTest extends OpenApiTest {
 
     @Test
     public void test() {
-        ServersListClient client = new OpenApiServerClient(this.openApiClient);
+        ServersListClient client = new OpenApiServerClient(this.openApiClient, this.nacosClientConfig);
 
         // Test getServersList()
         ServersList serversList = client.getServersList();
