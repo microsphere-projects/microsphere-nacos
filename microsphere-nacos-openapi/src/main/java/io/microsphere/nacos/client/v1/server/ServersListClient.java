@@ -16,6 +16,7 @@
  */
 package io.microsphere.nacos.client.v1.server;
 
+import io.microsphere.nacos.client.Client;
 import io.microsphere.nacos.client.v1.server.model.ServersList;
 
 /**
@@ -25,7 +26,7 @@ import io.microsphere.nacos.client.v1.server.model.ServersList;
  * @see ServersList
  * @since 1.0.0
  */
-public interface ServersListClient {
+public interface ServersListClient extends Client {
 
     /**
      * Get the {@link ServersList}
