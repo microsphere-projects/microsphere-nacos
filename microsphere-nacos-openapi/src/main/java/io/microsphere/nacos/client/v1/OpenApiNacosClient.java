@@ -17,6 +17,7 @@
 package io.microsphere.nacos.client.v1;
 
 import io.microsphere.nacos.client.NacosClientConfig;
+import io.microsphere.nacos.client.common.OpenApiTemplateClient;
 import io.microsphere.nacos.client.common.auth.AuthenticationClient;
 import io.microsphere.nacos.client.common.auth.OpenApiAuthenticationClient;
 import io.microsphere.nacos.client.common.auth.model.Authentication;
@@ -67,11 +68,7 @@ import java.util.Map;
  * @see NacosClient
  * @since 1.0.0
  */
-public class OpenApiNacosClient implements NacosClient {
-
-    private final OpenApiClient openApiClient;
-
-    private final NacosClientConfig nacosClientConfig;
+public class OpenApiNacosClient extends OpenApiTemplateClient implements NacosClient {
 
     private final AuthenticationClient authenticationClient;
 
@@ -88,23 +85,14 @@ public class OpenApiNacosClient implements NacosClient {
     private final RaftClient raftClient;
 
     public OpenApiNacosClient(OpenApiClient openApiClient, NacosClientConfig nacosClientConfig) {
-        this.openApiClient = openApiClient;
-        this.nacosClientConfig = nacosClientConfig;
+        super(openApiClient, nacosClientConfig);
         this.authenticationClient = new OpenApiAuthenticationClient(openApiClient, nacosClientConfig);
         this.configClient = new OpenApiConfigClient(openApiClient, nacosClientConfig);
         this.serviceClient = new OpenApiServiceClient(openApiClient, nacosClientConfig);
         this.instanceClient = new OpenApiInstanceClient(openApiClient, nacosClientConfig);
-        this.namespaceClient = new OpenApiNamespaceClient(openApiClient);
-        this.serverClient = new OpenApiServerClient(openApiClient);
-        this.raftClient = new OpenApiRaftClient(openApiClient);
-    }
-
-    public OpenApiClient getOpenApiClient() {
-        return openApiClient;
-    }
-
-    public NacosClientConfig getNacosClientConfig() {
-        return nacosClientConfig;
+        this.namespaceClient = new OpenApiNamespaceClient(openApiClient, nacosClientConfig);
+        this.serverClient = new OpenApiServerClient(openApiClient, nacosClientConfig);
+        this.raftClient = new OpenApiRaftClient(openApiClient, nacosClientConfig);
     }
 
     public AuthenticationClient getAuthenticationClient() {
@@ -138,6 +126,11 @@ public class OpenApiNacosClient implements NacosClient {
     @Override
     public Authentication authenticate() {
         return authenticationClient.authenticate();
+    }
+
+    @Override
+    public Authentication authenticate(String userName, String password) {
+        return authenticationClient.authenticate(userName, password);
     }
 
     @Override
