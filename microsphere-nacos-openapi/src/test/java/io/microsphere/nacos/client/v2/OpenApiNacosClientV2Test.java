@@ -21,12 +21,14 @@ import io.microsphere.nacos.client.common.discovery.model.DeleteInstance;
 import io.microsphere.nacos.client.common.discovery.model.Instance;
 import io.microsphere.nacos.client.common.discovery.model.NewInstance;
 import io.microsphere.nacos.client.v2.client.model.ClientDetail;
+import io.microsphere.nacos.client.v2.client.model.ClientInfo;
 import io.microsphere.nacos.client.v2.client.model.ClientInstance;
 import io.microsphere.nacos.client.v2.client.model.ClientSubscriber;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static io.microsphere.nacos.client.common.discovery.ConsistencyType.EPHEMERAL;
 import static io.microsphere.nacos.client.v1.discovery.OpenApiInstanceClientTest.TEST_INSTANCE_IP;
 import static io.microsphere.nacos.client.v1.discovery.OpenApiInstanceClientTest.TEST_INSTANCE_PORT;
 import static io.microsphere.nacos.client.v1.discovery.OpenApiInstanceClientTest.assertBaseInstance;
@@ -84,10 +86,41 @@ public class OpenApiNacosClientV2Test extends OpenApiTest {
 
         client.getInstancesList(registeredInstance.getNamespaceId(), registeredInstance.getGroupName(), registeredInstance.getServiceName());
         clientSubscribers = client.getSubscribers(clientId);
+        assertTrue(clientSubscribers.isEmpty());
+
+        // Test getRegisteredClients()
+        List<ClientInfo> registeredClients = client.getRegisteredClients(
+                newInstance.getNamespaceId(),
+                newInstance.getGroupName(),
+                newInstance.getServiceName(),
+                EPHEMERAL,
+                newInstance.getIp(),
+                newInstance.getPort()
+        );
+        assertEquals(1, registeredClients.size());
+        ClientInfo registeredClient = registeredClients.get(0);
+        assertClientInfo(registeredClient, clientId);
+
+        // Test getSubscribedClients()
+        List<ClientInfo> subscribedClients = client.getSubscribedClients(
+                newInstance.getNamespaceId(),
+                newInstance.getGroupName(),
+                newInstance.getServiceName(),
+                EPHEMERAL,
+                newInstance.getIp(),
+                newInstance.getPort()
+        );
+        assertTrue(subscribedClients.isEmpty());
 
         // deregister
         assertTrue(client.deregister(DeleteInstance.build(instance)));
 
+    }
+
+    private void assertClientInfo(ClientInfo clientInfo, String clientId) {
+        assertEquals(clientId, clientInfo.getClientId());
+        assertEquals(TEST_INSTANCE_IP, clientInfo.getClientIp());
+        assertEquals(TEST_INSTANCE_PORT, clientInfo.getClientPort());
     }
 
     private void assertClientDetail(ClientDetail clientDetail, String clientId) {

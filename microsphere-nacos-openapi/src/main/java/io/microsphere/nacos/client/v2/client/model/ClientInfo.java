@@ -14,17 +14,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.common.model;
+package io.microsphere.nacos.client.v2.client.model;
 
-import java.io.Serializable;
+import io.microsphere.nacos.client.common.model.Model;
 
 /**
- * The Marker interface for all Models
+ * The {@link Model} {@link Class} for Nacos Client Info
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
- * @see Serializable
+ * @see Model
  * @since 1.0.0
  */
-public interface Model extends Serializable {
+public class ClientInfo implements Model {
+
+    private static final long serialVersionUID = 4980156098442210806L;
+
+    protected String clientId;
+
+    protected String clientIp;
+
+    protected int clientPort;
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getClientIp() {
+        return clientIp;
+    }
+
+    public void setClientIp(String clientIp) {
+        this.clientIp = clientIp;
+    }
+
+    public int getClientPort() {
+        return clientPort;
+    }
+
+    public void setClientPort(int clientPort) {
+        this.clientPort = clientPort;
+    }
+
 
 }

@@ -25,11 +25,9 @@ import io.microsphere.nacos.client.common.model.Model;
  * @see Model
  * @since 1.0.0
  */
-public class ClientDetail implements Model {
+public class ClientDetail extends ClientInfo {
 
     private static final long serialVersionUID = -7456524977337954973L;
-
-    private String clientId;
 
     private boolean ephemeral;
 
@@ -37,23 +35,11 @@ public class ClientDetail implements Model {
 
     private String clientType;
 
-    private String clientIp;
-
-    private int clientPort;
-
     private String connectType;
 
     private String appName;
 
     private String version;
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
 
     public boolean isEphemeral() {
         return ephemeral;
@@ -77,22 +63,6 @@ public class ClientDetail implements Model {
 
     public void setClientType(String clientType) {
         this.clientType = clientType;
-    }
-
-    public String getClientIp() {
-        return clientIp;
-    }
-
-    public void setClientIp(String clientIp) {
-        this.clientIp = clientIp;
-    }
-
-    public int getClientPort() {
-        return clientPort;
-    }
-
-    public void setClientPort(int clientPort) {
-        this.clientPort = clientPort;
     }
 
     public String getConnectType() {

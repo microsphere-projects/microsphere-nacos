@@ -55,6 +55,7 @@ import io.microsphere.nacos.client.v1.raft.RaftClient;
 import io.microsphere.nacos.client.v1.server.OpenApiServerClient;
 import io.microsphere.nacos.client.v1.server.ServerClient;
 import io.microsphere.nacos.client.v2.client.model.ClientDetail;
+import io.microsphere.nacos.client.v2.client.model.ClientInfo;
 import io.microsphere.nacos.client.v2.client.model.ClientInstance;
 import io.microsphere.nacos.client.v2.client.model.ClientSubscriber;
 
@@ -63,8 +64,15 @@ import java.util.List;
 import java.util.Map;
 
 import static io.microsphere.nacos.client.OpenApiVersion.V2;
+import static io.microsphere.nacos.client.common.discovery.ConsistencyType.EPHEMERAL;
 import static io.microsphere.nacos.client.http.HttpMethod.GET;
 import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CLIENT_ID;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_EPHEMERAL;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_IP;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.INSTANCE_PORT;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPACE_ID;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_GROUP_NAME;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SERVICE_NAME;
 import static io.microsphere.nacos.client.util.TypeUtils.ofParameterizedType;
 
 /**
@@ -84,9 +92,9 @@ public class OpenApiNacosClientV2 extends OpenApiTemplateClient implements Nacos
 
     protected static final String CLIENT_SUBSCRIBERS_ENDPOINT = CLIENT_ENDPOINT + "/subscribe/list";
 
-    protected static final String CLIENT_REGISTERED_SERVICES_ENDPOINT = CLIENT_ENDPOINT + "/service/publisher/list";
+    protected static final String REGISTERED_CLIENTS_ENDPOINT = CLIENT_ENDPOINT + "/service/publisher/list";
 
-    protected static final String CLIENT_SUBSCRIBED_SERVICES_ENDPOINT = CLIENT_ENDPOINT + "/service/subscriber/list";
+    protected static final String SUBSCRIBED_CLIENTS_ENDPOINT = CLIENT_ENDPOINT + "/service/subscriber/list";
 
     private final AuthenticationClient authenticationClient;
 
@@ -560,6 +568,32 @@ public class OpenApiNacosClientV2 extends OpenApiTemplateClient implements Nacos
     public List<ClientSubscriber> getSubscribers(String clientId) {
         OpenApiRequest request = clientRequest(CLIENT_SUBSCRIBERS_ENDPOINT, clientId);
         return response(request, ofParameterizedType(List.class, ClientSubscriber.class));
+    }
+
+    @Override
+    public List<ClientInfo> getRegisteredClients(String namespaceId, String groupName, String serviceName,
+                                                 ConsistencyType consistencyType, String ip, Integer port) {
+        return getClients(REGISTERED_CLIENTS_ENDPOINT, namespaceId, groupName, serviceName, consistencyType, ip, port);
+    }
+
+    @Override
+    public List<ClientInfo> getSubscribedClients(String namespaceId, String groupName, String serviceName,
+                                                 ConsistencyType consistencyType, String ip, Integer port) {
+        return getClients(SUBSCRIBED_CLIENTS_ENDPOINT, namespaceId, groupName, serviceName, consistencyType, ip, port);
+    }
+
+    private List<ClientInfo> getClients(String endpoint, String namespaceId, String groupName, String serviceName,
+                                        ConsistencyType consistencyType, String ip, Integer port) {
+        OpenApiRequest request = OpenApiRequest.Builder.create(endpoint)
+                .method(GET)
+                .queryParameter(NAMESPACE_ID, namespaceId)
+                .queryParameter(SERVICE_GROUP_NAME, groupName)
+                .queryParameter(SERVICE_NAME, serviceName)
+                .queryParameter(INSTANCE_EPHEMERAL, EPHEMERAL.equals(consistencyType))
+                .queryParameter(INSTANCE_IP, ip)
+                .queryParameter(INSTANCE_PORT, port)
+                .build();
+        return response(request, ofParameterizedType(List.class, ClientInfo.class));
     }
 
     private OpenApiRequest clientRequest(String endpoint, String clientId) {
