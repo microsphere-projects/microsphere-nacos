@@ -17,10 +17,17 @@
 package io.microsphere.nacos.client;
 
 /**
- * The marker interface for Nacos Client
+ * The interface for Nacos Client
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @since 1.0.0
  */
 public interface Client {
+
+    /**
+     * Get {@link NacosClientConfig the Nacos Client Config}
+     *
+     * @return non-null
+     */
+    NacosClientConfig getNacosClientConfig();
 }
