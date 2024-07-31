@@ -57,7 +57,7 @@ public class OpenApiNamespaceClientTest extends OpenApiTest {
     }
 
     protected NamespaceClient createNamespaceClient() {
-        return new OpenApiNamespaceClient(this.openApiClient);
+        return new OpenApiNamespaceClient(this.openApiClient, this.nacosClientConfig);
     }
 
     @Test
