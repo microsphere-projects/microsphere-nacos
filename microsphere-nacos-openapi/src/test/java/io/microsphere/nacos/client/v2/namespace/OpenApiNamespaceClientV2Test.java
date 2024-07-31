@@ -32,6 +32,6 @@ public class OpenApiNamespaceClientV2Test extends OpenApiNamespaceClientTest {
 
     @Override
     protected NamespaceClient createNamespaceClient() {
-        return new OpenApiNamespaceClientV2(this.openApiClient);
+        return new OpenApiNamespaceClientV2(this.openApiClient, this.nacosClientConfig);
     }
 }
