@@ -17,6 +17,7 @@
 package io.microsphere.nacos.client.common.discovery.model;
 
 import io.microsphere.nacos.client.common.model.Model;
+import io.microsphere.nacos.client.constants.Constants;
 
 /**
  * The Nacos Discoverable {@link Model} {@link Class}
@@ -29,19 +30,34 @@ public abstract class DiscoverableModel implements Model {
 
     private static final long serialVersionUID = -9120611693810903834L;
 
-    private String groupName;
+    /**
+     * The ID of namespace (optional)
+     * If not specified, the default value is "public"
+     *
+     * @see Constants#DEFAULT_NAMESPACE_ID
+     */
+    protected String namespaceId;
 
-    private String namespaceId;
+    /**
+     * The Cluster name (optional)
+     * If not specified, the default value is "DEFAULT"
+     *
+     * @see Constants#DEFAULT_CLUSTER_NAME
+     */
+    protected String clusterName;
 
-    private String serviceName;
+    /**
+     * The Group name (optional)
+     * If not specified, the default value is "DEFAULT_GROUP"
+     *
+     * @see Constants#DEFAULT_GROUP_NAME
+     */
+    protected String groupName;
 
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
+    /**
+     * The Service name (required)
+     */
+    protected String serviceName;
 
     public String getNamespaceId() {
         return namespaceId;
@@ -49,6 +65,22 @@ public abstract class DiscoverableModel implements Model {
 
     public void setNamespaceId(String namespaceId) {
         this.namespaceId = namespaceId;
+    }
+
+    public String getClusterName() {
+        return clusterName;
+    }
+
+    public void setClusterName(String clusterName) {
+        this.clusterName = clusterName;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public String getServiceName() {
@@ -61,9 +93,10 @@ public abstract class DiscoverableModel implements Model {
 
     @Override
     public String toString() {
-        return "BaseService{" +
-                "groupName='" + groupName + '\'' +
-                ", namespaceId='" + namespaceId + '\'' +
+        return "DiscoverableModel{" +
+                "namespaceId='" + namespaceId + '\'' +
+                ", clusterName='" + clusterName + '\'' +
+                ", groupName='" + groupName + '\'' +
                 ", serviceName='" + serviceName + '\'' +
                 '}';
     }
