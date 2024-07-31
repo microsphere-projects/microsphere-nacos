@@ -34,7 +34,7 @@ public class ServerMetricsClientTest extends OpenApiTest {
 
     @Test
     public void test() {
-        ServerMetricsClient client = new OpenApiServerClient(this.openApiClient);
+        ServerMetricsClient client = new OpenApiServerClient(this.openApiClient, this.nacosClientConfig);
 
         ServerMetrics serverMetrics = client.getServerMetrics();
 
