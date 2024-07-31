@@ -16,6 +16,8 @@
  */
 package io.microsphere.nacos.client.v1;
 
+import io.microsphere.nacos.client.Client;
+import io.microsphere.nacos.client.common.auth.AuthenticationClient;
 import io.microsphere.nacos.client.common.config.ConfigClient;
 import io.microsphere.nacos.client.common.discovery.InstanceClient;
 import io.microsphere.nacos.client.common.discovery.ServiceClient;
@@ -27,8 +29,14 @@ import io.microsphere.nacos.client.v1.server.ServerClient;
  * Nacos Client for Open API V1
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
+ * @see ConfigClient
+ * @see ServiceClient
+ * @see InstanceClient
+ * @see NamespaceClient
  * @see ServerClient
+ * @see RaftClient
  * @since 1.0.0
  */
-public interface NacosClient extends ConfigClient, ServiceClient, InstanceClient, NamespaceClient, ServerClient, RaftClient {
+public interface NacosClient extends AuthenticationClient, ConfigClient, ServiceClient, InstanceClient, NamespaceClient,
+        ServerClient, RaftClient, Client {
 }
