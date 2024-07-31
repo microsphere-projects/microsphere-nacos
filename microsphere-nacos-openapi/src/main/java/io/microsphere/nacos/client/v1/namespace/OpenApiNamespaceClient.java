@@ -16,6 +16,8 @@
  */
 package io.microsphere.nacos.client.v1.namespace;
 
+import io.microsphere.nacos.client.NacosClientConfig;
+import io.microsphere.nacos.client.common.OpenApiTemplateClient;
 import io.microsphere.nacos.client.common.namespace.NamespaceClient;
 import io.microsphere.nacos.client.common.namespace.model.Namespace;
 import io.microsphere.nacos.client.common.namespace.model.NamespacesList;
@@ -41,14 +43,12 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SHOW;
  * @see NamespaceClient
  * @since 1.0.0
  */
-public class OpenApiNamespaceClient implements NamespaceClient {
+public class OpenApiNamespaceClient extends OpenApiTemplateClient implements NamespaceClient {
 
     private static final String NAMESPACES_ENDPOINT = "/v1/console/namespaces";
 
-    private final OpenApiClient openApiClient;
-
-    public OpenApiNamespaceClient(OpenApiClient openApiClient) {
-        this.openApiClient = openApiClient;
+    public OpenApiNamespaceClient(OpenApiClient openApiClient, NacosClientConfig nacosClientConfig) {
+        super(openApiClient, nacosClientConfig);
     }
 
     @Override
