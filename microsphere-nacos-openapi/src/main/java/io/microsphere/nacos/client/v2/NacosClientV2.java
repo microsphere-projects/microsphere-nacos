@@ -25,6 +25,7 @@ import io.microsphere.nacos.client.common.namespace.NamespaceClient;
 import io.microsphere.nacos.client.v1.NacosClient;
 import io.microsphere.nacos.client.v2.client.model.ClientInfo;
 import io.microsphere.nacos.client.v2.client.model.ClientInstance;
+import io.microsphere.nacos.client.v2.client.model.ClientSubscriber;
 
 import java.util.List;
 
@@ -65,4 +66,12 @@ public interface NacosClientV2 extends AuthenticationClient, ConfigClient, Servi
      * @return the non-null {@link List list} of {@link ClientInstance instances}
      */
     List<ClientInstance> getRegisteredInstances(String clientId);
+
+    /**
+     * Get the {@link List list} of {@link ClientSubscriber subscribers} from the specified client id
+     *
+     * @param clientId the id of {@link ClientInfo}
+     * @return the non-null {@link List list} of {@link ClientInstance instances}
+     */
+    List<ClientSubscriber> getSubscribers(String clientId);
 }
