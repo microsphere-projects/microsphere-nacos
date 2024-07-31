@@ -16,6 +16,7 @@
  */
 package io.microsphere.nacos.client.v1.server;
 
+import io.microsphere.nacos.client.Client;
 import io.microsphere.nacos.client.v1.server.model.ServerState;
 
 /**
@@ -28,7 +29,7 @@ import io.microsphere.nacos.client.v1.server.model.ServerState;
  * @see ServersListClient
  * @since 1.0.0
  */
-public interface ServerClient extends ServerSwitchClient, ServerMetricsClient, ServersListClient {
+public interface ServerClient extends ServerSwitchClient, ServerMetricsClient, ServersListClient, Client {
 
     /**
      * Get the {@link ServerState}
