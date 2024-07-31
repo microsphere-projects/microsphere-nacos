@@ -338,6 +338,12 @@ public enum OpenApiRequestParam {
         }
     },
 
+    // Client
+    /**
+     * The request parameter of Nacos Client's id
+     */
+    CLIENT_ID("clientId"),
+
     ;
     /**
      * The request parameter name
