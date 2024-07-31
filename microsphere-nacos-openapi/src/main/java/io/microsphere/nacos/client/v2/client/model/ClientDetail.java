@@ -19,13 +19,13 @@ package io.microsphere.nacos.client.v2.client.model;
 import io.microsphere.nacos.client.common.model.Model;
 
 /**
- * The {@link Model} {@link Class} for Nacos Client Info
+ * The {@link Model} {@link Class} for Nacos Client Detail
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy<a/>
  * @see Model
  * @since 1.0.0
  */
-public class ClientInfo implements Model {
+public class ClientDetail implements Model {
 
     private static final long serialVersionUID = -7456524977337954973L;
 
