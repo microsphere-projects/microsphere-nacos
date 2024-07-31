@@ -16,6 +16,7 @@
  */
 package io.microsphere.nacos.client.v1.raft;
 
+import io.microsphere.nacos.client.Client;
 import io.microsphere.nacos.client.v1.raft.model.RaftModel;
 
 /**
@@ -27,7 +28,7 @@ import io.microsphere.nacos.client.v1.raft.model.RaftModel;
  * @deprecated will remove in 1.4.x
  */
 @Deprecated
-public interface RaftClient {
+public interface RaftClient extends Client {
 
     /**
      * Get the instance of {@link RaftModel}
