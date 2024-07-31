@@ -16,6 +16,7 @@
  */
 package io.microsphere.nacos.client.common.discovery;
 
+import io.microsphere.nacos.client.Client;
 import io.microsphere.nacos.client.common.discovery.model.Service;
 import io.microsphere.nacos.client.common.model.Page;
 import io.microsphere.nacos.client.common.namespace.model.Namespace;
@@ -31,7 +32,7 @@ import static io.microsphere.nacos.client.constants.Constants.PAGE_SIZE;
  * @see Namespace
  * @since 1.0.0
  */
-public interface ServiceClient {
+public interface ServiceClient extends Client {
 
 
     /**
