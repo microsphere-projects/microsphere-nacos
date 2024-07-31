@@ -16,6 +16,7 @@
  */
 package io.microsphere.nacos.client.common;
 
+import io.microsphere.nacos.client.AbstractClient;
 import io.microsphere.nacos.client.NacosClientConfig;
 import io.microsphere.nacos.client.OpenApiVersion;
 import io.microsphere.nacos.client.transport.OpenApiClient;
@@ -34,17 +35,14 @@ import static io.microsphere.nacos.client.OpenApiVersion.V2;
  * @see OpenApiClient
  * @since 1.0.0
  */
-public abstract class OpenApiTemplateClient {
+public abstract class OpenApiTemplateClient extends AbstractClient {
 
     protected final OpenApiClient openApiClient;
 
-    protected final NacosClientConfig nacosClientConfig;
-
     protected OpenApiTemplateClient(OpenApiClient openApiClient, NacosClientConfig nacosClientConfig) {
+        super(nacosClientConfig);
         Objects.requireNonNull(openApiClient, "The 'openApiClient' argument must not be null!");
-        Objects.requireNonNull(nacosClientConfig, "The 'nacosClientConfig' argument must not be null!");
         this.openApiClient = openApiClient;
-        this.nacosClientConfig = nacosClientConfig;
     }
 
     /**
@@ -52,17 +50,8 @@ public abstract class OpenApiTemplateClient {
      *
      * @return non-null
      */
-    public OpenApiClient getOpenApiClient() {
+    public final OpenApiClient getOpenApiClient() {
         return openApiClient;
-    }
-
-    /**
-     * Get the {@link NacosClientConfig}
-     *
-     * @return non-null
-     */
-    public NacosClientConfig getNacosClientConfig() {
-        return nacosClientConfig;
     }
 
     /**
