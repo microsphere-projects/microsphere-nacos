@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 
+import static io.microsphere.nacos.client.util.CollectionUtils.size;
 import static java.beans.Introspector.decapitalize;
 import static java.beans.Introspector.getBeanInfo;
 import static java.util.Arrays.asList;
@@ -63,7 +64,7 @@ public abstract class JsonUtils {
     }
 
     public static String toJSON(Collection<?> elements) {
-        int size = elements == null ? 0 : elements.size();
+        int size = size(elements);
         if (size < 1) {
             return EMPTY_ARRAY_JSON;
         }
