@@ -62,9 +62,9 @@ public class NacosClientConfig implements Serializable {
     private String contextPath = "/nacos";
 
     /**
-     * The Nacos authentication username
+     * The Nacos authentication user name
      */
-    private String username;
+    private String userName;
 
     /**
      * The Nacos authentication password
@@ -154,12 +154,12 @@ public class NacosClientConfig implements Serializable {
         this.contextPath = contextPath;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -267,7 +267,7 @@ public class NacosClientConfig implements Serializable {
     }
 
     public boolean isAuthorizationEnabled() {
-        return username != null && password != null;
+        return userName != null && password != null;
     }
 
     @Override
@@ -286,7 +286,7 @@ public class NacosClientConfig implements Serializable {
                 Objects.equals(serverAddress, that.serverAddress) &&
                 Objects.equals(scheme, that.scheme) &&
                 Objects.equals(contextPath, that.contextPath) &&
-                Objects.equals(username, that.username) &&
+                Objects.equals(userName, that.userName) &&
                 Objects.equals(password, that.password) &&
                 Objects.equals(accessKey, that.accessKey) &&
                 Objects.equals(secretKey, that.secretKey) &&
@@ -301,7 +301,7 @@ public class NacosClientConfig implements Serializable {
         int result = Objects.hashCode(serverAddress);
         result = 31 * result + Objects.hashCode(scheme);
         result = 31 * result + Objects.hashCode(contextPath);
-        result = 31 * result + Objects.hashCode(username);
+        result = 31 * result + Objects.hashCode(userName);
         result = 31 * result + Objects.hashCode(password);
         result = 31 * result + Objects.hashCode(accessKey);
         result = 31 * result + Objects.hashCode(secretKey);
@@ -324,7 +324,7 @@ public class NacosClientConfig implements Serializable {
                 "serverAddress='" + serverAddress + '\'' +
                 ", scheme='" + scheme + '\'' +
                 ", contextPath='" + contextPath + '\'' +
-                ", username='" + username + '\'' +
+                ", username='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", accessKey='" + accessKey + '\'' +
                 ", secretKey='" + secretKey + '\'' +
