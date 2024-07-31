@@ -16,6 +16,8 @@
  */
 package io.microsphere.nacos.client.v1.raft;
 
+import io.microsphere.nacos.client.NacosClientConfig;
+import io.microsphere.nacos.client.common.OpenApiTemplateClient;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
 import io.microsphere.nacos.client.v1.raft.model.RaftModel;
@@ -27,12 +29,10 @@ import io.microsphere.nacos.client.v1.raft.model.RaftModel;
  * @see RaftClient
  * @since 1.0.0
  */
-public class OpenApiRaftClient implements RaftClient {
+public class OpenApiRaftClient extends OpenApiTemplateClient implements RaftClient {
 
-    private final OpenApiClient openApiClient;
-
-    public OpenApiRaftClient(OpenApiClient openApiClient) {
-        this.openApiClient = openApiClient;
+    public OpenApiRaftClient(OpenApiClient openApiClient, NacosClientConfig nacosClientConfig) {
+        super(openApiClient, nacosClientConfig);
     }
 
     @Override
