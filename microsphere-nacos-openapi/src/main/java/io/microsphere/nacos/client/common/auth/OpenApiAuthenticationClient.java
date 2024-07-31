@@ -17,6 +17,7 @@
 package io.microsphere.nacos.client.common.auth;
 
 import io.microsphere.nacos.client.NacosClientConfig;
+import io.microsphere.nacos.client.common.OpenApiTemplateClient;
 import io.microsphere.nacos.client.common.auth.model.Authentication;
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
@@ -32,25 +33,20 @@ import static io.microsphere.nacos.client.transport.OpenApiRequestParam.USER_NAM
  * @see AuthenticationClient
  * @since 1.0.0
  */
-public class OpenApiAuthenticationClient implements AuthenticationClient {
-
-    private final OpenApiClient openApiClient;
-
-    private final NacosClientConfig nacosClientConfig;
+public class OpenApiAuthenticationClient extends OpenApiTemplateClient implements AuthenticationClient {
 
     public OpenApiAuthenticationClient(OpenApiClient openApiClient, NacosClientConfig nacosClientConfig) {
-        this.openApiClient = openApiClient;
-        this.nacosClientConfig = nacosClientConfig;
+        super(openApiClient, nacosClientConfig);
     }
 
     @Override
-    public Authentication authenticate() {
+    public Authentication authenticate(String userName, String password) {
         OpenApiRequest request = OpenApiRequest.Builder.create("/v1/auth/login")
                 .method(POST)
-                .queryParameter(USER_NAME, nacosClientConfig.getUsername())
-                .queryParameter(PASSWORD, nacosClientConfig.getPassword())
+                .queryParameter(USER_NAME, userName)
+                .queryParameter(PASSWORD, password)
                 .build();
-
         return openApiClient.execute(request, Authentication.class);
     }
+
 }
