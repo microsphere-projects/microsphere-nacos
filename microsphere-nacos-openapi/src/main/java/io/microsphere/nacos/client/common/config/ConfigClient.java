@@ -16,6 +16,7 @@
  */
 package io.microsphere.nacos.client.common.config;
 
+import io.microsphere.nacos.client.Client;
 import io.microsphere.nacos.client.common.config.event.ConfigChangedListener;
 import io.microsphere.nacos.client.common.config.model.Config;
 import io.microsphere.nacos.client.common.config.model.HistoryConfig;
@@ -35,7 +36,7 @@ import static io.microsphere.nacos.client.constants.Constants.PAGE_NUMBER;
  * @see Config
  * @since 1.0.0
  */
-public interface ConfigClient {
+public interface ConfigClient extends Client {
 
     /**
      * The default page size
