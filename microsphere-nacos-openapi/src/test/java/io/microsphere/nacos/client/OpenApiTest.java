@@ -60,7 +60,7 @@ public abstract class OpenApiTest {
 
         NacosClientConfig config = new NacosClientConfig();
         config.setServerAddress(SERVER_ADDRESS);
-        config.setUsername(USER_NAME);
+        config.setUserName(USER_NAME);
         config.setPassword(PASSWORD);
         customize(config);
         this.openApiClient = new OpenApiHttpClient(config);
