@@ -37,7 +37,7 @@ public class OpenApiAuthenticationClientTest extends OpenApiTest {
     @Test
     public void testAuthenticate() {
         NacosClientConfig nacosClientConfig = this.nacosClientConfig;
-        nacosClientConfig.setUsername("nacos");
+        nacosClientConfig.setUserName("nacos");
         nacosClientConfig.setPassword("nacos");
         OpenApiAuthenticationClient client = new OpenApiAuthenticationClient(openApiClient, nacosClientConfig);
         Authentication authentication = client.authenticate();
