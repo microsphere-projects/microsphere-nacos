@@ -32,4 +32,14 @@ public class DeleteInstance extends BaseInstance {
         super.from(that);
         return this;
     }
+
+    /**
+     * Build a new {@link DeleteInstance} from the specified {@link BaseInstance}
+     *
+     * @param that the specified {@link BaseInstance}
+     * @return non-null
+     */
+    public static DeleteInstance build(BaseInstance that) {
+        return new DeleteInstance().from(that);
+    }
 }
