@@ -19,6 +19,8 @@ package io.microsphere.nacos.client.util;
 import java.util.Collection;
 import java.util.Iterator;
 
+import static io.microsphere.nacos.client.util.CollectionUtils.size;
+
 /**
  * The utility class for {@link String}
  *
@@ -86,11 +88,13 @@ public abstract class StringUtils {
      */
     public static String collectionToDelimitedString(Collection<?> coll, String delim, String prefix, String suffix) {
 
-        if (coll == null || coll.isEmpty()) {
+        int size = size(coll);
+
+        if (size < 1) {
             return "";
         }
 
-        int totalLength = coll.size() * (prefix.length() + suffix.length()) + (coll.size() - 1) * delim.length();
+        int totalLength = size * (prefix.length() + suffix.length()) + (size - 1) * delim.length();
         for (Object element : coll) {
             totalLength += String.valueOf(element).length();
         }
