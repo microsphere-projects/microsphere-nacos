@@ -17,7 +17,6 @@
 package io.microsphere.nacos.client.common.discovery.model;
 
 import io.microsphere.nacos.client.common.model.Model;
-import io.microsphere.nacos.client.constants.Constants;
 
 /**
  * The abstract {@link Model model} {@link Class} of Service Instance
@@ -26,38 +25,9 @@ import io.microsphere.nacos.client.constants.Constants;
  * @see Model
  * @since 1.0.0
  */
-public abstract class BaseInstance implements Model {
+public abstract class BaseInstance extends DiscoverableModel {
 
-    private static final long serialVersionUID = -4622496619793842894L;
-
-    /**
-     * The ID of namespace (optional)
-     * If not specified, the default value is "public"
-     *
-     * @see Constants#DEFAULT_NAMESPACE_ID
-     */
-    private String namespaceId;
-
-    /**
-     * The Cluster name (optional)
-     * If not specified, the default value is "DEFAULT"
-     *
-     * @see Constants#DEFAULT_CLUSTER_NAME
-     */
-    private String clusterName;
-
-    /**
-     * The Group name (optional)
-     * If not specified, the default value is "DEFAULT_GROUP"
-     *
-     * @see Constants#DEFAULT_GROUP_NAME
-     */
-    private String groupName;
-
-    /**
-     * The Service name (required)
-     */
-    private String serviceName;
+    private static final long serialVersionUID = 5847911699437357967L;
 
     /**
      * The IP of instance (required)
@@ -73,38 +43,6 @@ public abstract class BaseInstance implements Model {
      * if instance is ephemeral (optional)
      */
     private Boolean ephemeral;
-
-    public String getNamespaceId() {
-        return namespaceId;
-    }
-
-    public void setNamespaceId(String namespaceId) {
-        this.namespaceId = namespaceId;
-    }
-
-    public String getClusterName() {
-        return clusterName;
-    }
-
-    public void setClusterName(String clusterName) {
-        this.clusterName = clusterName;
-    }
-
-    public String getGroupName() {
-        return this.groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-    public String getServiceName() {
-        return this.serviceName;
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
 
     public String getIp() {
         return ip;
@@ -130,10 +68,6 @@ public abstract class BaseInstance implements Model {
         this.ephemeral = ephemeral;
     }
 
-    @Override
-    public String toString() {
-        return "{" + "namespaceId='" + namespaceId + '\'' + ", clusterName='" + clusterName + '\'' + ", groupName='" + groupName + '\'' + ", serviceName='" + serviceName + '\'' + ", ip='" + ip + '\'' + ", port=" + port + ", ephemeral=" + ephemeral + '}';
-    }
 
     /**
      * Copy the properties from the specified {@link BaseInstance}
