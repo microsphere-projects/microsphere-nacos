@@ -16,6 +16,7 @@
  */
 package io.microsphere.nacos.client.v1.server;
 
+import io.microsphere.nacos.client.Client;
 import io.microsphere.nacos.client.v1.server.model.ServerSwitch;
 
 /**
@@ -25,7 +26,7 @@ import io.microsphere.nacos.client.v1.server.model.ServerSwitch;
  * @see ServerSwitch
  * @since 1.0.0
  */
-public interface ServerSwitchClient {
+public interface ServerSwitchClient extends Client {
 
     /**
      * Get the Nacos {@link ServerSwitch Server Swtich}
