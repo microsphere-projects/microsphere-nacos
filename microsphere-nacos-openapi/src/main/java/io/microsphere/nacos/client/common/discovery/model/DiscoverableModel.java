@@ -27,8 +27,8 @@ import io.microsphere.nacos.client.constants.Constants;
  * @since 1.0.0
  */
 public abstract class DiscoverableModel implements Model {
-
-    private static final long serialVersionUID = -9120611693810903834L;
+    
+    private static final long serialVersionUID = 719819197200005111L;
 
     /**
      * The ID of namespace (optional)
