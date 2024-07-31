@@ -23,7 +23,7 @@ import io.microsphere.nacos.client.common.discovery.InstanceClient;
 import io.microsphere.nacos.client.common.discovery.ServiceClient;
 import io.microsphere.nacos.client.common.namespace.NamespaceClient;
 import io.microsphere.nacos.client.v1.NacosClient;
-import io.microsphere.nacos.client.v2.client.model.ClientInfo;
+import io.microsphere.nacos.client.v2.client.model.ClientDetail;
 import io.microsphere.nacos.client.v2.client.model.ClientInstance;
 import io.microsphere.nacos.client.v2.client.model.ClientSubscriber;
 
@@ -52,17 +52,17 @@ public interface NacosClientV2 extends AuthenticationClient, ConfigClient, Servi
     List<String> getAllClientIds();
 
     /**
-     * Get an instance of {@link ClientInfo} by the specified client id
+     * Get an instance of {@link ClientDetail} by the specified client id
      *
-     * @param clientId the id of {@link ClientInfo}
-     * @return an instance of {@link ClientInfo} if found
+     * @param clientId the id of {@link ClientDetail}
+     * @return an instance of {@link ClientDetail} if found
      */
-    ClientInfo getClientInfo(String clientId);
+    ClientDetail getClientDetail(String clientId);
 
     /**
      * Get the registered {@link List list} of {@link ClientInstance instances} from the specified client id
      *
-     * @param clientId the id of {@link ClientInfo}
+     * @param clientId the id of {@link ClientDetail}
      * @return the non-null {@link List list} of {@link ClientInstance instances}
      */
     List<ClientInstance> getRegisteredInstances(String clientId);
@@ -70,7 +70,7 @@ public interface NacosClientV2 extends AuthenticationClient, ConfigClient, Servi
     /**
      * Get the {@link List list} of {@link ClientSubscriber subscribers} from the specified client id
      *
-     * @param clientId the id of {@link ClientInfo}
+     * @param clientId the id of {@link ClientDetail}
      * @return the non-null {@link List list} of {@link ClientInstance instances}
      */
     List<ClientSubscriber> getSubscribers(String clientId);
