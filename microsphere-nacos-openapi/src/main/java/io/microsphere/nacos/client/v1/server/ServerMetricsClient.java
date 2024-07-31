@@ -16,6 +16,7 @@
  */
 package io.microsphere.nacos.client.v1.server;
 
+import io.microsphere.nacos.client.Client;
 import io.microsphere.nacos.client.v1.server.model.ServerMetrics;
 
 /**
@@ -25,7 +26,7 @@ import io.microsphere.nacos.client.v1.server.model.ServerMetrics;
  * @see ServerMetrics
  * @since 1.0.0
  */
-public interface ServerMetricsClient {
+public interface ServerMetricsClient extends Client {
 
     /**
      * Get the Nacos {@link ServerMetrics Server Metrics}
