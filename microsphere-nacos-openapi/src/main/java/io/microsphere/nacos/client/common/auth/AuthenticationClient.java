@@ -16,6 +16,7 @@
  */
 package io.microsphere.nacos.client.common.auth;
 
+import io.microsphere.nacos.client.Client;
 import io.microsphere.nacos.client.common.auth.model.Authentication;
 
 /**
@@ -25,7 +26,7 @@ import io.microsphere.nacos.client.common.auth.model.Authentication;
  * @see Authentication
  * @since 1.0.0
  */
-public interface AuthenticationClient {
+public interface AuthenticationClient extends Client {
 
     /**
      * The client authenticates the Nacos Server
