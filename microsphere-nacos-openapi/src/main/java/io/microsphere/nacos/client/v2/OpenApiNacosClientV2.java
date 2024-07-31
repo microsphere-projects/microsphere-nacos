@@ -54,7 +54,7 @@ import io.microsphere.nacos.client.v1.raft.OpenApiRaftClient;
 import io.microsphere.nacos.client.v1.raft.RaftClient;
 import io.microsphere.nacos.client.v1.server.OpenApiServerClient;
 import io.microsphere.nacos.client.v1.server.ServerClient;
-import io.microsphere.nacos.client.v2.client.model.ClientInfo;
+import io.microsphere.nacos.client.v2.client.model.ClientDetail;
 import io.microsphere.nacos.client.v2.client.model.ClientInstance;
 import io.microsphere.nacos.client.v2.client.model.ClientSubscriber;
 
@@ -545,9 +545,9 @@ public class OpenApiNacosClientV2 extends OpenApiTemplateClient implements Nacos
     }
 
     @Override
-    public ClientInfo getClientInfo(String clientId) {
+    public ClientDetail getClientDetail(String clientId) {
         OpenApiRequest request = clientRequest(CLIENT_ENDPOINT, clientId);
-        return response(request, ClientInfo.class);
+        return response(request, ClientDetail.class);
     }
 
     @Override
