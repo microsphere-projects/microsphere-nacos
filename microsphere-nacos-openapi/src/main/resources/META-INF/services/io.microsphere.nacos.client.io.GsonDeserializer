@@ -1,8 +1,9 @@
-io.microsphere.nacos.client.v1.server.io.ServerStateDeserializer
-io.microsphere.nacos.client.common.namespace.io.NamespaceDeserializer
-io.microsphere.nacos.client.v1.server.io.ServerMetricsDeserializer
-io.microsphere.nacos.client.v1.server.io.ServerDeserializer
-io.microsphere.nacos.client.v1.raft.io.RaftModelDeserializer
 io.microsphere.nacos.client.common.config.io.ConfigDeserializer
 io.microsphere.nacos.client.common.config.io.HistoryConfigPageDeserializer
 io.microsphere.nacos.client.common.config.io.HistoryConfigDeserializer
+io.microsphere.nacos.client.common.namespace.io.NamespaceDeserializer
+io.microsphere.nacos.client.v1.server.io.ServerStateDeserializer
+io.microsphere.nacos.client.v1.server.io.ServerMetricsDeserializer
+io.microsphere.nacos.client.v1.server.io.ServerDeserializer
+io.microsphere.nacos.client.v1.raft.io.RaftModelDeserializer
+io.microsphere.nacos.client.v2.client.io.ClientInstanceDeserializer
