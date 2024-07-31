@@ -17,6 +17,7 @@
 package io.microsphere.nacos.client.v2;
 
 import io.microsphere.nacos.client.NacosClientConfig;
+import io.microsphere.nacos.client.OpenApiVersion;
 import io.microsphere.nacos.client.common.OpenApiTemplateClient;
 import io.microsphere.nacos.client.common.auth.AuthenticationClient;
 import io.microsphere.nacos.client.common.auth.OpenApiAuthenticationClient;
@@ -44,6 +45,7 @@ import io.microsphere.nacos.client.common.model.Page;
 import io.microsphere.nacos.client.common.namespace.NamespaceClient;
 import io.microsphere.nacos.client.common.namespace.model.Namespace;
 import io.microsphere.nacos.client.transport.OpenApiClient;
+import io.microsphere.nacos.client.transport.OpenApiRequest;
 import io.microsphere.nacos.client.v1.config.OpenApiConfigClient;
 import io.microsphere.nacos.client.v1.discovery.OpenApiInstanceClient;
 import io.microsphere.nacos.client.v1.discovery.OpenApiServiceClient;
@@ -54,9 +56,13 @@ import io.microsphere.nacos.client.v1.server.OpenApiServerClient;
 import io.microsphere.nacos.client.v1.server.ServerClient;
 import io.microsphere.nacos.client.v2.client.model.ClientInfo;
 
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import static io.microsphere.nacos.client.OpenApiVersion.V2;
+import static io.microsphere.nacos.client.http.HttpMethod.GET;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CLIENT_ID;
 
 /**
  * {@link NacosClientV2} for Open API
@@ -66,6 +72,10 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class OpenApiNacosClientV2 extends OpenApiTemplateClient implements NacosClientV2 {
+
+    protected static final String CLIENT_ENDPOINT = "/v2/ns/client";
+
+    protected static final String CLIENT_LIST_ENDPOINT = CLIENT_ENDPOINT + "/list";
 
     private final AuthenticationClient authenticationClient;
 
@@ -90,6 +100,11 @@ public class OpenApiNacosClientV2 extends OpenApiTemplateClient implements Nacos
         this.namespaceClient = new OpenApiNamespaceClient(openApiClient, nacosClientConfig);
         this.serverClient = new OpenApiServerClient(openApiClient, nacosClientConfig);
         this.raftClient = new OpenApiRaftClient(openApiClient, nacosClientConfig);
+    }
+
+    @Override
+    public OpenApiVersion getOpenApiVersion() {
+        return V2;
     }
 
     public AuthenticationClient getAuthenticationClient() {
@@ -512,11 +527,18 @@ public class OpenApiNacosClientV2 extends OpenApiTemplateClient implements Nacos
 
     @Override
     public List<String> getAllClientIds() {
-        return Collections.emptyList();
+        OpenApiRequest request = OpenApiRequest.Builder.create(CLIENT_LIST_ENDPOINT)
+                .method(GET)
+                .build();
+        return response(request, LinkedList.class);
     }
 
     @Override
     public ClientInfo getClientInfo(String clientId) {
-        return null;
+        OpenApiRequest request = OpenApiRequest.Builder.create(CLIENT_ENDPOINT)
+                .method(GET)
+                .queryParameter(CLIENT_ID, clientId)
+                .build();
+        return response(request, ClientInfo.class);
     }
 }
