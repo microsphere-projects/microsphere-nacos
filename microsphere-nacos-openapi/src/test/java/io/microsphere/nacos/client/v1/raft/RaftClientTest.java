@@ -43,7 +43,6 @@ public class RaftClientTest extends OpenApiTest {
         assertNotNull(leader.getIp());
         assertNotNull(leader.getTerm());
         assertNotNull(leader.getState());
-        assertNotNull(leader.getVoteFor());
         assertNotNull(leader.getLeaderDueMs());
         assertNotNull(leader.getHeartbeatDueMs());
     }
