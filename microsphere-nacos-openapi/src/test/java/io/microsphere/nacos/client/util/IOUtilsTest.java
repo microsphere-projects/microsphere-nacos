@@ -39,14 +39,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class IOUtilsTest {
 
-    private static final int TEST_BUFFER_SIZE = 1024;
-
     private static final String ENCODING = System.getProperty("file.encoding");
 
     private static final byte[] TEST_BYTES;
 
     static {
-        System.setProperty(DEFAULT_BUFFER_SIZE_PROPERTY_NAME, String.valueOf(TEST_BUFFER_SIZE));
         try {
             TEST_BYTES = ENCODING.getBytes(ENCODING);
         } catch (Exception e) {
@@ -57,7 +54,7 @@ public class IOUtilsTest {
     @Test
     public void testConstants() {
         assertEquals("microsphere.nacos.client.io.default-buffer-size", DEFAULT_BUFFER_SIZE_PROPERTY_NAME);
-        assertEquals(TEST_BUFFER_SIZE, DEFAULT_BUFFER_SIZE);
+        assertEquals(4096, DEFAULT_BUFFER_SIZE);
         assertEquals(2147483639, MAX_BUFFER_SIZE);
         assertArrayEquals(new byte[0], EMPTY_BYTE_ARRAY);
     }
