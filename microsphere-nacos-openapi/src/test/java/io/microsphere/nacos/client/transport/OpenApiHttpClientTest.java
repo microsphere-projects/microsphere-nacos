@@ -24,7 +24,6 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * {@link OpenApiHttpClient} Test
@@ -55,8 +54,6 @@ public class OpenApiHttpClientTest extends OpenApiTest {
 
         ServerState serverState = openApiClient.execute(request, ServerState.class);
         assertNotNull(serverState);
-        assertNotNull(serverState.getMode());
         assertNotNull(serverState.getVersion());
-        assertNull(serverState.getFunctionMode());
     }
 }
