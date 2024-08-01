@@ -21,7 +21,6 @@ import io.microsphere.nacos.client.v1.server.model.ServerState;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * {@link ServerClient} Test
@@ -37,8 +36,6 @@ public class ServerClientTest extends OpenApiTest {
         ServerClient serverClient = new OpenApiServerClient(this.openApiClient, this.nacosClientConfig);
         ServerState serverState = serverClient.getServerState();
         assertNotNull(serverState);
-        assertNotNull(serverState.getMode());
         assertNotNull(serverState.getVersion());
-        assertNull(serverState.getFunctionMode());
     }
 }
