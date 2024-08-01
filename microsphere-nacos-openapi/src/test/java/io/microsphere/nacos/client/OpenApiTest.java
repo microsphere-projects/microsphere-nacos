@@ -18,11 +18,11 @@ package io.microsphere.nacos.client;
 
 import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiHttpClient;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import java.util.concurrent.TimeUnit;
@@ -35,7 +35,6 @@ import java.util.concurrent.TimeUnit;
  * @see OpenApiHttpClient
  * @since 1.0.0
  */
-@Testcontainers
 public abstract class OpenApiTest {
 
     protected static final String TEST_NAMESPACE_ID = "test";
@@ -54,29 +53,42 @@ public abstract class OpenApiTest {
 
     protected NacosClientConfig nacosClientConfig;
 
-    @Container
-    public GenericContainer nacosServer = new GenericContainer(DockerImageName.parse("nacos/nacos-server:latest"))
-            .withEnv("MODE", "standalone")
-            .withExposedPorts(8848);
+    protected static GenericContainer nacosServer;
+
+    @BeforeAll
+    public static void beforeAll() {
+        if (SERVER_ADDRESS == null) {
+            nacosServer = new GenericContainer(DockerImageName.parse("nacos/nacos-server:latest"))
+                    .withEnv("MODE", "standalone")
+                    .withExposedPorts(8848);
+            nacosServer.start();
+        }
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        if (nacosServer != null) {
+            nacosServer.stop();
+        }
+    }
+
+    protected static String getServerAddress() {
+        if (nacosServer == null) {
+            return SERVER_ADDRESS;
+        } else {
+            return nacosServer.getHost() + ":" + nacosServer.getFirstMappedPort();
+        }
+    }
 
     @BeforeEach
     public void init() {
-        String serverAddress = SERVER_ADDRESS;
-
-        if (SERVER_ADDRESS == null) {
-            serverAddress = nacosServer.getHost() + ":" + nacosServer.getFirstMappedPort();
-        }
-
         NacosClientConfig config = new NacosClientConfig();
-        config.setServerAddress(serverAddress);
+        config.setServerAddress(getServerAddress());
         customize(config);
         this.openApiClient = new OpenApiHttpClient(config);
         this.nacosClientConfig = config;
 
         setup();
-    }
-
-    protected void setup() {
     }
 
     /**
@@ -87,6 +99,8 @@ public abstract class OpenApiTest {
     protected void customize(NacosClientConfig nacosClientConfig) {
     }
 
+    protected void setup() {
+    }
 
     protected void await(long waitTimeInSeconds) {
         long waitTime = TimeUnit.SECONDS.toMillis(waitTimeInSeconds);
