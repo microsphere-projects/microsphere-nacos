@@ -19,4 +19,8 @@ dependencies {
     // Testing
     testImplementation(libs.junit.jupiter.engine)
 
+    testImplementation(libs.testcontainers)
+
+    testImplementation(libs.testcontainers.junit.jupiter)
+
 }

@@ -3,11 +3,14 @@ apache-http-client-version = "4.5.14"
 gson-version = "2.10.1"
 junit-platform-launcher-version = "1.10.2"
 junit-jupiter-engine-version = "5.10.2"
+testcontainers-version = "1.20.1"
 
 [libraries]
 apache-http-client = { group = "org.apache.httpcomponents", name = "httpclient", version.ref = "apache-http-client-version" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson-version" }
 junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junit-platform-launcher-version" }
 junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter-engine-version" }
+testcontainers = { group = "org.testcontainers", name = "testcontainers", version.ref="testcontainers-version" }
+testcontainers-junit-jupiter = { group = "org.testcontainers", name = "junit-jupiter", version.ref="testcontainers-version" }
 
 [plugins]

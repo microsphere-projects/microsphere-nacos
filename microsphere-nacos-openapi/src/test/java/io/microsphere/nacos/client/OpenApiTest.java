@@ -20,10 +20,12 @@ import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiHttpClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import java.util.concurrent.TimeUnit;
-
-import static java.lang.String.format;
 
 /**
  * Abstract Test class for Open API
@@ -33,6 +35,7 @@ import static java.lang.String.format;
  * @see OpenApiHttpClient
  * @since 1.0.0
  */
+@Testcontainers
 public abstract class OpenApiTest {
 
     protected static final String TEST_NAMESPACE_ID = "test";
@@ -51,17 +54,21 @@ public abstract class OpenApiTest {
 
     protected NacosClientConfig nacosClientConfig;
 
+    @Container
+    public GenericContainer nacosServer = new GenericContainer(DockerImageName.parse("nacos/nacos-server:latest"))
+            .withEnv("MODE", "standalone")
+            .withExposedPorts(8848);
+
     @BeforeEach
     public void init() {
+        String serverAddress = SERVER_ADDRESS;
+
         if (SERVER_ADDRESS == null) {
-            String errorMessage = format("The environment variable[ name : '%s' ] for Nacos Server must be set!", SERVER_ADDRESS_PROPERTY_NAME);
-            throw new IllegalArgumentException(errorMessage);
+            serverAddress = nacosServer.getHost() + ":" + nacosServer.getFirstMappedPort();
         }
 
         NacosClientConfig config = new NacosClientConfig();
-        config.setServerAddress(SERVER_ADDRESS);
-        config.setUserName(USER_NAME);
-        config.setPassword(PASSWORD);
+        config.setServerAddress(serverAddress);
         customize(config);
         this.openApiClient = new OpenApiHttpClient(config);
         this.nacosClientConfig = config;
