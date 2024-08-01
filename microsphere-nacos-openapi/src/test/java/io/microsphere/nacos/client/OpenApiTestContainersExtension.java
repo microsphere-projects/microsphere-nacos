@@ -38,13 +38,14 @@ public class OpenApiTestContainersExtension implements BeforeAllCallback, AfterA
 
     @Override
     public void beforeAll(ExtensionContext extensionContext) throws Exception {
+        if (System.getProperties().contains(SERVER_ADDRESS_PROPERTY_NAME)) { // Use the external Nacos Server
+            return;
+        }
         String nacosServerImage = extensionContext.getTestClass().map(testClass -> {
             String className = testClass.getName();
             return className.contains(".v1.") ? "nacos/nacos-server:v1.4.7" : "nacos/nacos-server:latest";
         }).get();
-        nacosServer = new GenericContainer(DockerImageName.parse(nacosServerImage))
-                .withEnv("MODE", "standalone")
-                .withExposedPorts(8848);
+        nacosServer = new GenericContainer(DockerImageName.parse(nacosServerImage)).withEnv("MODE", "standalone").withExposedPorts(8848);
         nacosServer.start();
         String serverAddress = nacosServer.getHost() + ":" + nacosServer.getFirstMappedPort();
         System.setProperty(SERVER_ADDRESS_PROPERTY_NAME, serverAddress);
