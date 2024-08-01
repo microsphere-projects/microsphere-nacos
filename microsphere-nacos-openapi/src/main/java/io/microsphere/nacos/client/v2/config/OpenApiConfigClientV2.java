@@ -81,7 +81,7 @@ public class OpenApiConfigClientV2 extends OpenApiConfigClient implements Config
                 .queryParameter(CONFIG_DATA_ID, dataId)
                 .queryParameter(SHOW, "all")
                 .build();
-        return super.response(request, Config.class);
+        return this.openApiClient.execute(request, Config.class);
     }
 
     @Override
