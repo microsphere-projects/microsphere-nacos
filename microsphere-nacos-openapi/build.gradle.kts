@@ -23,4 +23,6 @@ dependencies {
 
     testImplementation(libs.testcontainers.junit.jupiter)
 
+    testImplementation(libs.logback.classic)
+
 }
