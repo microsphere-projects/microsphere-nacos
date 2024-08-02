@@ -23,6 +23,8 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;
 
 import static io.microsphere.nacos.client.OpenApiTest.SERVER_ADDRESS_PROPERTY_NAME;
+import static io.microsphere.nacos.client.OpenApiTest.getServerAddress;
+import static org.junit.platform.commons.util.StringUtils.isNotBlank;
 
 /**
  * The Junit5 Extension of TestContainers for Open API
@@ -38,7 +40,7 @@ public class OpenApiTestContainersExtension implements BeforeAllCallback, AfterA
 
     @Override
     public void beforeAll(ExtensionContext extensionContext) throws Exception {
-        if (System.getProperties().contains(SERVER_ADDRESS_PROPERTY_NAME)) { // Use the external Nacos Server
+        if (isNotBlank(getServerAddress())) { // Use the external Nacos Server
             return;
         }
         String nacosServerImage = extensionContext.getTestClass().map(testClass -> {
