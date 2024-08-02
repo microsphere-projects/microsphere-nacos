@@ -21,6 +21,7 @@ repositories {
         url = uri("https://maven.aliyun.com/repository/spring-plugin")
     }
     mavenCentral()
+    gradleToolingApi()
     gradlePluginPortal()
 }
 
@@ -28,6 +29,10 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(8)
     }
+}
+
+tasks.withType<JavaCompile> {
+    options.compilerArgs.addAll(listOf("-source", "8", "-target", "8"))
 }
 
 dependencies {
