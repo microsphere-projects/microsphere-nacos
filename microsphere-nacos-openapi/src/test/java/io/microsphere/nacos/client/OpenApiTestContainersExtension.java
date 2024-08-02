@@ -43,14 +43,17 @@ public class OpenApiTestContainersExtension implements BeforeAllCallback, AfterA
         if (isNotBlank(getServerAddress())) { // Use the external Nacos Server
             return;
         }
-        String nacosServerImage = extensionContext.getTestClass().map(testClass -> {
-            String className = testClass.getName();
-            return className.contains(".v1.") ? "nacos/nacos-server:v1.4.7" : "nacos/nacos-server:latest";
-        }).get();
+        boolean nacosServerV1 = extensionContext.getTestClass()
+                .map(testClass -> testClass.getName().contains(".v1."))
+                .get();
+        String nacosServerImage = nacosServerV1 ? "nacos/nacos-server:v1.4.7" : "nacos/nacos-server:latest";
         nacosServer = new GenericContainer(DockerImageName.parse(nacosServerImage))
                 .withEnv("MODE", "standalone")
-                .withEnv("NACOS_AUTH_TOKEN","SecretKey012345678901234567890123456789012345678901234567890123456789")
                 .withExposedPorts(8848);
+        if (nacosServerV1) {
+            // "NACOS_AUTH_TOKEN" was removed since Nacos Server 2.2.1
+            nacosServer.withEnv("NACOS_AUTH_TOKEN", "SecretKey012345678901234567890123456789012345678901234567890123456789");
+        }
         nacosServer.start();
         String serverAddress = nacosServer.getHost() + ":" + nacosServer.getFirstMappedPort();
         System.setProperty(SERVER_ADDRESS_PROPERTY_NAME, serverAddress);
@@ -60,7 +63,7 @@ public class OpenApiTestContainersExtension implements BeforeAllCallback, AfterA
     public void afterAll(ExtensionContext extensionContext) throws Exception {
         if (nacosServer != null) {
             nacosServer.stop();
+            System.getProperties().remove(SERVER_ADDRESS_PROPERTY_NAME);
         }
     }
-
 }
