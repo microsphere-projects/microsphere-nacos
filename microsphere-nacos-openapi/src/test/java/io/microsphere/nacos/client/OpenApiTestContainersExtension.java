@@ -47,7 +47,10 @@ public class OpenApiTestContainersExtension implements BeforeAllCallback, AfterA
             String className = testClass.getName();
             return className.contains(".v1.") ? "nacos/nacos-server:v1.4.7" : "nacos/nacos-server:latest";
         }).get();
-        nacosServer = new GenericContainer(DockerImageName.parse(nacosServerImage)).withEnv("MODE", "standalone").withExposedPorts(8848);
+        nacosServer = new GenericContainer(DockerImageName.parse(nacosServerImage))
+                .withEnv("MODE", "standalone")
+                .withEnv("NACOS_AUTH_TOKEN","SecretKey012345678901234567890123456789012345678901234567890123456789")
+                .withExposedPorts(8848);
         nacosServer.start();
         String serverAddress = nacosServer.getHost() + ":" + nacosServer.getFirstMappedPort();
         System.setProperty(SERVER_ADDRESS_PROPERTY_NAME, serverAddress);
