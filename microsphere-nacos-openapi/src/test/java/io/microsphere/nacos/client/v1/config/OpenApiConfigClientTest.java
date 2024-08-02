@@ -198,7 +198,7 @@ public class OpenApiConfigClientTest extends OpenApiTest {
         assertEquals(TEST_DATA_ID, config.getDataId());
         assertEquals(TEST_CONFIG_APP_NAME, config.getAppName());
         assertNotNull(config.getOperatorIp());
-        assertNotNull(config.getOperator());
+        assertNull(config.getOperator());
         assertNotNull(config.getCreatedTime());
         assertNotNull(config.getLastModifiedTime());
     }
