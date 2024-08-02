@@ -51,9 +51,14 @@ public abstract class OpenApiTest {
 
     protected NacosClientConfig nacosClientConfig;
 
+    static String getServerAddress() {
+        String key = SERVER_ADDRESS_PROPERTY_NAME;
+        return System.getProperty(key, System.getenv(key));
+    }
+
     @BeforeEach
     public void init() {
-        String serverAddress = System.getProperty(SERVER_ADDRESS_PROPERTY_NAME);
+        String serverAddress = getServerAddress();
         if (serverAddress == null) {
             String errorMessage = format("The Java System Property[ name : '%s' ] for Nacos Server must be set!", SERVER_ADDRESS_PROPERTY_NAME);
             throw new IllegalArgumentException(errorMessage);
