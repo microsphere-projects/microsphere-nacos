@@ -45,6 +45,7 @@ import io.microsphere.nacos.client.common.model.Page;
 import io.microsphere.nacos.client.common.namespace.NamespaceClient;
 import io.microsphere.nacos.client.common.namespace.model.Namespace;
 import io.microsphere.nacos.client.transport.OpenApiClient;
+import io.microsphere.nacos.client.transport.OpenApiHttpClient;
 import io.microsphere.nacos.client.transport.OpenApiRequest;
 import io.microsphere.nacos.client.v1.config.OpenApiConfigClient;
 import io.microsphere.nacos.client.v1.discovery.OpenApiInstanceClient;
@@ -109,6 +110,10 @@ public class OpenApiNacosClientV2 extends OpenApiTemplateClient implements Nacos
     private final ServerClient serverClient;
 
     private final RaftClient raftClient;
+
+    public OpenApiNacosClientV2(NacosClientConfig nacosClientConfig) {
+        this(new OpenApiHttpClient(nacosClientConfig), nacosClientConfig);
+    }
 
     public OpenApiNacosClientV2(OpenApiClient openApiClient, NacosClientConfig nacosClientConfig) {
         super(openApiClient, nacosClientConfig);
