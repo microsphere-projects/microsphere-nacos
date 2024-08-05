@@ -38,9 +38,13 @@ public class ServerDeserializer extends GsonDeserializer<Server> {
 
     private static final String IP_MEMBER_NAME = "ip";
 
-    private static final String PORT_MEMBER_NAME = "servePort";
+    private static final String SERVE_PORT_MEMBER_NAME = "servePort";
+
+    private static final String PORT_MEMBER_NAME = "port";
 
     private static final String SITE_MEMBER_NAME = "site";
+
+    private static final String STATE_MEMBER_NAME = "state";
 
     private static final String WEIGHT_MEMBER_NAME = "weight";
 
@@ -54,6 +58,18 @@ public class ServerDeserializer extends GsonDeserializer<Server> {
 
     private static final String KEY_MEMBER_NAME = "key";
 
+    private static final String EXTEND_INFO_MEMBER_NAME = "extendInfo";
+
+    private static final String LAST_REFRESH_TIME_MEMBER_NAME = "lastRefreshTime";
+
+    private static final String RAFT_PORT_MEMBER_NAME = "raftPort";
+
+    private static final String VERSION_MEMBER_NAME = "version";
+
+    private static final String ADDRESS_MEMBER_NAME = "address";
+
+    private static final String FAIL_ACCESS_COUNT_MEMBER_NAME = "failAccessCnt";
+
     /**
      * Deserialize an instance of {@link Server}
      *
@@ -66,25 +82,41 @@ public class ServerDeserializer extends GsonDeserializer<Server> {
     protected Server deserialize(JsonElement json, Type typeOfT) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
         String ip = getString(jsonObject, IP_MEMBER_NAME);
-        int port = getInteger(jsonObject, PORT_MEMBER_NAME);
+        int port = getInteger(jsonObject, SERVE_PORT_MEMBER_NAME, PORT_MEMBER_NAME);
         String site = getString(jsonObject, SITE_MEMBER_NAME);
+        String state = getString(jsonObject, STATE_MEMBER_NAME);
         Float weight = getFloat(jsonObject, WEIGHT_MEMBER_NAME);
         Float adWeight = getFloat(jsonObject, AD_WEIGHT_MEMBER_NAME);
         Boolean alive = getBoolean(jsonObject, ALIVE_MEMBER_NAME);
-        Long lastRefTime = getLong(jsonObject, LAST_REF_TIME_MEMBER_NAME);
+        Long lastRefreshTime = getLong(jsonObject, LAST_REF_TIME_MEMBER_NAME);
         String lastRefTimeStr = getString(jsonObject, LAST_REF_TIME_STR_MEMBER_NAME);
-        String key = getString(jsonObject, KEY_MEMBER_NAME);
+        String address = getString(jsonObject, KEY_MEMBER_NAME, ADDRESS_MEMBER_NAME);
+        Integer failAccessCount = getInteger(jsonObject, FAIL_ACCESS_COUNT_MEMBER_NAME);
+
+        Integer raftPort = null;
+        String version = null;
+
+        JsonObject extendInfoJsonObject = jsonObject.getAsJsonObject(EXTEND_INFO_MEMBER_NAME);
+        if (extendInfoJsonObject != null) {
+            lastRefreshTime = getLong(extendInfoJsonObject, LAST_REFRESH_TIME_MEMBER_NAME);
+            raftPort = getInteger(extendInfoJsonObject, RAFT_PORT_MEMBER_NAME);
+            version = getString(extendInfoJsonObject, VERSION_MEMBER_NAME);
+        }
 
         Server server = new Server();
         server.setIp(ip);
         server.setPort(port);
         server.setSite(site);
+        server.setState(state);
         server.setWeight(weight);
         server.setAdWeight(adWeight);
         server.setAlive(alive);
-        server.setLastRefTime(lastRefTime);
-        server.setLastRefTimeStr(lastRefTimeStr);
-        server.setKey(key);
+        server.setLastRefreshTime(lastRefreshTime);
+        server.setLastRefreshTimeString(lastRefTimeStr);
+        server.setAddress(address);
+        server.setRaftPort(raftPort);
+        server.setVersion(version);
+        server.setFailAccessCount(failAccessCount);
         return server;
     }
 }

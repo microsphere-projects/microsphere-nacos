@@ -51,13 +51,8 @@ public class ServersListClientTest extends OpenApiTest {
         Server server = servers.get(0);
         assertNotNull(server.getIp());
         assertNotNull(server.getPort());
-        assertNotNull(server.getSite());
-        assertNotNull(server.getWeight());
-        assertNotNull(server.getAdWeight());
-        assertNotNull(server.getAlive());
-        assertNotNull(server.getLastRefTime());
-        assertNull(server.getLastRefTimeStr());
-        assertNotNull(server.getKey());
+        assertNotNull(server.getLastRefreshTime());
+        assertNotNull(server.getAddress());
 
     }
 }

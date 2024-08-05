@@ -35,87 +35,146 @@ public class Server implements Model {
 
     private String site;
 
+    private String state;
+
     private Float weight;
 
     private Float adWeight;
 
     private Boolean alive;
 
-    private Long lastRefTime;
+    private Long lastRefreshTime;
 
-    private String lastRefTimeStr;
+    private String lastRefreshTimeString;
 
-    private String key;
+    private String version;
 
-    public String getIp() {
-        return ip;
-    }
+    private Integer raftPort;
+
+    private String address;
+
+    private Integer failAccessCount;
 
     public void setIp(String ip) {
         this.ip = ip;
-    }
-
-    public Integer getPort() {
-        return port;
     }
 
     public void setPort(Integer port) {
         this.port = port;
     }
 
-    public String getSite() {
-        return site;
-    }
-
     public void setSite(String site) {
         this.site = site;
     }
 
-    public Float getWeight() {
-        return weight;
+    public void setState(String state) {
+        this.state = state;
     }
 
     public void setWeight(Float weight) {
         this.weight = weight;
     }
 
-    public Float getAdWeight() {
-        return adWeight;
-    }
-
     public void setAdWeight(Float adWeight) {
         this.adWeight = adWeight;
-    }
-
-    public Boolean getAlive() {
-        return alive;
     }
 
     public void setAlive(Boolean alive) {
         this.alive = alive;
     }
 
-    public Long getLastRefTime() {
-        return lastRefTime;
+    public void setLastRefreshTime(Long lastRefreshTime) {
+        this.lastRefreshTime = lastRefreshTime;
     }
 
-    public void setLastRefTime(Long lastRefTime) {
-        this.lastRefTime = lastRefTime;
+    public void setLastRefreshTimeString(String lastRefreshTimeString) {
+        this.lastRefreshTimeString = lastRefreshTimeString;
     }
 
-    public String getLastRefTimeStr() {
-        return lastRefTimeStr;
+    public void setVersion(String version) {
+        this.version = version;
     }
 
-    public void setLastRefTimeStr(String lastRefTimeStr) {
-        this.lastRefTimeStr = lastRefTimeStr;
+    public void setRaftPort(Integer raftPort) {
+        this.raftPort = raftPort;
     }
 
-    public String getKey() {
-        return key;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setFailAccessCount(Integer failAccessCount) {
+        this.failAccessCount = failAccessCount;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public String getSite() {
+        return site;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public Float getWeight() {
+        return weight;
+    }
+
+    public Float getAdWeight() {
+        return adWeight;
+    }
+
+    public Boolean getAlive() {
+        return alive;
+    }
+
+    public Long getLastRefreshTime() {
+        return lastRefreshTime;
+    }
+
+    public String getLastRefreshTimeString() {
+        return lastRefreshTimeString;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public Integer getRaftPort() {
+        return raftPort;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public Integer getFailAccessCount() {
+        return failAccessCount;
+    }
+
+    @Override
+    public String toString() {
+        return "Server{" +
+                "ip='" + ip + '\'' +
+                ", port=" + port +
+                ", site='" + site + '\'' +
+                ", state='" + state + '\'' +
+                ", weight=" + weight +
+                ", adWeight=" + adWeight +
+                ", alive=" + alive +
+                ", lastRefreshTime=" + lastRefreshTime +
+                ", lastRefreshTimeString='" + lastRefreshTimeString + '\'' +
+                ", version='" + version + '\'' +
+                ", raftPort=" + raftPort +
+                ", address='" + address + '\'' +
+                ", failAccessCount=" + failAccessCount +
+                '}';
     }
 }

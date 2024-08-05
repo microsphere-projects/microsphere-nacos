@@ -82,8 +82,8 @@ public abstract class GsonDeserializer<T> implements JsonDeserializer<T> {
      * @param memberName the member name
      * @return the field value as {@link Boolean} if found,or <code>null</code>
      */
-    protected Boolean getBoolean(JsonObject jsonObject, String memberName) {
-        return getFieldValue(jsonObject, memberName, JsonElement::getAsBoolean);
+    protected Boolean getBoolean(JsonObject jsonObject, String memberName, String... otherMemberNames) {
+        return getFieldValue(jsonObject, memberName, otherMemberNames, JsonElement::getAsBoolean);
     }
 
     /**
@@ -93,8 +93,8 @@ public abstract class GsonDeserializer<T> implements JsonDeserializer<T> {
      * @param memberName the member name
      * @return the field value as {@link Integer} if found,or <code>null</code>
      */
-    protected Integer getInteger(JsonObject jsonObject, String memberName) {
-        return getFieldValue(jsonObject, memberName, JsonElement::getAsInt);
+    protected Integer getInteger(JsonObject jsonObject, String memberName, String... otherMemberNames) {
+        return getFieldValue(jsonObject, memberName, otherMemberNames, JsonElement::getAsInt);
     }
 
     /**
@@ -104,8 +104,8 @@ public abstract class GsonDeserializer<T> implements JsonDeserializer<T> {
      * @param memberName the member name
      * @return the field value as {@link Long} if found,or <code>null</code>
      */
-    protected Long getLong(JsonObject jsonObject, String memberName) {
-        return getFieldValue(jsonObject, memberName, JsonElement::getAsLong);
+    protected Long getLong(JsonObject jsonObject, String memberName, String... otherMemberNames) {
+        return getFieldValue(jsonObject, memberName, otherMemberNames, JsonElement::getAsLong);
     }
 
     /**
@@ -115,8 +115,8 @@ public abstract class GsonDeserializer<T> implements JsonDeserializer<T> {
      * @param memberName the member name
      * @return the field value as {@link Float} if found,or <code>null</code>
      */
-    protected Float getFloat(JsonObject jsonObject, String memberName) {
-        return getFieldValue(jsonObject, memberName, JsonElement::getAsFloat);
+    protected Float getFloat(JsonObject jsonObject, String memberName, String... otherMemberNames) {
+        return getFieldValue(jsonObject, memberName, otherMemberNames, JsonElement::getAsFloat);
     }
 
     /**
@@ -126,15 +126,31 @@ public abstract class GsonDeserializer<T> implements JsonDeserializer<T> {
      * @param memberName the member name
      * @return the field value as {@link String} if found,or <code>null</code>
      */
-    protected String getString(JsonObject jsonObject, String memberName) {
-        return getFieldValue(jsonObject, memberName, JsonElement::getAsString);
+    protected String getString(JsonObject jsonObject, String memberName, String... otherMemberNames) {
+        return getFieldValue(jsonObject, memberName, otherMemberNames, JsonElement::getAsString);
     }
 
-    protected <T> T getFieldValue(JsonObject jsonObject, String memberName, Function<JsonElement, T> asTypeFunction) {
+    protected <T> T getFieldValue(JsonObject jsonObject, String memberName, String[] otherMemberNames, Function<JsonElement, T> asTypeFunction) {
+        JsonElement fieldElement = get(jsonObject, memberName);
+        if (fieldElement == null) {
+            for (String otherMemberName : otherMemberNames) {
+                fieldElement = get(jsonObject, otherMemberName);
+                if (fieldElement != null) {
+                    break;
+                }
+            }
+        }
+        if (fieldElement == null) {
+            return null;
+        }
+        return asTypeFunction.apply(fieldElement);
+    }
+
+    private JsonElement get(JsonObject jsonObject, String memberName) {
         JsonElement fieldElement = jsonObject.get(memberName);
         if (fieldElement == null || fieldElement instanceof JsonNull) {
             return null;
         }
-        return asTypeFunction.apply(fieldElement);
+        return fieldElement;
     }
 }
