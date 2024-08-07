@@ -19,6 +19,8 @@ package io.microsphere.nacos.discovery.spring.cloud;
 import io.microsphere.nacos.client.NacosClientConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.Map;
+
 import static io.microsphere.nacos.discovery.spring.cloud.NacosDiscoveryProperties.PREFIX;
 
 /**
