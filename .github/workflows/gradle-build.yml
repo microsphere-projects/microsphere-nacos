@@ -2,31 +2,19 @@
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
 # documentation.
-# This workflow will build a package using Gradle and then publish it to GitHub packages when a release is created
-# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#Publishing-using-gradle
 
-name: Gradle Publish
+name: Gradle Build
 
 on:
   push:
-    branches: [ 'release' ]
-  workflow_dispatch:
-    inputs:
-      revision:
-        description: 'The version to release'
-        required: true
-        default: '0.0.1-SNAPSHOT'
+    branches: [ 'main' , 'dev' ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    if:  ${{ inputs.revision }}
-    permissions:
-      contents: read
-      packages: write
     strategy:
       matrix:
-        java: [ '17' ]
+        java: [ '8' , '11' , '17' , '21' ]
 
     steps:
     - name: Checkout Source
@@ -46,7 +34,7 @@ jobs:
       uses: gradle/actions/setup-gradle@dbbdc275be76ac10734476cc723d82dfe7ec6eda # v3.4.2
 
     - name: Build and Publish with Gradle to GitHub Packages
-      run: ./gradlew build publish -Drevision=${{ inputs.revision }}
+      run: ./gradlew build
       env:
         OSSRH_MAVEN_USERNAME: ${{ secrets.OSS_SONATYPE_USERNAME }}
         OSSRH_MAVEN_PASSWORD: ${{ secrets.OSS_SONATYPE_PASSWORD }}
