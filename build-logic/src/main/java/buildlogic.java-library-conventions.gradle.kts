@@ -85,7 +85,4 @@ tasks.javadoc {
     if (JavaVersion.current().isJava8Compatible) {
         (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none","quiet")
     }
-    if (JavaVersion.current().isJava9Compatible) {
-        (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
-    }
 }
