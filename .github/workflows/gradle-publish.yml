@@ -13,13 +13,14 @@ on:
   workflow_dispatch:
     inputs:
       revision:
-        description: 'The revision to build'
+        description: 'The version to release'
         required: true
         default: '0.0.1-SNAPSHOT'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    if:  ${{ inputs.revision }}
     permissions:
       contents: read
       packages: write
