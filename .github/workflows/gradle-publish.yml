@@ -20,6 +20,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if:  ${{ inputs.revision }}
     permissions:
       contents: read
       packages: write
