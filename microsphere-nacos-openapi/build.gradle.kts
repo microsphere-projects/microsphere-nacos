@@ -34,3 +34,7 @@ java {
         languageVersion = JavaLanguageVersion.of(8)
     }
 }
+
+tasks.withType<JavaCompile> {
+    options.compilerArgs.addAll(listOf("-source", "8", "-target", "8"))
+}
