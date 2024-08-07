@@ -8,8 +8,8 @@ plugins {
     `java`
 }
 
-group = "io.microsphere"
-version = "1.0.0-SNAPSHOT"
+group = "io.github.microsphere-projects"
+version = "0.0.1-SNAPSHOT"
 
 repositories {
     // Use the plugin portal to apply community plugins in convention plugins.

@@ -69,8 +69,12 @@ publishing {
                 maven {
                     name = "ossrh"
                     val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-                    val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                    val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
                     url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+                    credentials {
+                        username = System.getenv("OSSRH_MAVEN_USERNAME")
+                        password = System.getenv("OSSRH_MAVEN_PASSWORD")
+                    }
                 }
             }
         }
@@ -78,11 +82,15 @@ publishing {
 }
 
 signing {
+    val SIGNING_KEY_ID: String? by project
+    val SIGNING_KEY: String? by project
+    val SIGNING_PASSWORD: String? by project
+    useInMemoryPgpKeys(SIGNING_KEY_ID, SIGNING_KEY, SIGNING_PASSWORD)
     sign(publishing.publications["mavenJava"])
 }
 
 tasks.javadoc {
     if (JavaVersion.current().isJava8Compatible) {
-        (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none","quiet")
+        (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "quiet")
     }
 }
