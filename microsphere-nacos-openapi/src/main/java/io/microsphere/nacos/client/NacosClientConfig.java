@@ -111,10 +111,19 @@ public class NacosClientConfig implements Serializable {
      */
     private int eventProcessingTimeout = EVENT_PROCESSING_TIMEOUT;
 
+    /**
+     * The thread name of config for fetching
+     */
     private String fetchingConfigThreadName = DEFAULT_FETCHING_CONFIG_THREAD_NAME;
 
+    /**
+     * The thread name of config for listening
+     */
     private String listenerConfigThreadName = DEFAULT_LISTENING_CONFIG_THREAD_NAME;
 
+    /**
+     * The thread name of config for publishing
+     */
     private String publishingConfigEventThreadName = DEFAULT_PUBLISHING_CONFIG_EVENT_THREAD_NAME;
 
     /**
