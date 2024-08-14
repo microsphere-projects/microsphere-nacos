@@ -11,5 +11,6 @@ plugins {
 rootProject.name = "microsphere-nacos"
 
 include(
-    "microsphere-nacos-openapi"
+    "microsphere-nacos-openapi",
+    "microsphere-nacos-discovery-spring-cloud"
 )
