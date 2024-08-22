@@ -23,13 +23,12 @@ import org.springframework.core.env.PropertySource;
 import java.util.Map;
 
 import static io.microsphere.spring.util.PropertySourcesUtils.getSubProperties;
-import static org.springframework.cloud.env.EnvironmentUtils.getSubProperties;
 
 /**
- * TODO Comment
+ * The utilities class for Nacos Client
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
- * @since TODO
+ * @since 1.0.0
  */
 public abstract class NacosClientUtils {
 
@@ -39,7 +38,7 @@ public abstract class NacosClientUtils {
         return NACOS_CLIENTS_PROPERTY_NAME_PREFIX + nacosClientName + ".";
     }
 
-    public static Map<String, String> getNacosClientProperties(ConfigurableEnvironment environment, String nacosClientName) {
+    public static Map<String, Object> getNacosClientProperties(ConfigurableEnvironment environment, String nacosClientName) {
         String prefix = buildNacosClientPropertyNamePrefix(nacosClientName);
         return getSubProperties(environment, prefix);
     }
