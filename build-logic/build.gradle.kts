@@ -23,7 +23,7 @@ repositories {
     maven {
         url = uri("https://maven.aliyun.com/repository/spring-plugin")
     }
-    mavenCentral()
     mavenLocal()
+    mavenCentral()
     gradlePluginPortal()
 }
