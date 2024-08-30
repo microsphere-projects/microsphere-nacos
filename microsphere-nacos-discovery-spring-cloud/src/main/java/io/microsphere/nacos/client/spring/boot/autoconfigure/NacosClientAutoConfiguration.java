@@ -14,16 +14,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.discovery.spring.cloud;
+package io.microsphere.nacos.client.spring.boot.autoconfigure;
 
+import io.microsphere.nacos.client.spring.NacosClientConfiguration;
+import io.microsphere.nacos.client.spring.boot.NacosClientProperties;
+import io.microsphere.spring.boot.condition.ConditionalOnPropertyPrefix;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
+import static io.microsphere.nacos.client.spring.boot.NacosClientProperties.PREFIX;
 
 /**
- * The default {@link Configuration Configuration} class for Nacos Discovery
+ * The Auto-{@link Configuration Configuration} class for Nacos Client
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since Configuration
  */
+@ConditionalOnPropertyPrefix(PREFIX)
 @Configuration(proxyBeanMethods = false)
-public class DefaultNacosDiscoveryConfiguration {
+@EnableConfigurationProperties(NacosClientProperties.class)
+@Import(value = {
+        NacosClientConfiguration.class
+})
+public class NacosClientAutoConfiguration {
 }

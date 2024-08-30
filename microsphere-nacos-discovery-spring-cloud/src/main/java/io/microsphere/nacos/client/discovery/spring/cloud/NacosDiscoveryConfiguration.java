@@ -14,38 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.discovery.spring.cloud.autoconfigure;
+package io.microsphere.nacos.client.discovery.spring.cloud;
 
-import io.microsphere.nacos.client.discovery.spring.cloud.NacosDiscoveryConfiguration;
-import io.microsphere.nacos.client.discovery.spring.cloud.NacosDiscoveryContextFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.ConfigurableApplicationContext;
+import io.microsphere.nacos.client.spring.NacosClientConfiguration;
+import io.microsphere.nacos.client.spring.boot.NacosClientProperties;
+import io.microsphere.nacos.client.transport.OpenApiHttpClient;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import static io.microsphere.nacos.client.spring.util.NacosClientUtils.NACOS_CLIENTS_PROPERTY_NAME_PREFIX;
-
 /**
- * The Auto-Configuration class for Nacos Discovery
+ * The default {@link Configuration Configuration} class for Nacos Discovery
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since Configuration
  */
 @Configuration(proxyBeanMethods = false)
-@Import(value = {
-        NacosDiscoveryConfiguration.class,
-        NacosDiscoveryAutoConfiguration.Multiple.class
-})
-public class NacosDiscoveryAutoConfiguration {
+@EnableConfigurationProperties(NacosClientProperties.class)
+@Import(NacosClientConfiguration.class)
+public class NacosDiscoveryConfiguration {
 
-    @ConditionalOnProperty(prefix = NACOS_CLIENTS_PROPERTY_NAME_PREFIX)
-    public static class Multiple {
-
-        @Bean
-        public NacosDiscoveryContextFactory nacosDiscoveryContextFactory(ConfigurableApplicationContext parentContext) {
-            return new NacosDiscoveryContextFactory(parentContext);
-        }
+    @Bean
+    public NacosDiscoveryClient nacosDiscoveryClient(OpenApiHttpClient openApiHttpClient,
+                                                     NacosClientProperties nacosClientProperties) {
+        return new NacosDiscoveryClient(openApiHttpClient, nacosClientProperties);
     }
-
 }

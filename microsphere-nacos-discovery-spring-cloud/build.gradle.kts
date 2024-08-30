@@ -13,7 +13,7 @@ dependencies {
     api(project(":microsphere-nacos-openapi"))
 
     // Third-Party
-    implementation("io.github.microsphere-projects:microsphere-spring-context")
+    implementation("io.github.microsphere-projects:microsphere-core-spring-boot-starter")
 
     // Spring Boot
     compileOnly("org.springframework.boot:spring-boot-starter-web")

@@ -21,6 +21,7 @@ import io.microsphere.nacos.client.common.discovery.ServiceClient;
 import io.microsphere.nacos.client.common.discovery.model.Instance;
 import io.microsphere.nacos.client.common.discovery.model.InstancesList;
 import io.microsphere.nacos.client.common.model.Page;
+import io.microsphere.nacos.client.spring.boot.NacosClientProperties;
 import io.microsphere.nacos.client.transport.OpenApiHttpClient;
 import io.microsphere.nacos.client.v1.discovery.OpenApiInstanceClient;
 import io.microsphere.nacos.client.v1.discovery.OpenApiServiceClient;
@@ -45,12 +46,15 @@ public class NacosDiscoveryClient implements DiscoveryClient {
 
     private final InstanceClient instanceClient;
 
-    private final NacosDiscoveryProperties nacosDiscoveryProperties;
+    private final NacosClientProperties nacosClientProperties;
 
-    public NacosDiscoveryClient(OpenApiHttpClient openApiHttpClient, NacosDiscoveryProperties nacosDiscoveryProperties) {
-        this.serviceClient = new OpenApiServiceClient(openApiHttpClient, nacosDiscoveryProperties);
-        this.instanceClient = new OpenApiInstanceClient(openApiHttpClient, nacosDiscoveryProperties);
-        this.nacosDiscoveryProperties = nacosDiscoveryProperties;
+    private final String namespaceId;
+
+    public NacosDiscoveryClient(OpenApiHttpClient openApiHttpClient, NacosClientProperties nacosClientProperties) {
+        this.serviceClient = new OpenApiServiceClient(openApiHttpClient, nacosClientProperties);
+        this.instanceClient = new OpenApiInstanceClient(openApiHttpClient, nacosClientProperties);
+        this.nacosClientProperties = nacosClientProperties;
+        this.namespaceId = nacosClientProperties.getDiscovery().getNamespaceId();
     }
 
     @Override
@@ -60,7 +64,6 @@ public class NacosDiscoveryClient implements DiscoveryClient {
 
     @Override
     public List<ServiceInstance> getInstances(String serviceId) {
-        String namespaceId = nacosDiscoveryProperties.getNamespaceId();
         String serviceName = serviceId;
         InstancesList instancesList = instanceClient.getInstancesList(namespaceId, serviceName);
         List<Instance> instances = instancesList.getHosts();
@@ -70,7 +73,6 @@ public class NacosDiscoveryClient implements DiscoveryClient {
     @Override
     public List<String> getServices() {
         List<String> allServiceNames = new LinkedList<>();
-        String namespaceId = nacosDiscoveryProperties.getNamespaceId();
 
         int pageNumber = 0;
         Page<String> serviceNames = serviceClient.getServiceNames(namespaceId, pageNumber);

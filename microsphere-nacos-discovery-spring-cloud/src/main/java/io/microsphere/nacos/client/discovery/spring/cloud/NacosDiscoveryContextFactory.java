@@ -17,8 +17,13 @@
 package io.microsphere.nacos.client.discovery.spring.cloud;
 
 import org.springframework.cloud.context.named.NamedContextFactory;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.PropertySource;
 
-import static io.microsphere.nacos.client.discovery.spring.cloud.NacosDiscoveryProperties.PREFIX;
+import static io.microsphere.nacos.client.spring.boot.NacosClientProperties.PREFIX;
+import static io.microsphere.nacos.client.spring.util.NacosClientUtils.getNacosCilentPropertySource;
 
 /**
  * {@link NamedContextFactory} Class for Nacos Discovery
@@ -26,9 +31,24 @@ import static io.microsphere.nacos.client.discovery.spring.cloud.NacosDiscoveryP
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since NamedContextFactory
  */
-public class NacosDiscoveryContextFactory extends NamedContextFactory {
+public class NacosDiscoveryContextFactory extends NamedContextFactory<NacosDiscoverySpecification> {
 
-    public NacosDiscoveryContextFactory() {
-        super(DefaultNacosDiscoveryConfiguration.class, "nacos-discovery", PREFIX + "name");
+    private final ConfigurableApplicationContext parentContext;
+
+    private static final String NACOS_DISCOVERY_PROPERTY_NAME = "nacos-discovery";
+
+    public NacosDiscoveryContextFactory(ConfigurableApplicationContext parentContext) {
+        super(NacosDiscoveryConfiguration.class, NACOS_DISCOVERY_PROPERTY_NAME, PREFIX + "name");
+        setApplicationContext(parentContext);
+        this.parentContext = parentContext;
+    }
+
+    @Override
+    public GenericApplicationContext buildContext(String name) {
+        GenericApplicationContext context = super.buildContext(name);
+        PropertySource nacosClientPropertySource = getNacosCilentPropertySource(this.parentContext.getEnvironment(), name);
+        ConfigurableEnvironment environment = context.getEnvironment();
+        environment.getPropertySources().addAfter(NACOS_DISCOVERY_PROPERTY_NAME, nacosClientPropertySource);
+        return context;
     }
 }

@@ -14,32 +14,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.microsphere.nacos.client.discovery.spring.cloud;
+package io.microsphere.nacos.client.spring.boot;
 
 import io.microsphere.nacos.client.NacosClientConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import static io.microsphere.nacos.client.constants.Constants.PROPERTY_NAME_PREFIX;
-import static io.microsphere.nacos.client.discovery.spring.cloud.NacosDiscoveryProperties.PREFIX;
+import static io.microsphere.nacos.client.spring.boot.NacosClientProperties.PREFIX;
 
 /**
- * The {@link ConfigurationProperties @ConfigurationProperties} class for Nacos Discovery
+ * The {@link ConfigurationProperties @ConfigurationProperties} class for Nacos Client
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since NacosClientConfig
  */
 @ConfigurationProperties(prefix = PREFIX)
-public class NacosDiscoveryProperties extends NacosClientConfig {
+public class NacosClientProperties extends NacosClientConfig {
 
     public static final String PREFIX = PROPERTY_NAME_PREFIX;
 
-    private String namespaceId;
+    private Discovery discovery = new Discovery();
 
-    public String getNamespaceId() {
-        return namespaceId;
+    public Discovery getDiscovery() {
+        return discovery;
     }
 
-    public void setNamespaceId(String namespaceId) {
-        this.namespaceId = namespaceId;
+    public void setDiscovery(Discovery discovery) {
+        this.discovery = discovery;
+    }
+
+    public static class Discovery {
+
+        private String namespaceId;
+
+        public String getNamespaceId() {
+            return namespaceId;
+        }
+
+        public void setNamespaceId(String namespaceId) {
+            this.namespaceId = namespaceId;
+        }
     }
 }
