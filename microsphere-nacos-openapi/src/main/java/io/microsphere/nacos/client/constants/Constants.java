@@ -157,13 +157,15 @@ public interface Constants {
      */
     int DEFAULT_PAGE_SIZE = 10;
 
+    /**
+     * The default value of healthy-only : <code>false</code>
+     */
     boolean DEFAULT_HEALTHY_ONLY = false;
 
     /**
      * The application name that uses Nacos Client
      */
     String APPLICATION_NAME = System.getProperty(APPLICATION_NAME_PROPERTY_NAME, DEFAULT_APPLICATION_NAME);
-
 
     /**
      * The maximum number of connections for Nacos Client
