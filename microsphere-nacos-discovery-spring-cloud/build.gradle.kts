@@ -7,11 +7,13 @@ dependencies {
     // BOM
     implementation(platform(libs.spring.boot.dependencies))
     implementation(platform(libs.spring.cloud.dependencies))
+    implementation(platform(libs.microsphere.spring.boot.dependencies))
 
     // Internal
     api(project(":microsphere-nacos-openapi"))
 
     // Third-Party
+    implementation("io.github.microsphere-projects:microsphere-core-spring-boot-starter")
 
     // Spring Boot
     compileOnly("org.springframework.boot:spring-boot-starter-web")
@@ -19,6 +21,7 @@ dependencies {
 
     // Spring Cloud Commons
     compileOnly("org.springframework.cloud:spring-cloud-commons")
+    compileOnly("org.springframework.cloud:spring-cloud-context")
 
     // Testing
     testImplementation(libs.junit.jupiter.engine)
