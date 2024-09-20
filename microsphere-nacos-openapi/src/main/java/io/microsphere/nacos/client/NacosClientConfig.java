@@ -288,6 +288,58 @@ public class NacosClientConfig implements Serializable {
         this.encoding = encoding;
     }
 
+    public boolean isAuthorizationEnabled() {
+        return userName != null && password != null;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NacosClientConfig)) return false;
+
+        NacosClientConfig that = (NacosClientConfig) o;
+
+        return maxConnections == that.maxConnections &&
+                maxPerRoute == that.maxPerRoute &&
+                connectionTimeout == that.connectionTimeout &&
+                readTimeout == that.readTimeout &&
+                longPollingTimeout == that.longPollingTimeout &&
+                eventProcessingTimeout == that.eventProcessingTimeout &&
+                Objects.equals(serverAddress, that.serverAddress) &&
+                Objects.equals(scheme, that.scheme) &&
+                Objects.equals(contextPath, that.contextPath) &&
+                Objects.equals(userName, that.userName) &&
+                Objects.equals(password, that.password) &&
+                Objects.equals(accessKey, that.accessKey) &&
+                Objects.equals(secretKey, that.secretKey) &&
+                Objects.equals(fetchingConfigThreadName, that.fetchingConfigThreadName) &&
+                Objects.equals(listenerConfigThreadName, that.listenerConfigThreadName) &&
+                Objects.equals(publishingConfigEventThreadName, that.publishingConfigEventThreadName) &&
+                Objects.equals(encoding, that.encoding);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(serverAddress);
+        result = 31 * result + Objects.hashCode(scheme);
+        result = 31 * result + Objects.hashCode(contextPath);
+        result = 31 * result + Objects.hashCode(userName);
+        result = 31 * result + Objects.hashCode(password);
+        result = 31 * result + Objects.hashCode(accessKey);
+        result = 31 * result + Objects.hashCode(secretKey);
+        result = 31 * result + maxConnections;
+        result = 31 * result + maxPerRoute;
+        result = 31 * result + connectionTimeout;
+        result = 31 * result + readTimeout;
+        result = 31 * result + longPollingTimeout;
+        result = 31 * result + eventProcessingTimeout;
+        result = 31 * result + Objects.hashCode(fetchingConfigThreadName);
+        result = 31 * result + Objects.hashCode(listenerConfigThreadName);
+        result = 31 * result + Objects.hashCode(publishingConfigEventThreadName);
+        result = 31 * result + Objects.hashCode(encoding);
+        return result;
+    }
+
     @Override
     public String toString() {
         return "NacosClientConfig{" +
