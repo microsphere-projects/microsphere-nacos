@@ -45,6 +45,10 @@ build
 *.iml
 *.iws
 
+# vscode
+.vscode
+.vscode/
+
 # temp ignore
 *.log
 *.cache
