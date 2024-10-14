@@ -50,7 +50,6 @@ build
 .vscode/
 
 # temp ignore
-*.log
 *.cache
 *.diff
 *.patch
