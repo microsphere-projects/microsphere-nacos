@@ -42,6 +42,11 @@ public class NacosClientConfig implements Serializable {
     private static final long serialVersionUID = 6094172977732048929L;
 
     /**
+     * The name of Nacos Client Config
+     */
+    private String name;
+
+    /**
      * The application name
      */
     private String applicationName = APPLICATION_NAME;
@@ -111,16 +116,33 @@ public class NacosClientConfig implements Serializable {
      */
     private int eventProcessingTimeout = EVENT_PROCESSING_TIMEOUT;
 
+    /**
+     * The thread name of config for fetching
+     */
     private String fetchingConfigThreadName = DEFAULT_FETCHING_CONFIG_THREAD_NAME;
 
+    /**
+     * The thread name of config for listening
+     */
     private String listenerConfigThreadName = DEFAULT_LISTENING_CONFIG_THREAD_NAME;
 
+    /**
+     * The thread name of config for publishing
+     */
     private String publishingConfigEventThreadName = DEFAULT_PUBLISHING_CONFIG_EVENT_THREAD_NAME;
 
     /**
      * The encoding for Nacos Client
      */
     private String encoding = ENCODING;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getApplicationName() {
         return applicationName;
@@ -321,10 +343,12 @@ public class NacosClientConfig implements Serializable {
     @Override
     public String toString() {
         return "NacosClientConfig{" +
-                "serverAddress='" + serverAddress + '\'' +
+                "name='" + name + '\'' +
+                ", applicationName='" + applicationName + '\'' +
+                ", serverAddress='" + serverAddress + '\'' +
                 ", scheme='" + scheme + '\'' +
                 ", contextPath='" + contextPath + '\'' +
-                ", username='" + userName + '\'' +
+                ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", accessKey='" + accessKey + '\'' +
                 ", secretKey='" + secretKey + '\'' +

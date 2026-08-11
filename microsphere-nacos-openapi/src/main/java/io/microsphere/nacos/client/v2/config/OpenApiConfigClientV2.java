@@ -31,20 +31,7 @@ import static io.microsphere.nacos.client.OpenApiVersion.V1;
 import static io.microsphere.nacos.client.OpenApiVersion.V2;
 import static io.microsphere.nacos.client.http.HttpMethod.GET;
 import static io.microsphere.nacos.client.http.HttpMethod.POST;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_APP;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_CONTENT;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_DATA_ID;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_EFFECT;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_GROUP;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_SCHEMA;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_TAG;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_TAGS_V2;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_TENANT;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.CONFIG_USE;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.DESCRIPTION;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.NAMESPACE_ID;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.OPERATOR_V2;
-import static io.microsphere.nacos.client.transport.OpenApiRequestParam.SHOW;
+import static io.microsphere.nacos.client.transport.OpenApiRequestParam.*;
 import static io.microsphere.nacos.client.util.StringUtils.collectionToCommaDelimitedString;
 
 /**
@@ -110,6 +97,8 @@ public class OpenApiConfigClientV2 extends OpenApiConfigClient implements Config
         String use = newConfig.getUse();
         String effect = newConfig.getEffect();
         String schema = newConfig.getSchema();
+        ConfigType configType = newConfig.getType();
+        String type = configType == null ? null : configType.getValue();
         OpenApiRequest request = configRequestBuilder(namespaceId, group, dataId, null, POST)
                 .queryParameter(CONFIG_CONTENT, content)
                 .queryParameter(CONFIG_TAGS_V2, tags)
@@ -119,6 +108,7 @@ public class OpenApiConfigClientV2 extends OpenApiConfigClient implements Config
                 .queryParameter(CONFIG_USE, use)
                 .queryParameter(CONFIG_EFFECT, effect)
                 .queryParameter(CONFIG_SCHEMA, schema)
+                .queryParameter(CONFIG_TYPE, type.toLowerCase())
                 .build();
         return response(request, Boolean.class);
     }

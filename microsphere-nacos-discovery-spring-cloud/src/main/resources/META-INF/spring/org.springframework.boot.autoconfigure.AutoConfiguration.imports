@@ -1,0 +1,2 @@
+io.microsphere.nacos.client.spring.boot.autoconfigure.NacosClientAutoConfiguration
+io.microsphere.nacos.client.discovery.spring.cloud.autoconfigure.NacosDiscoveryAutoConfiguration

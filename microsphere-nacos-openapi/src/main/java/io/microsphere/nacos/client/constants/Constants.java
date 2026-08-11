@@ -120,7 +120,7 @@ public interface Constants {
     /**
      * The default value of the long polling timeout for Nacos Client : 30 seconds
      */
-    int DEFAULT_LONG_POLLING_TIMEOUT = (int) SECONDS.toMicros(30);
+    int DEFAULT_LONG_POLLING_TIMEOUT = (int) SECONDS.toMillis(30);
 
     /**
      * The default value of the event processing timeout for Nacos Client : 30 seconds
@@ -157,13 +157,15 @@ public interface Constants {
      */
     int DEFAULT_PAGE_SIZE = 10;
 
+    /**
+     * The default value of healthy-only : <code>false</code>
+     */
     boolean DEFAULT_HEALTHY_ONLY = false;
 
     /**
      * The application name that uses Nacos Client
      */
     String APPLICATION_NAME = System.getProperty(APPLICATION_NAME_PROPERTY_NAME, DEFAULT_APPLICATION_NAME);
-
 
     /**
      * The maximum number of connections for Nacos Client
