@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>io.github.microsphere-projects</groupId>
+        <artifactId>microsphere-nacos-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../microsphere-nacos-parent/pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.microsphere-projects</groupId>
+    <artifactId>microsphere-nacos-dependencies</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <name>Microsphere :: Nacos :: Dependencies</name>
+    <description>Microsphere Nacos Dependencies</description>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>io.github.microsphere-projects</groupId>
+                <artifactId>microsphere-nacos-openapi</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.microsphere-projects</groupId>
+                <artifactId>microsphere-nacos-discovery-spring-cloud</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+</project>

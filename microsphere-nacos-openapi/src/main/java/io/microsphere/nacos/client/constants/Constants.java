@@ -120,7 +120,7 @@ public interface Constants {
     /**
      * The default value of the long polling timeout for Nacos Client : 30 seconds
      */
-    int DEFAULT_LONG_POLLING_TIMEOUT = (int) SECONDS.toMicros(30);
+    int DEFAULT_LONG_POLLING_TIMEOUT = (int) SECONDS.toMillis(30);
 
     /**
      * The default value of the event processing timeout for Nacos Client : 30 seconds

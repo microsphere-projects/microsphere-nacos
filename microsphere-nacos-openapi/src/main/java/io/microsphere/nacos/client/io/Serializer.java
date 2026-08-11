@@ -41,7 +41,6 @@ public interface Serializer {
      */
     void serialize(Object object, OutputStream outputStream) throws SerializationException;
 
-
     /**
      * Serialize an object as String
      *

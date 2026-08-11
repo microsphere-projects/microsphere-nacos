@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>io.github.microsphere-projects</groupId>
+        <artifactId>microsphere-nacos</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.microsphere-projects</groupId>
+    <artifactId>microsphere-nacos-parent</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <name>Microsphere :: Nacos :: Parent</name>
+    <description>Microsphere Nacos Parent</description>
+
+    <properties>
+        <httpclient.version>4.5.14</httpclient.version>
+        <!-- BOM versions -->
+        <microsphere-spring-cloud.version>0.2.25</microsphere-spring-cloud.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- Apache HttpClient -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+
+            <!-- Microsphere Spring Cloud Dependencies -->
+            <dependency>
+                <groupId>io.github.microsphere-projects</groupId>
+                <artifactId>microsphere-spring-cloud-dependencies</artifactId>
+                <version>${microsphere-spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+</project>

@@ -44,6 +44,9 @@ public abstract class ConfigUtil {
      * @return dataId^2Group^2contentMD5^2tenant
      */
     public static String buildListeningConfigDataPacket(String namespaceId, String group, String dataId, String contentMD5) {
+        if (namespaceId == null || namespaceId.isEmpty()) {
+            return doBuildConfigId(dataId, group, contentMD5);
+        }
         return doBuildConfigId(dataId, group, contentMD5, namespaceId);
     }
 
@@ -57,6 +60,9 @@ public abstract class ConfigUtil {
      * @return tenant^2Group^2dataId
      */
     public static String buildConfigId(String namespaceId, String group, String dataId) {
+        if (namespaceId == null || namespaceId.isEmpty()) {
+            return doBuildConfigId(dataId, group);
+        }
         return doBuildConfigId(dataId, group, namespaceId);
     }
 
