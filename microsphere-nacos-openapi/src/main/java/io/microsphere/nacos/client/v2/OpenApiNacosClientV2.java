@@ -59,6 +59,10 @@ import io.microsphere.nacos.client.v2.client.model.ClientDetail;
 import io.microsphere.nacos.client.v2.client.model.ClientInfo;
 import io.microsphere.nacos.client.v2.client.model.ClientInstance;
 import io.microsphere.nacos.client.v2.client.model.ClientSubscriber;
+import io.microsphere.nacos.client.v2.config.OpenApiConfigClientV2;
+import io.microsphere.nacos.client.v2.discovery.OpenApiInstanceClientV2;
+import io.microsphere.nacos.client.v2.discovery.OpenApiServiceClientV2;
+import io.microsphere.nacos.client.v2.namespace.OpenApiNamespaceClientV2;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -118,10 +122,10 @@ public class OpenApiNacosClientV2 extends OpenApiTemplateClient implements Nacos
     public OpenApiNacosClientV2(OpenApiClient openApiClient, NacosClientConfig nacosClientConfig) {
         super(openApiClient, nacosClientConfig);
         this.authenticationClient = new OpenApiAuthenticationClient(openApiClient, nacosClientConfig);
-        this.configClient = new OpenApiConfigClient(openApiClient, nacosClientConfig);
-        this.serviceClient = new OpenApiServiceClient(openApiClient, nacosClientConfig);
-        this.instanceClient = new OpenApiInstanceClient(openApiClient, nacosClientConfig);
-        this.namespaceClient = new OpenApiNamespaceClient(openApiClient, nacosClientConfig);
+        this.configClient = new OpenApiConfigClientV2(openApiClient, nacosClientConfig);
+        this.serviceClient = new OpenApiServiceClientV2(openApiClient, nacosClientConfig);
+        this.instanceClient = new OpenApiInstanceClientV2(openApiClient, nacosClientConfig);
+        this.namespaceClient = new OpenApiNamespaceClientV2(openApiClient, nacosClientConfig);
         this.serverClient = new OpenApiServerClient(openApiClient, nacosClientConfig);
         this.raftClient = new OpenApiRaftClient(openApiClient, nacosClientConfig);
     }
