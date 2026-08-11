@@ -20,7 +20,6 @@ import io.microsphere.nacos.client.transport.OpenApiClient;
 import io.microsphere.nacos.client.transport.OpenApiHttpClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.concurrent.TimeUnit;
 
@@ -34,7 +33,6 @@ import static java.lang.String.format;
  * @see OpenApiHttpClient
  * @since 1.0.0
  */
-@ExtendWith(OpenApiTestContainersExtension.class)
 public abstract class OpenApiTest {
 
     protected static final String TEST_NAMESPACE_ID = "test";
