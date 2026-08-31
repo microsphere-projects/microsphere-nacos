@@ -21,7 +21,7 @@
     <properties>
         <httpclient.version>4.5.14</httpclient.version>
         <!-- BOM versions -->
-        <microsphere-spring-cloud.version>0.2.25</microsphere-spring-cloud.version>
+        <microsphere-spring-cloud.version>0.2.26</microsphere-spring-cloud.version>
     </properties>
 
     <dependencyManagement>
