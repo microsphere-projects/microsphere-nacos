@@ -22,7 +22,8 @@ import org.springframework.core.env.PropertySource;
 
 import java.util.Map;
 
-import static io.microsphere.spring.util.PropertySourcesUtils.getSubProperties;
+import static io.microsphere.spring.core.env.PropertySourcesUtils.getSubProperties;
+
 
 /**
  * The utilities class for Nacos Client
