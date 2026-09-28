@@ -32,6 +32,7 @@ target/
 !gradle/wrapper/*
 ## Ignore Gradle build output directory
 build
+bin
 
 # eclipse ignore
 .settings/
@@ -74,6 +75,10 @@ compiler/.gradle/*
 # Tomcat
 .extract
 .java-version
+
+# kotlin
+.kotlin
+
 
 # others
 build.txt
