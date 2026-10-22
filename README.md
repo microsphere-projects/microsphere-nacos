@@ -85,6 +85,18 @@ We welcome your contributions! Please read [Code of Conduct](./CODE_OF_CONDUCT.m
 
 ## Documentation
 
+### Guides
+
+In-repo, bilingual guides (English default, Chinese under `zh/`) generated from the `release` and `release-1.x`
+branches, one document per Maven module:
+
+| Version line | User Guide | Developer Guide |
+|--------------|------------|-----------------|
+| `current` (`release`) | [docs/user-guide/current](docs/user-guide/current/README.md) · [中文](docs/user-guide/zh/current/README.md) | [docs/developer-guide/current](docs/developer-guide/current/README.md) · [中文](docs/developer-guide/zh/current/README.md) |
+| `1.x` (`release-1.x`) | [docs/user-guide/1.x](docs/user-guide/1.x/README.md) · [中文](docs/user-guide/zh/1.x/README.md) | [docs/developer-guide/1.x](docs/developer-guide/1.x/README.md) · [中文](docs/developer-guide/zh/1.x/README.md) |
+
+Docs home: [docs/README.md](docs/README.md) · [中文](docs/zh/README.md)
+
 ### User Guide
 
 [DeepWiki Host](https://deepwiki.com/microsphere-projects/microsphere-nacos)
